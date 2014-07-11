@@ -42,6 +42,8 @@ public function new () {
 
 Project Compilation
 =========
+To use this library application need ip and port. 
+Lime/haxe project have to copiled with additional flag:
 ```sh
 lime test html5 -Ddebugip=localhost:28080
 ```
