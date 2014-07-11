@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="weblog">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	
+	<script>
+		require("./server/server.js");
+	</script>
+	
+	
+	
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/jquery.pnotify.js"></script>
+	<script src="js/ng-infinite-scroll.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
+	<script src="js/base64.js"></script>
+	<script src="js/socket.io.js"></script>
+	<script src="js/json2html.js"></script>
+	
+	<link rel="stylesheet" href="css/weblog.css">
+	<link rel="stylesheet" href="css/bootstrap.slate.css">
+	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
+	<link rel="stylesheet" href="css/jquery.pnotify.default.icons.css">
+	
+	
+</head>
+<body>	
+
+		<script>
+			if (!library)
+   var library = {};
+
+library.json = {
+   replacer: function(match, pIndent, pKey, pVal, pEnd) {
+      var key = '<span class=json-key>';
+      var val = '<span class=json-value>';
+      var str = '<span class=json-string>';
+      var r = pIndent || '';
+      if (pKey)
+         r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+      if (pVal)
+         r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+      return r + (pEnd || '');
+      },
+   prettyPrint: function(obj) {
+      var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+      return JSON.stringify(obj, null, 3)
+         .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+         .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+         .replace(jsonLine, library.json.replacer);
+      }
+   };
+		</script>
+	
+	
+			
+		<div class="tabNavigator" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
+			<ul class="nav nav-tabs">
+				<li ng-class="setClass('log')" ng-click="selectTab('log')">
+					<a href="#">Log</a>
+				</li>
+				<li ng-class="setClass('debug')" ng-click="selectTab('debug')">
+					<a href="#">Debug</a>
+				</li>
+				<li ng-class="setClass('inspect')" ng-click="selectTab('inspect')">
+					<a href="#">Inspect</a>
+				</li>
+				<li ng-class="setClass('test')" ng-click="selectTab('test')">
+					<a href="#">Test</a>
+				</li>
+			</ul>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.LogController" ng-show="selectedTab=='log'">			
+			
+			
+			<div class="content">
+				<table class="table table-striped" class="contab" infinite-scroll="nextPage($event)">
+					
+					<thead >
+						<tr>
+							<th>ID</th>
+							<th>TIME</th>
+							<th>DEVICE</th>
+							<th>MESSAGE</th>
+						</tr>
+					</thead>
+					
+					<tbody id="logs">
+						<tr style="" ng-repeat="log in logs">							
+							<td>{{log.id}}</td>
+							<td>{{log.time | date:'HH:mm:ss'}}</td>
+							<td>{{log.device}}</td>
+							<td>{{log.message}}</td>
+						</tr>
+					</tbody>
+					
+				</table>
+				
+				<center>
+				<div class="loader" ng-show="ajaxProgress"><img src="img/ajax-loader.gif" /></div>
+				</center>
+			</div>
+		</div>
+		
+		
+		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" ng-show="selectedTab=='debug'">			
+			
+			
+			<div class="content debug">
+				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
+					
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>TIME</th>
+							<th>DEVICE</th>
+							<!--<th>MESSAGE</th>-->
+						</tr>
+					</thead>
+					
+					<tbody id="logs">
+						<tr style="" ng-repeat="log in logs" ng-click="select(log.message, log.id)" ng-class="{debugSelected: log.id === selectedId}">							
+							<td>{{log.id}}</td>
+							<td>{{log.time | date:'HH:mm:ss'}}</td>
+							<td>{{log.device}}</td>
+							<!--<td ng-bind-html="log.message"></td>-->
+						</tr>
+					</tbody>
+					
+				</table>
+			</div>
+			
+			<div class="details" ng-bind-html="selectedDebugItem">
+				
+			</div>
+		</div>
+		
+		
+		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.TestController" ng-show="selectedTab=='test'">
+			
+			
+			<div class="content">
+				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
+					
+					<thead>
+						<tr>
+							<th>MESSAGE</th>
+						</tr>
+					</thead>
+					
+					<tbody id="logs">
+						<tr style="" ng-repeat="log in logs">
+							<td ng-bind-html="log.message"></td>
+						</tr>
+					</tbody>
+					
+				</table>
+			</div>
+		</div>
+		
+		
+		
+		
+	
+	
+	<script src="js/weblog.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "weblog",
+  "version": "0.0.1",
+  "devDependencies": {
+	"mkdirp": "latest",
+	"mv": "latest",
+	"remove": "latest",
+	"walkdir": "latest",
+	"watchr": "latest"
+  },
+  "main": "index.html",
+  "chromium-args" : "--disable-threaded-compositing --enable-smooth-scrolling",
+  "window": {
+    "title": "weblog",
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 600,
+    "position": "center",
+    "min_width": 768,
+    "show": false,
+	"icon": "bug.png"
+  }
+}
