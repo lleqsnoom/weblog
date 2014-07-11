@@ -2,6 +2,11 @@ WebLog
 ============
 
 Haxe remote debugging tool.
+This project require node-webkit.
+```sh
+haxelib install node-webkit
+```
+
 
 
 
