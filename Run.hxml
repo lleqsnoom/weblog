@@ -1,0 +1,5 @@
+-cp src
+-main tools.Run
+-neko bin/run.n
+-debug
+-dce full

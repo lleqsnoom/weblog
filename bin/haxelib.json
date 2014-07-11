@@ -1,0 +1,13 @@
+{
+    "name": "weblog",
+    "url" : "https://github.com/zasmarkany/remote-debug/",
+    "license": "MIT",
+    "tags": ["log", "debug", "remote", "html5"],
+    "description": "remote logging tool for haxe",
+    "version": "0.0.1",
+    "releasenote": "See changes.md",
+    "contributors": ["tkwiatek"],
+    "dependencies": {
+		"node-webkit": ""
+		}
+}

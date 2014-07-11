@@ -1,0 +1,6 @@
+.done{top:1px;left:1px;
+width:46px;height:46px;background: url("../img/sprites.png") no-repeat -46px -0px;}
+.downloading{top:1px;left:1px;
+width:46px;height:46px;background: url("../img/sprites.png") no-repeat -0px -46px;}
+.error{top:1px;left:1px;
+width:46px;height:46px;background: url("../img/sprites.png") no-repeat -0px -0px;}
