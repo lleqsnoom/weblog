@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 //var ws = require("nodejs-websocket");
-var port = 28080;
-var wsport = 28081;
+var port = 18080;
+var wsport = 18081;
 var io = require('socket.io').listen(wsport);
 var http = require('http');
 var fs = require('fs');
@@ -68,7 +68,7 @@ var server = http.createServer(function(request, response) {
 
 try{
 	server.listen(port, function() {
-		console.log((new Date()) + ' Server is listening on port 8080');
+		console.log((new Date()) + ' Server is listening on port ' + port);
 	});
 }catch(err){
 	
