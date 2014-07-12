@@ -43,7 +43,7 @@ class SocketService implements IService
 		}
 		
 		untyped __js__("console.log('SocketService')");
-		var socket:Dynamic = untyped __js__("io.connect('http://localhost:28081/')");
+		var socket:Dynamic = untyped __js__("io.connect('http://localhost:18081/')");
 		socket.on("data", onSocketData);
 	}
 	

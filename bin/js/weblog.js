@@ -176,7 +176,7 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.testData = new Array();
 	this.socketData = { logData : this.logData, debugData : this.debugData, testData : this.testData};
 	console.log('SocketService');
-	var socket = io.connect('http://localhost:28081/');
+	var socket = io.connect('http://localhost:18081/');
 	socket.on("data",$bind(this,this.onSocketData));
 };
 pl.bigsoda.weblog.servicess.SocketService.__interfaces__ = [hxangular.haxe.IService];
