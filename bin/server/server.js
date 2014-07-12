@@ -42,18 +42,18 @@ var server = http.createServer(function(request, response) {
 		
 		if(request.url == "/"){
 			try{
-				var asset = fs.readFileSync("../weblog/bin" + "/index.html");
+				//var asset = fs.readFileSync("../weblog/bin" + "/index.html");
 				response.writeHead(200);
-				response.end(asset);
+				response.end("");
 			}catch(e){
 				console.log("error");
 				console.log(e);
 			}
 		}else{
 			try{
-				var asset = fs.readFileSync("../weblog/bin" + request.url);
+				//var asset = fs.readFileSync("../weblog/bin" + request.url);
 				response.writeHead(200);
-				response.end(asset);
+				response.end("");
 			}catch(e){
 				console.log("error");
 				console.log(e);
