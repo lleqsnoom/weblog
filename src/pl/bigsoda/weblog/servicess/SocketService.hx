@@ -12,11 +12,14 @@ class SocketService implements IService
 	public var socketData:Dynamic;
 	public var logData:Array<Dynamic>;
 	public var debugData:Array<Dynamic>;
+	public var inspectData:Array<Dynamic>;
 	public var testData:Array<Dynamic>;
 	private var logDeferred:Dynamic;
 	private var debugDeferred:Dynamic;
+	private var inspectDeferred:Dynamic;
 	private var testDeferred:Dynamic;
 	private var rootScope:Dynamic;
+	private var inspectSocketData:Dynamic;
 	private var init:Bool = false;
 	private var sce:Dynamic;
 	private var index:Float = 0;
@@ -29,16 +32,19 @@ class SocketService implements IService
 		logDeferred = q.defer();
 		debugDeferred = q.defer();
 		testDeferred = q.defer();
+		inspectDeferred = q.defer();
 		
 		socketData = new Array<Dynamic>();
 		this.sce = sce;
 		
 		logData = new Array<Dynamic>();
 		debugData = new Array<Dynamic>();
+		inspectData = new Array<Dynamic>();
 		testData = new Array<Dynamic>();
 		socketData = {
 			logData: logData,
 			debugData: debugData,
+			inspectData: inspectData,
 			testData: testData,
 		}
 		
@@ -48,7 +54,9 @@ class SocketService implements IService
 	}
 	
 	public function onSocketData(data:Dynamic):Void {
-		data.data = Json.parse(data.data);
+		//data.data = Json.parse(data.data);
+		data = Json.parse(data);
+
 		var max:UInt = 100;
 		
 		if (data.type == "log") {
@@ -73,6 +81,18 @@ class SocketService implements IService
 		}
 		
 
+		if (data.type == "inspect") {
+			inspectSocketData = sce.trustAsHtml("<pre id='debug'>" + formatJson(data.data) + "</pre>");
+			inspectData.insert(0, {
+				id: index,
+				time: Date.now(),
+				device: data.device,
+				message: sce.trustAsHtml("<pre id='debug'>" + formatJson(data.data) + "</pre>"),
+			});
+			if (inspectData.length > 1) inspectData.pop();
+		}
+		
+
 		if (data.type == "test") {
 			testData.insert(0, {
 				id: index,
@@ -86,6 +106,7 @@ class SocketService implements IService
 		
 		logDeferred.resolve(logData);
 		debugDeferred.resolve(debugData);
+		inspectDeferred.resolve(inspectData);
 		testDeferred.resolve(testData);
 		
 		rootScope.$apply();
@@ -110,6 +131,12 @@ class SocketService implements IService
 	}
 	public function getDebugData():Dynamic {
 		return debugDeferred.promise;
+	}
+	public function getInspectData():Dynamic {
+		return inspectDeferred.promise;
+	}
+	public function getInspectSocketData():Dynamic {
+		return inspectSocketData;
 	}
 	public function getTestData():Dynamic {
 		return testDeferred.promise;
