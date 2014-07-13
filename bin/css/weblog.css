@@ -166,3 +166,12 @@
 			right: 0;
 			z-index: 1;
 		}
+
+		
+		.details.full
+		{
+			width:100%;
+			left: 0px;
+			/*overflow: auto;*/
+			/*ox-sizing: border-box;*/
+		}

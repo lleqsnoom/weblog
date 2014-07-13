@@ -12,7 +12,7 @@ var server = http.createServer(function(request, response) {
 
 	try{
 	
-		console.log((new Date()) + ' Received request for ' + request.url);
+		//console.log((new Date()) + ' Received request for ' + request.url);
 		
 	   
 		if (request.method == 'POST') {
@@ -26,10 +26,13 @@ var server = http.createServer(function(request, response) {
 				//console.log(POST);
 				try{
 					POST.device = request.headers["user-agent"];
-					ws_conn.emit("data", POST);
+					ws_conn.emit("data", body);
+					//ws_conn.emit("data", POST);
 				}catch(e){}
 				// use POST
 				
+				//console.log(body);
+
 				response.writeHead(200);
 				response.end();
 				

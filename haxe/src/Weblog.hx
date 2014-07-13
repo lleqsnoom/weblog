@@ -1,19 +1,16 @@
 package ;
-import flash.Lib;
-import flash.net.URLLoader;
-import flash.net.URLRequest;
-import flash.net.URLRequestHeader;
-import flash.net.URLRequestMethod;
-import flash.net.URLVariables;
+
 import haxe.Json;
 import haxe.macro.Compiler;
 
 /**
  * ...
- * @author 
+ * @author tkwiatek
  */
 class Weblog{
-	
+	private static var _inspectable:Dynamic = null;
+	private static var _isRunning:Bool = false;
+
 	public static function log(data:Dynamic):Void {
 		send(data, "log");
 	}
@@ -22,6 +19,22 @@ class Weblog{
 		send(data, "debug");
 	}
 	
+	public static function inspect(data:Dynamic):Void {
+		_inspectable = data;
+		if(_isRunning) return;
+		runInspect();
+	}
+	private static function runInspect():Void {
+		if(_inspectable == null) {
+			_isRunning = false;
+			return;
+		}
+		send(_inspectable, "inspect");
+		haxe.Timer.delay(function():Void{
+			runInspect();
+		}, 100);
+	}
+
 	public static function test(data:Dynamic):Void {
 		send(data, "test");
 	}
@@ -30,10 +43,19 @@ class Weblog{
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip != null) {
 			
-			
-			//var json:String = readObjectJson(data);
+			var r:haxe.Http = new haxe.Http("http://" + debugip);
+			r.addHeader("Accept" , "application/json");
+			r.setPostData( Json.stringify({
+					data: readObjectReflect(data),
+					append: true,
+					type: type,
+				})
+			);
+			r.request(true);
+
+
+			/*
 			var json:String = Json.stringify(readObjectReflect(data));
-			
 			var l:URLLoader = new URLLoader();
 			var r:URLRequest = new URLRequest("http://" + debugip);
 			r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
@@ -45,17 +67,19 @@ class Weblog{
 			urlVars.device = "mobile";
 			r.data = urlVars;			
 			l.load(r);
+			*/
 		}
 	}
 	
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
 
 		if(depth == 0)return null;
-		
+
 		var a:Array<Dynamic> = new Array<Dynamic>();
-		for (value in o)
+		for (val in o)
 		{
-			a.push(readObjectReflect(value, depth-1));
+			if(Reflect.isFunction(val)) continue;
+			a.push(readObjectReflect(val, depth-1));
 		}
 		return a;
 
@@ -77,8 +101,8 @@ class Weblog{
 
 			for (field in fields){
 				var val:Dynamic = Reflect.field(o,field);
+				if(Reflect.isFunction(val)) continue;
 				Reflect.setField(t, field, readObjectReflect(val, depth - 1));
-				//Reflect.setField(t, field, val + "");
 			}
 
 			return t;
@@ -115,45 +139,7 @@ class Weblog{
 
 		}
 
-
-
-
-
-
 		return null;
-
-/*
-		var s:String = "";
-		var t:Dynamic = {};
-		
-		
-		
-		var fields = Reflect.fields(o);
-		fields = fields.concat(Type.getInstanceFields(Type.getClass(o)));
-		
-		
-		var type;
-		for (j in 0...fields.length)
-		{
-			 //type = Type.typeof(Reflect.getProperty(o, fields[j]));
-			var f = Reflect.getProperty(o, fields[j]);
-			
-			if(Std.is(f, Int) || Std.is(f, Float) || Std.is(f, String) || Std.is(f, Bool)){
-				Reflect.setField(t, fields[j], Reflect.getProperty(o, fields[j]));
-			}else{
-				if(depth > 0){
-					try{
-						Reflect.setField(t, fields[j], readObjectReflect(Reflect.getProperty(o, fields[j]), depth - 1));	
-					}catch(e:Dynamic){
-						
-					}
-				} 
-			}
-			 
-		}
-
-		
-		return t;*/
 	}
 	
 	private static function readObjectJson(o:Dynamic):String {

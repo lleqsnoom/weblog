@@ -27,7 +27,7 @@ Main.main = function() {
 	var app = angular.module("weblog",["infinite-scroll"]);
 	app.controller("pl.bigsoda.weblog.controllers.LogController",pl.bigsoda.weblog.controllers.LogController);
 	app.controller("pl.bigsoda.weblog.controllers.DebugController",pl.bigsoda.weblog.controllers.DebugController);
-	app.controller("pl.bigsoda.weblog.controllers.TestController",pl.bigsoda.weblog.controllers.TestController);
+	app.controller("pl.bigsoda.weblog.controllers.InspectController",pl.bigsoda.weblog.controllers.InspectController);
 	app.controller("pl.bigsoda.weblog.controllers.TabNavigatorController",pl.bigsoda.weblog.controllers.TabNavigatorController);
 	app.controller("pl.bigsoda.weblog.controllers.ServerAdressController",pl.bigsoda.weblog.controllers.ServerAdressController);
 	app.service("pl.bigsoda.weblog.servicess.SocketService",pl.bigsoda.weblog.servicess.SocketService);
@@ -103,6 +103,40 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 		this.scope.selectedId = id;
 	}
 	,__class__: pl.bigsoda.weblog.controllers.DebugController
+};
+pl.bigsoda.weblog.controllers.InspectController = $hx_exports.pl.bigsoda.weblog.controllers.InspectController = function(scope,window,http,document,timeout,rootScope,socketService,sce) {
+	this.scope = scope;
+	this.http = http;
+	this.timeout = timeout;
+	this.sce = sce;
+	this.socketService = socketService;
+	hxangular.AngularHelper.map(this.scope,this);
+	socketService.getInspectData().then($bind(this,this.onSocketData));
+};
+pl.bigsoda.weblog.controllers.InspectController.__interfaces__ = [hxangular.haxe.IController];
+pl.bigsoda.weblog.controllers.InspectController.prototype = {
+	scope: null
+	,rootScope: null
+	,http: null
+	,timeout: null
+	,socketData: null
+	,sce: null
+	,socketService: null
+	,onSocketData: function(data) {
+		var _g = this;
+		console.log("onSocketData");
+		this.scope.logs = data;
+		setInterval(function() {
+			_g.select(_g.socketService.getInspectSocketData());
+		},100);
+	}
+	,select: function(msg) {
+		var _g = this;
+		this.scope.$apply(function() {
+			_g.scope.selectedInspectItem = msg;
+		});
+	}
+	,__class__: pl.bigsoda.weblog.controllers.InspectController
 };
 pl.bigsoda.weblog.controllers.LogController = $hx_exports.pl.bigsoda.weblog.controllers.LogController = function(scope,window,http,document,timeout,rootScope,socketService) {
 	this.scope = scope;
@@ -191,12 +225,14 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.logDeferred = q.defer();
 	this.debugDeferred = q.defer();
 	this.testDeferred = q.defer();
+	this.inspectDeferred = q.defer();
 	this.socketData = new Array();
 	this.sce = sce;
 	this.logData = new Array();
 	this.debugData = new Array();
+	this.inspectData = new Array();
 	this.testData = new Array();
-	this.socketData = { logData : this.logData, debugData : this.debugData, testData : this.testData};
+	this.socketData = { logData : this.logData, debugData : this.debugData, inspectData : this.inspectData, testData : this.testData};
 	console.log('SocketService');
 	var socket = io.connect('http://localhost:18081/');
 	socket.on("data",$bind(this,this.onSocketData));
@@ -206,16 +242,19 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	socketData: null
 	,logData: null
 	,debugData: null
+	,inspectData: null
 	,testData: null
 	,logDeferred: null
 	,debugDeferred: null
+	,inspectDeferred: null
 	,testDeferred: null
 	,rootScope: null
+	,inspectSocketData: null
 	,init: null
 	,sce: null
 	,index: null
 	,onSocketData: function(data) {
-		data.data = JSON.parse(data.data);
+		data = JSON.parse(data);
 		var max = 100;
 		if(data.type == "log") {
 			var x = { id : this.index, time : new Date(), device : data.device, message : data.data};
@@ -241,13 +280,20 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 				return $r;
 			}(this))) this.debugData.pop();
 		}
+		if(data.type == "inspect") {
+			this.inspectSocketData = this.sce.trustAsHtml("<pre id='debug'>" + library.json.prettyPrint(data.data) + "</pre>");
+			var x2 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml("<pre id='debug'>" + library.json.prettyPrint(data.data) + "</pre>")};
+			this.inspectData.splice(0,0,x2);
+			if(this.inspectData.length > 1) this.inspectData.pop();
+		}
 		if(data.type == "test") {
-			var x2 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml(this.formatMunit(data.data))};
-			this.testData.splice(0,0,x2);
+			var x3 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml(this.formatMunit(data.data))};
+			this.testData.splice(0,0,x3);
 		}
 		this.index++;
 		this.logDeferred.resolve(this.logData);
 		this.debugDeferred.resolve(this.debugData);
+		this.inspectDeferred.resolve(this.inspectData);
 		this.testDeferred.resolve(this.testData);
 		this.rootScope.$apply();
 	}
@@ -267,6 +313,12 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getDebugData: function() {
 		return this.debugDeferred.promise;
 	}
+	,getInspectData: function() {
+		return this.inspectDeferred.promise;
+	}
+	,getInspectSocketData: function() {
+		return this.inspectSocketData;
+	}
 	,getTestData: function() {
 		return this.testDeferred.promise;
 	}
@@ -280,12 +332,14 @@ if(Array.prototype.indexOf) HxOverrides.indexOf = function(a,o,i) {
 String.prototype.__class__ = String;
 Date.prototype.__class__ = Date;
 pl.bigsoda.weblog.controllers.DebugController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
+pl.bigsoda.weblog.controllers.InspectController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.controllers.LogController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
 pl.bigsoda.weblog.controllers.ServerAdressController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope"];
 pl.bigsoda.weblog.controllers.TabNavigatorController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope"];
 pl.bigsoda.weblog.controllers.TestController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
 pl.bigsoda.weblog.servicess.SocketService.$inject = ["$q","$rootScope","$sce"];
 pl.bigsoda.weblog.controllers.DebugController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
+pl.bigsoda.weblog.controllers.InspectController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
 pl.bigsoda.weblog.controllers.LogController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"]}}};
 pl.bigsoda.weblog.controllers.ServerAdressController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope"]}}};
 pl.bigsoda.weblog.controllers.TabNavigatorController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope"]}}};

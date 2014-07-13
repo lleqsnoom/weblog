@@ -7,7 +7,7 @@ import js.Console;
  * ...
  * @author tkwiatek
  */
-class DebugController implements IController
+class InspectController implements IController
 {
 
 	var scope:Dynamic;
@@ -16,6 +16,7 @@ class DebugController implements IController
 	var timeout:Dynamic;
 	var socketData:Dynamic;
 	var sce:Dynamic;
+	var socketService:Dynamic;
 	
 	@inject("$scope", "$window", "$http", "$document", "$timeout", "$rootScope", "pl.bigsoda.weblog.servicess.SocketService", "$sce")
 	public function new(scope, window, http, document, timeout, rootScope, socketService, sce) 
@@ -25,21 +26,29 @@ class DebugController implements IController
 		this.timeout = timeout;
 		this.sce = sce;
 		
-		
+		this.socketService = socketService;
+
 		AngularHelper.map(this.scope, this);
-		socketService.getDebugData().then(onSocketData);
+		socketService.getInspectData().then(onSocketData);
+
+
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
 		Console.log("onSocketData");
 		scope.logs = data;
-		//scope.selectedDebugItem = data;
+		untyped __js__("setInterval")(function(){
+			select(socketService.getInspectSocketData());
+	
+		}, 100);
+
 	}
 	
-	public function select(msg, id)
+	public function select(msg)
 	{
-		scope.selectedDebugItem = msg;
-		scope.selectedId = id;
+		scope.$apply(function () {
+            scope.selectedInspectItem = msg;
+        });
 	}
 }
