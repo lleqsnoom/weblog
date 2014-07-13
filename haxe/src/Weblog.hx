@@ -1,5 +1,12 @@
 package ;
 
+#if openfl
+	import openfl.net.URLLoader;
+	import openfl.net.URLRequest;
+	import openfl.net.URLRequestHeader;
+	import openfl.net.URLRequestMethod;
+	import openfl.net.URLVariables;
+#end 
 import haxe.Json;
 import haxe.macro.Compiler;
 
@@ -42,32 +49,43 @@ class Weblog{
 	private static function send(data:Dynamic, type:String):Void {
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip != null) {
+
+
+
+
+			#if openfl
+				//var json:String = Json.stringify(readObjectReflect(data));
+				
+				var l:URLLoader = new URLLoader();
+				var r:URLRequest = new URLRequest("http://" + debugip);
+				r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
+				r.method = URLRequestMethod.POST;
+				/*var urlVars:URLVariables = new URLVariables();
+				urlVars.data = json;
+				urlVars.append = true;
+				urlVars.type = type;
+				urlVars.device = "mobile";*/
+				r.data = Json.stringify({
+						data: readObjectReflect(data),
+						append: true,
+						type: type,
+					});			
+				l.load(r);
+
+			#else
+
+				var r:haxe.Http = new haxe.Http("http://" + debugip);
+				r.addHeader("Accept" , "application/json");
+				r.setPostData( Json.stringify({
+						data: readObjectReflect(data),
+						append: true,
+						type: type,
+					})
+				);
+				r.request(true);
+
+			#end
 			
-			var r:haxe.Http = new haxe.Http("http://" + debugip);
-			r.addHeader("Accept" , "application/json");
-			r.setPostData( Json.stringify({
-					data: readObjectReflect(data),
-					append: true,
-					type: type,
-				})
-			);
-			r.request(true);
-
-
-			/*
-			var json:String = Json.stringify(readObjectReflect(data));
-			var l:URLLoader = new URLLoader();
-			var r:URLRequest = new URLRequest("http://" + debugip);
-			r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
-			r.method = URLRequestMethod.POST;
-			var urlVars:URLVariables = new URLVariables();
-			urlVars.data = json;
-			urlVars.append = true;
-			urlVars.type = type;
-			urlVars.device = "mobile";
-			r.data = urlVars;			
-			l.load(r);
-			*/
 		}
 	}
 	
