@@ -28,15 +28,21 @@ haxelib run weblog
 Usage
 =========
 ```haxe
-import WebDebug;
+package ;
+import flash.display.Sprite;
+import Weblog;
 
-public function new () {
-	super ();
-	
-	WebDebug.log("Hello :)"); //this message will apear in Log tab
-	WebDebug.debug(new Sprite()); //this message will apear in Debug tab
+class Main extends Sprite{
+
+	public function new () {
+		
+		super ();
+		Weblog.log("Hello :)");
+		Weblog.debug(new Sprite());
+		Weblog.debug({a: {b: 1, c: 2}, d:"aaaa"});
+		
+	}
 }
-
 ```
 
 
@@ -45,5 +51,5 @@ Project Compilation
 To use this library application need ip and port. 
 Lime/haxe project have to copiled with additional flag:
 ```sh
-lime test html5 -Ddebugip=localhost:18080
+lime test [platform] -Ddebugip=WEBLOG_IP:18080
 ```

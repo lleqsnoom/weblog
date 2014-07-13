@@ -29,6 +29,7 @@ Main.main = function() {
 	app.controller("pl.bigsoda.weblog.controllers.DebugController",pl.bigsoda.weblog.controllers.DebugController);
 	app.controller("pl.bigsoda.weblog.controllers.TestController",pl.bigsoda.weblog.controllers.TestController);
 	app.controller("pl.bigsoda.weblog.controllers.TabNavigatorController",pl.bigsoda.weblog.controllers.TabNavigatorController);
+	app.controller("pl.bigsoda.weblog.controllers.ServerAdressController",pl.bigsoda.weblog.controllers.ServerAdressController);
 	app.service("pl.bigsoda.weblog.servicess.SocketService",pl.bigsoda.weblog.servicess.SocketService);
 };
 var Reflect = function() { };
@@ -122,6 +123,27 @@ pl.bigsoda.weblog.controllers.LogController.prototype = {
 		this.scope.logs = data;
 	}
 	,__class__: pl.bigsoda.weblog.controllers.LogController
+};
+pl.bigsoda.weblog.controllers.ServerAdressController = $hx_exports.pl.bigsoda.weblog.controllers.ServerAdressController = function(scope,window,http,document,timeout,rootScope) {
+	this.scope = scope;
+	this.rootScope = rootScope;
+	rootScope.selectedTab = "log";
+	hxangular.AngularHelper.map(this.scope,this);
+	console.log(window.server);
+	window.server.getNetworkIP(function(error,ip) {
+		scope.$apply(function() {
+			scope.serverIP = ip;
+		});
+		if(error) {
+		}
+	});
+};
+pl.bigsoda.weblog.controllers.ServerAdressController.__interfaces__ = [hxangular.haxe.IController];
+pl.bigsoda.weblog.controllers.ServerAdressController.prototype = {
+	rootScope: null
+	,scope: null
+	,serverIP: null
+	,__class__: pl.bigsoda.weblog.controllers.ServerAdressController
 };
 pl.bigsoda.weblog.controllers.TabNavigatorController = $hx_exports.pl.bigsoda.weblog.controllers.TabNavigatorController = function(scope,window,http,document,timeout,rootScope) {
 	this.scope = scope;
@@ -259,11 +281,13 @@ String.prototype.__class__ = String;
 Date.prototype.__class__ = Date;
 pl.bigsoda.weblog.controllers.DebugController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.controllers.LogController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
+pl.bigsoda.weblog.controllers.ServerAdressController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope"];
 pl.bigsoda.weblog.controllers.TabNavigatorController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope"];
 pl.bigsoda.weblog.controllers.TestController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
 pl.bigsoda.weblog.servicess.SocketService.$inject = ["$q","$rootScope","$sce"];
 pl.bigsoda.weblog.controllers.DebugController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
 pl.bigsoda.weblog.controllers.LogController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"]}}};
+pl.bigsoda.weblog.controllers.ServerAdressController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope"]}}};
 pl.bigsoda.weblog.controllers.TabNavigatorController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope"]}}};
 pl.bigsoda.weblog.controllers.TestController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"]}}};
 pl.bigsoda.weblog.servicess.SocketService.__meta__ = { fields : { _ : { inject : ["$q","$rootScope","$sce"]}}};

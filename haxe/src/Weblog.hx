@@ -12,7 +12,7 @@ import haxe.macro.Compiler;
  * ...
  * @author 
  */
-class WebDebug{
+class Weblog{
 	
 	public static function log(data:Dynamic):Void {
 		send(data, "log");
@@ -48,8 +48,81 @@ class WebDebug{
 		}
 	}
 	
-	private static function readObjectReflect(o:Dynamic, depth:Int = 5):Dynamic {
+	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
+
+		if(depth == 0)return null;
 		
+		var a:Array<Dynamic> = new Array<Dynamic>();
+		for (value in o)
+		{
+			a.push(readObjectReflect(value, depth-1));
+		}
+		return a;
+
+	}
+	
+	private static function readObjectReflectObj(o:Dynamic, depth:Int = 5):Dynamic {
+
+			if(depth == 0)return null;
+
+			var t:Dynamic = {};
+
+			var fields:Array<String>;
+			var c = Type.getClass(o);
+			if (c == null) {
+				fields = Reflect.fields(o);
+			} else {
+				fields = Type.getInstanceFields(c);
+			}
+
+			for (field in fields){
+				var val:Dynamic = Reflect.field(o,field);
+				Reflect.setField(t, field, readObjectReflect(val, depth - 1));
+				//Reflect.setField(t, field, val + "");
+			}
+
+			return t;
+
+	}
+	private static function readObjectReflect(o:Dynamic, depth:Int = 5):Dynamic {
+
+
+		if(depth == 0)return null;
+
+		if(o == null){
+
+			return null;
+
+		}else if(Std.is(o, String) || Std.is(o, Int) || Std.is(o, Float) || Std.is(o, Bool)){
+
+			return o;
+
+		}else if(Std.is(o, Array) || Std.is(o, List)){
+
+			return readObjectReflectArr(o, depth - 1);
+
+		}else if(Reflect.isFunction(o)){
+
+			return "function";
+
+		}else if(Reflect.isObject(o)){
+
+			return readObjectReflectObj(o, depth - 1);
+
+		}else{
+
+			return "unknown";
+
+		}
+
+
+
+
+
+
+		return null;
+
+/*
 		var s:String = "";
 		var t:Dynamic = {};
 		
@@ -80,7 +153,7 @@ class WebDebug{
 		}
 
 		
-		return t;
+		return t;*/
 	}
 	
 	private static function readObjectJson(o:Dynamic):String {

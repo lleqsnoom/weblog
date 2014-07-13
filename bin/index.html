@@ -5,7 +5,8 @@
 	<title></title>
 	
 	<script>
-		require("./server/server.js");
+		window.server = require("./server/server.js");
+		
 	</script>
 	
 	
@@ -55,6 +56,11 @@ library.json = {
 		</script>
 	
 	
+
+		<div class="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
+			<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
+		</div>
+
 			
 		<div class="tabNavigator" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
 			<ul class="nav nav-tabs">
