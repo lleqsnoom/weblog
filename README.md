@@ -1,3 +1,5 @@
+<p align="center"><img src="webloglogo.png"/></p>
+
 WebLog
 ============
 
