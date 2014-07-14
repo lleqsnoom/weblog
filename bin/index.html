@@ -1,7 +1,7 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <html lang="en" ng-app="weblog">
 <head>
-	<meta charset="utf-8">
 	<title></title>
 	
 	<script>
@@ -12,7 +12,14 @@
 	
 	
 	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<!--
+	
+	-->
 	<script src="js/angular.js"></script>
+	<script src="js/angularjs-nvd3-directives.min.js"></script>
+	<script src="js/d3.v3.min.js"></script>
+	<script src="js/nv.d3.js"></script>
+
 	<script src="js/jquery.pnotify.js"></script>
 	<script src="js/ng-infinite-scroll.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
@@ -20,6 +27,7 @@
 	<script src="js/socket.io.js"></script>
 	<script src="js/json2html.js"></script>
 	
+	<link rel="stylesheet" href="css/nv.d3.css">
 	<link rel="stylesheet" href="css/weblog.css">
 	<link rel="stylesheet" href="css/bootstrap.slate.css">
 	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
@@ -75,6 +83,9 @@ library.json = {
 				</li>
 				<li ng-class="setClass('test')" ng-click="selectTab('test')">
 					<a href="#">Test</a>
+				</li>
+				<li ng-class="setClass('stats')" ng-click="selectTab('stats')">
+					<a href="#">Stats</a>
 				</li>
 			</ul>
 		</div>
@@ -195,6 +206,25 @@ library.json = {
 		
 		
 		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" ng-show="selectedTab=='stats'">			
+			
+			<div class="content" width="100" height="100">
+			<nvd3-line-chart
+			    data="statsChartData"
+		        id="exampleId"
+		        width="550"
+		        height="300"
+		        xAxisTickFormat="xAxisTickFormatFunction()"
+		        yAxisTickFormat="yAxisTickFormatFunction()"
+		        showXAxis="true"
+		        showYAxis="true"
+		        showLegend="true">
+		        <svg></svg>
+			</nvd3-line-chart>
+			</div>
+
+		</div>
 		
 	
 	
