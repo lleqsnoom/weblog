@@ -1,0 +1,431 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"set",
+				"setPostData( data : String )	haxe.Http"
+			],
+			[
+				"Con",
+				"Console	pl.bigsoda.utils"
+			],
+			[
+				"timer",
+				"Timer	haxe"
+			],
+			[
+				"point",
+				"Point	openfl.geom"
+			],
+			[
+				"is",
+				"isFunction( f : Dynamic )	Bool"
+			],
+			[
+				"poin",
+				"Point	openfl.geom"
+			],
+			[
+				"mo",
+				"MockAPI	class"
+			],
+			[
+				"Main",
+				"MainView	pl.bigsoda.view"
+			],
+			[
+				"acco",
+				"AccordionTitleRenderer	class"
+			],
+			[
+				"sprite",
+				"Sprite	openfl.display"
+			],
+			[
+				"padding-",
+				"padding-right"
+			],
+			[
+				"_pos",
+				"_posX	var"
+			],
+			[
+				"textf",
+				"TextFormat	openfl.text"
+			],
+			[
+				"sty",
+				"StyleSheet	class"
+			],
+			[
+				"re",
+				"repeatY	Bool"
+			],
+			[
+				"r",
+				"repeatX	Bool"
+			],
+			[
+				"stag",
+				"stageY	Float"
+			],
+			[
+				"del",
+				"deltaY	Float"
+			],
+			[
+				"ma",
+				"Matrix	flash.geom"
+			],
+			[
+				"_de",
+				"_deltaY	var"
+			],
+			[
+				"_",
+				"_deltaX	var"
+			],
+			[
+				"bitma",
+				"beginBitmapFill(...)	Void"
+			],
+			[
+				"get",
+				"getBitmapData(...)	flash.display.BitmapData"
+			],
+			[
+				"back",
+				"Background	net.bigsoda.utils"
+			],
+			[
+				"Bac",
+				"Background	net.bigsoda.utils"
+			],
+			[
+				"assets",
+				"Assets	openfl"
+			],
+			[
+				"bg",
+				"bg_bd	var"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 400.0,
+		"selected_items":
+		[
+			[
+				"haxe",
+				"Haxe: Choose Build Target"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: ",
+				"Snippet: Property with getter/setter (prop)"
+			],
+			[
+				"snipe",
+				"Snippet: for (…) {…}"
+			],
+			[
+				"remo",
+				"Haxelib: Remove library"
+			]
+		],
+		"width": 601.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/README.md",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/Label.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ImageLoader.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ImageButtonSlice9.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ImageButton.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/DropDownList.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ButtonLoaderLabel.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ButtonIconLabel.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/Accordion.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/interfaces/IVisualElemetHW.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/interfaces/IScroller.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/interfaces/IListBase.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/events/ListEvent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/utils/ImageLoaderManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/pooling/Pool.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ListBase.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/LabelIcon.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/List.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/PageList.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/Scroller.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/ScrollerContainer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/TileList.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/controller/DisplayManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/model/ComoyoAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/model/RESTfullRequest.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/model/RESTfullResponse.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/Remote.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemoteHTTP.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemoteIpSettings.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemoteIpWindow.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemotePage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemoteService.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/remote/RemoteTouchpad.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/view/Screen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/DebugInfo.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/secondscreen/SquareButton.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/servicess/SocketService.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/bin/server/server.js",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/AssetsManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/DebugClient.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/Main.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/utils/JpegImage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/controllers/InspectController.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/bin/index.html",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/haxe/src/Weblog.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/bin/css/weblog.css",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/controllers/ServerAdressController.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/controllers/DebugController.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/controllers/TabNavigatorController.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/MainApp.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/src/pl/bigsoda/MovieAssetsManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/Main.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Beacon.hxproj",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/Remote.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/Remote.hx_",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteActions.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteHTTP.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteIpSettings.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteIpWindow.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemotePage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteService.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/remote/RemoteTouchpad.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/HomeScreen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/FeaturedPage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/InfoPage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/MoviePage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/MoviesPage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/Page.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/pages/StartPage.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/InfoScreen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/MovieScreen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/screen/MoviesScreen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/DebugInfo.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/Env.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/SquareButton.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/Screen.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/tile/IconSmallTile.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/tile/ImageTile.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/tile/IconTile.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/tile/InfoTile.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/secondscreen/view/tile/Tile.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/AssetsManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/DebugClient.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/dk/xstream/MovieAssetsManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/Weblog.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/view/MainView.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/run.sh",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/weblog_dev.bat",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/project.xml",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/model/api/MoviedbAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/Main.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/src/MainApp.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/second_screen_demo/application.xml",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/model/api/MockAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/Main.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/WebDebug.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/haxe/src/WebDebug.hx",
+		"/Users/tkwiatek/Dysk Google/XBMC Remote/application.xml",
+		"/Users/tkwiatek/Dysk Google/XBMC Remote/obj/XBMCRemoteConfig.xml",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/AssetsManager.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/mob_FlightOfTheHipster/FlightOfTheHipster/project.xml",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Extensions/BigsodaUI/Source/pl/bigsoda/gesture/GestureAgent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Extensions/BigsodaUI/Source/pl/bigsoda/view/ui/Scroller.hx",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/project.xml",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/src/dk/xstream/view/secondscreendemo/ui/UserMenu.hx",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/src/dk/xstream/view/secondscreendemo/ui/Application.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Extensions/BigsodaUI/Source/pl/bigsoda/Env.hx",
+		"/Volumes/server/movies2/___projekty/mobile/HAXE_LIBS/xstream/src/dk/xstream/model/api/XstreamAPI.hx",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/src/dk/xstream/view/secondscreendemo/ui/AccordeonItemRenderer.hx",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/src/dk/xstream/view/secondscreendemo/ui/AccordeonTitleRenderer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/styles/renderers/AccordionTitleRenderer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/styles/renderers/AccordionItemRenderer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/styles/renderers/AccordeonItemRenderer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/styles/renderers/AccordeonTitleRenderer.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Source/pl/bigsoda/styles/AccordeonStyledUserMenu.hx",
+		"/Volumes/server/movies2/___projekty/mobile/second_screen/src/Main.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Beacon/Beacon.hxproj",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/Env.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/ComoyoAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/XstreamRESTAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/XstreamAPI.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/gesture/GestureEvent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/api/rest/RESTResponse.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/api/rest/RESTRequest.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/data/AppData.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/gesture/GestureAgent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/view/events/ListEvent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/pooling/Pool.hx"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"debugtab",
+			"connections",
+			"dk.xstream",
+			"ul",
+			"ul.tabs",
+			".tabs",
+			"3E3E42"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"pl.bigsoda"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 98.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "weblog.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 278.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

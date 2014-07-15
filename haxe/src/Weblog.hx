@@ -1,22 +1,89 @@
 package ;
 
 #if openfl
+	import openfl.events.Event;
 	import openfl.net.URLLoader;
 	import openfl.net.URLRequest;
 	import openfl.net.URLRequestHeader;
 	import openfl.net.URLRequestMethod;
 	import openfl.net.URLVariables;
+	import openfl.Lib;
+	import openfl.system.System;
 #end 
 import haxe.Json;
 import haxe.macro.Compiler;
+
 
 /**
  * ...
  * @author tkwiatek
  */
+
+typedef Stats = {
+    var fps:Int;
+    var ms:Int;
+    var mem:Float;
+    var memMax:Float;
+}
+
 class Weblog{
 	private static var _inspectable:Dynamic = null;
 	private static var _isRunning:Bool = false;
+
+	private static var timeCurr:Int;
+	private static var timeLast:Int;
+	private static var mem:Float;
+	private static var memMax:Float;
+	private static var ms:Int;
+	private static var fps:Int;
+	private static var stats:Stats = {
+	    fps: 0,
+	    ms: 0,
+	    mem: 0,
+	    memMax: 0
+	}
+
+
+
+
+
+	#if openfl
+
+	public static function statsStart():Void {
+		Lib.current.stage.addEventListener(Event.ENTER_FRAME, updateStats);
+	}
+
+	private static function updateStats(e:Event = null):Void {
+		timeCurr = Lib.getTimer();
+		//one second
+		if(timeCurr - 1000 > timeLast){
+
+			mem = System.totalMemory / 1048576;
+			memMax = Math.max(memMax, mem);
+			stats.mem = mem;
+			stats.memMax = memMax;
+
+			stats.fps = fps;
+
+			//reset
+			fps = 0;
+			timeLast = timeCurr;
+
+			send(stats, "stats");
+		}
+		
+		stats.ms = timeCurr - ms;
+		ms = timeCurr;
+
+		fps++;
+	}
+
+	#end
+
+
+
+
+
 
 	public static function log(data:Dynamic):Void {
 		send(data, "log");
@@ -50,21 +117,12 @@ class Weblog{
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip != null) {
 
-
-
-
 			#if openfl
-				//var json:String = Json.stringify(readObjectReflect(data));
-				
+
 				var l:URLLoader = new URLLoader();
 				var r:URLRequest = new URLRequest("http://" + debugip);
 				r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
 				r.method = URLRequestMethod.POST;
-				/*var urlVars:URLVariables = new URLVariables();
-				urlVars.data = json;
-				urlVars.append = true;
-				urlVars.type = type;
-				urlVars.device = "mobile";*/
 				r.data = Json.stringify({
 						data: readObjectReflect(data),
 						append: true,
@@ -132,29 +190,17 @@ class Weblog{
 		if(depth == 0)return null;
 
 		if(o == null){
-
 			return null;
-
 		}else if(Std.is(o, String) || Std.is(o, Int) || Std.is(o, Float) || Std.is(o, Bool)){
-
 			return o;
-
 		}else if(Std.is(o, Array) || Std.is(o, List)){
-
 			return readObjectReflectArr(o, depth - 1);
-
 		}else if(Reflect.isFunction(o)){
-
 			return "function";
-
 		}else if(Reflect.isObject(o)){
-
 			return readObjectReflectObj(o, depth - 1);
-
 		}else{
-
 			return "unknown";
-
 		}
 
 		return null;
@@ -163,4 +209,5 @@ class Weblog{
 	private static function readObjectJson(o:Dynamic):String {
 		return Json.stringify(o);
 	}
+
 }

@@ -12,14 +12,17 @@ class SocketService implements IService
 	public var socketData:Dynamic;
 	public var logData:Array<Dynamic>;
 	public var debugData:Array<Dynamic>;
+	public var statsData:Array<Dynamic>;
 	public var inspectData:Array<Dynamic>;
 	public var testData:Array<Dynamic>;
 	private var logDeferred:Dynamic;
 	private var debugDeferred:Dynamic;
+	private var statsDeferred:Dynamic;
 	private var inspectDeferred:Dynamic;
 	private var testDeferred:Dynamic;
 	private var rootScope:Dynamic;
 	private var inspectSocketData:Dynamic;
+	private var statsSocketData:Array<Dynamic> = new Array<Dynamic>();
 	private var init:Bool = false;
 	private var sce:Dynamic;
 	private var index:Float = 0;
@@ -31,6 +34,7 @@ class SocketService implements IService
 		
 		logDeferred = q.defer();
 		debugDeferred = q.defer();
+		statsDeferred = q.defer();
 		testDeferred = q.defer();
 		inspectDeferred = q.defer();
 		
@@ -39,6 +43,7 @@ class SocketService implements IService
 		
 		logData = new Array<Dynamic>();
 		debugData = new Array<Dynamic>();
+		statsData = new Array<Dynamic>();
 		inspectData = new Array<Dynamic>();
 		testData = new Array<Dynamic>();
 		socketData = {
@@ -46,6 +51,7 @@ class SocketService implements IService
 			debugData: debugData,
 			inspectData: inspectData,
 			testData: testData,
+			statsData: statsData,
 		}
 		
 		untyped __js__("console.log('SocketService')");
@@ -57,7 +63,7 @@ class SocketService implements IService
 		//data.data = Json.parse(data.data);
 		data = Json.parse(data);
 
-		var max:UInt = 100;
+		var max:UInt = 101;
 		
 		if (data.type == "log") {
 			logData.insert(0, {
@@ -67,6 +73,13 @@ class SocketService implements IService
 				message: data.data,
 			});
 			if (logData.length > max) logData.pop();
+		}
+		
+		if (data.type == "stats") {
+			statsSocketData.insert(0, data.data);
+			statsData.insert(0, data.data);
+			if (statsData.length > max) statsData.pop();
+			if (statsSocketData.length > max) statsSocketData.pop();
 		}
 		
 
@@ -108,6 +121,7 @@ class SocketService implements IService
 		debugDeferred.resolve(debugData);
 		inspectDeferred.resolve(inspectData);
 		testDeferred.resolve(testData);
+		statsDeferred.resolve(statsData);
 		
 		rootScope.$apply();
 	}
@@ -132,11 +146,17 @@ class SocketService implements IService
 	public function getDebugData():Dynamic {
 		return debugDeferred.promise;
 	}
+	public function getStatsData():Dynamic {
+		return statsDeferred.promise;
+	}
 	public function getInspectData():Dynamic {
 		return inspectDeferred.promise;
 	}
 	public function getInspectSocketData():Dynamic {
 		return inspectSocketData;
+	}
+	public function getStatsSocketData():Dynamic {
+		return statsSocketData;
 	}
 	public function getTestData():Dynamic {
 		return testDeferred.promise;
