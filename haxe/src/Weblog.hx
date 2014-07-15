@@ -1,5 +1,6 @@
 package ;
 
+
 #if openfl
 	import openfl.events.Event;
 	import openfl.net.URLLoader;
@@ -10,9 +11,19 @@ package ;
 	import openfl.Lib;
 	import openfl.system.System;
 #end 
+
+
 import haxe.Json;
 import haxe.macro.Compiler;
 
+
+#if neko
+	import neko.vm.Thread;
+#end
+
+#if cpp
+	import cpp.vm.Thread;
+#end
 
 /**
  * ...
@@ -93,23 +104,40 @@ class Weblog{
 		send(data, "debug");
 	}
 	
-	#if (flash || js || java || openfl)
+	
+	
 	public static function inspect(data:Dynamic):Void {
 		_inspectable = data;
 		if(_isRunning) return;
 		runInspect();
 	}
+	
+	#if (neko || cpp)
+	private static function inspectThread():Void {
+		while (_inspectable != null) {
+			send(_inspectable, "inspect");
+			Sys.sleep(100 / 1000);
+		}				
+		_isRunning = false;
+	}
+    #end
+	
 	private static function runInspect():Void {
 		if(_inspectable == null) {
 			_isRunning = false;
 			return;
 		}
-		send(_inspectable, "inspect");
-		haxe.Timer.delay(function():Void{
-			runInspect();
-		}, 100);
+		_isRunning = true;
+		
+		#if (neko || cpp)
+            Thread.create(inspectThread);
+        #else       
+            haxe.Timer.delay(function():Void {
+				send(_inspectable, "inspect");
+                runInspect();
+            }, 100);
+        #end		
 	}
-	#end
 
 	public static function test(data:Dynamic):Void {
 		send(data, "test");
@@ -118,7 +146,8 @@ class Weblog{
 	private static function send(data:Dynamic, type:String):Void {
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip != null) {
-
+	
+			/*
 			#if openfl
 
 				var l:URLLoader = new URLLoader();
@@ -133,6 +162,7 @@ class Weblog{
 				l.load(r);
 
 			#else
+			*/
 
 				var r:haxe.Http = new haxe.Http("http://" + debugip);
 				r.addHeader("Accept" , "application/json");
@@ -144,7 +174,7 @@ class Weblog{
 				);
 				r.request(true);
 
-			#end
+			//#end
 			
 		}
 	}
