@@ -93,6 +93,7 @@ class Weblog{
 		send(data, "debug");
 	}
 	
+	#if (flash || js || java || openfl)
 	public static function inspect(data:Dynamic):Void {
 		_inspectable = data;
 		if(_isRunning) return;
@@ -108,6 +109,7 @@ class Weblog{
 			runInspect();
 		}, 100);
 	}
+	#end
 
 	public static function test(data:Dynamic):Void {
 		send(data, "test");
