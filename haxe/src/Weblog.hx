@@ -1,5 +1,6 @@
 package ;
 
+
 #if openfl
 	import openfl.events.Event;
 	import openfl.net.URLLoader;
@@ -10,9 +11,19 @@ package ;
 	import openfl.Lib;
 	import openfl.system.System;
 #end 
+
+
 import haxe.Json;
 import haxe.macro.Compiler;
 
+
+#if neko
+	import neko.vm.Thread;
+#end
+
+#if cpp
+	import cpp.vm.Thread;
+#end
 
 /**
  * ...
@@ -93,60 +104,85 @@ class Weblog{
 		send(data, "debug");
 	}
 	
-	#if (flash || js || java || openfl)
+	
+	
 	public static function inspect(data:Dynamic):Void {
 		_inspectable = data;
 		if(_isRunning) return;
 		runInspect();
 	}
+	
+	#if (neko || cpp)
+	private static function inspectThread():Void {
+		while (_inspectable != null) {
+			sendData(_inspectable, "inspect");
+			Sys.sleep(100 / 1000);
+		}				
+		_isRunning = false;
+	}
+    #end
+	
 	private static function runInspect():Void {
 		if(_inspectable == null) {
 			_isRunning = false;
 			return;
 		}
-		send(_inspectable, "inspect");
-		haxe.Timer.delay(function():Void{
-			runInspect();
-		}, 100);
+		_isRunning = true;
+		
+		#if (neko || cpp)
+            Thread.create(inspectThread);
+        #else       
+            haxe.Timer.delay(function():Void {
+				send(_inspectable, "inspect");
+                runInspect();
+            }, 100);
+        #end		
 	}
-	#end
 
 	public static function test(data:Dynamic):Void {
 		send(data, "test");
 	}
 	
 	private static function send(data:Dynamic, type:String):Void {
+	
+		/*
+		#if openfl
+
+			var l:URLLoader = new URLLoader();
+			var r:URLRequest = new URLRequest("http://" + debugip);
+			r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
+			r.method = URLRequestMethod.POST;
+			r.data = Json.stringify({
+					data: readObjectReflect(data),
+					append: true,
+					type: type,
+				});			
+			l.load(r);
+
+		#else
+		*/
+
+		#if (neko || cpp)
+            Thread.create(function():Void{ sendData(data, type); });
+        #else       
+            sendData(data, type)
+        #end
+	}
+
+	private static function sendData(data:Dynamic, type:String):Void{
+
 		var debugip = Compiler.getDefine("debugip");
-		if (debugip != null) {
+		if (debugip == null) return;
 
-			#if openfl
-
-				var l:URLLoader = new URLLoader();
-				var r:URLRequest = new URLRequest("http://" + debugip);
-				r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
-				r.method = URLRequestMethod.POST;
-				r.data = Json.stringify({
-						data: readObjectReflect(data),
-						append: true,
-						type: type,
-					});			
-				l.load(r);
-
-			#else
-
-				var r:haxe.Http = new haxe.Http("http://" + debugip);
-				r.addHeader("Accept" , "application/json");
-				r.setPostData( Json.stringify({
-						data: readObjectReflect(data),
-						append: true,
-						type: type,
-					})
-				);
-				r.request(true);
-
-			#end
-			
-		}
+		var r:haxe.Http = new haxe.Http("http://" + debugip);
+		r.addHeader("Accept" , "application/json");
+		r.setPostData( Json.stringify({
+				data: readObjectReflect(data),
+				append: true,
+				type: type,
+			})
+		);
+		r.request(true);
 	}
 	
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
