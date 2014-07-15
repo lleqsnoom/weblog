@@ -255,8 +255,8 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height1,0);
-			_g.drawData(data,"mem",maxMEM,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height1,100);
-			_g.drawData(data,"ms",maxMS,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height1,200);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height1,100);
+			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height1,200);
 			ctx.fillStyle = "#111111";
 			ctx.fillRect(0,99,width,3);
 			ctx.fillRect(0,199,width,3);
