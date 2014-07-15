@@ -53,10 +53,21 @@ class Weblog{
 	    mem: 0,
 	    memMax: 0
 	}
+	
+	private static var tictoc:Map<String, Float> = new Map<String, Float>();
 
 
+	public static function tic(id:String = ""):Void {
+		tictoc.set(id, haxe.Timer.stamp());
+		//trace("tic: " + haxe.Timer.stamp());
+	}
 
-
+	public static function toc(id:String = ""):Void {
+		var t:Float = tictoc.get(id);
+		//trace("toc: " + t);
+		log("tictoc for '"+id+"': " + (haxe.Timer.stamp() - t));
+		tictoc.remove(id);
+	}
 
 	#if openfl
 
@@ -165,7 +176,7 @@ class Weblog{
 		#if (neko || cpp)
             Thread.create(function():Void{ sendData(data, type); });
         #else       
-            sendData(data, type)
+            sendData(data, type);
         #end
 	}
 
