@@ -117,8 +117,8 @@ class StatsController implements IController
 			}
 			
 			drawData(data, "fps", maxFPS, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 1)", ctx, width, height, 0);
-			drawData(data, "mem", maxMEM, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, 100);
-			drawData(data, "ms", maxMS, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, 200);
+			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, 100);
+			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, 200);
 			
 			ctx.fillStyle = "#111111";
 			ctx.fillRect(0,100-1,width,3);
