@@ -115,7 +115,7 @@ class Weblog{
 	#if (neko || cpp)
 	private static function inspectThread():Void {
 		while (_inspectable != null) {
-			send(_inspectable, "inspect");
+			sendData(_inspectable, "inspect");
 			Sys.sleep(100 / 1000);
 		}				
 		_isRunning = false;
@@ -144,39 +144,45 @@ class Weblog{
 	}
 	
 	private static function send(data:Dynamic, type:String):Void {
-		var debugip = Compiler.getDefine("debugip");
-		if (debugip != null) {
 	
-			/*
-			#if openfl
+		/*
+		#if openfl
 
-				var l:URLLoader = new URLLoader();
-				var r:URLRequest = new URLRequest("http://" + debugip);
-				r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
-				r.method = URLRequestMethod.POST;
-				r.data = Json.stringify({
-						data: readObjectReflect(data),
-						append: true,
-						type: type,
-					});			
-				l.load(r);
+			var l:URLLoader = new URLLoader();
+			var r:URLRequest = new URLRequest("http://" + debugip);
+			r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
+			r.method = URLRequestMethod.POST;
+			r.data = Json.stringify({
+					data: readObjectReflect(data),
+					append: true,
+					type: type,
+				});			
+			l.load(r);
 
-			#else
-			*/
+		#else
+		*/
 
-				var r:haxe.Http = new haxe.Http("http://" + debugip);
-				r.addHeader("Accept" , "application/json");
-				r.setPostData( Json.stringify({
-						data: readObjectReflect(data),
-						append: true,
-						type: type,
-					})
-				);
-				r.request(true);
+		#if (neko || cpp)
+            Thread.create(function():Void{ sendData(data, type); });
+        #else       
+            sendData(data, type)
+        #end
+	}
 
-			//#end
-			
-		}
+	private static function sendData(data:Dynamic, type:String):Void{
+
+		var debugip = Compiler.getDefine("debugip");
+		if (debugip == null) return;
+
+		var r:haxe.Http = new haxe.Http("http://" + debugip);
+		r.addHeader("Accept" , "application/json");
+		r.setPostData( Json.stringify({
+				data: readObjectReflect(data),
+				append: true,
+				type: type,
+			})
+		);
+		r.request(true);
 	}
 	
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
