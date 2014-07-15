@@ -124,3 +124,4 @@ lime test [platform] -Ddebugip=[WEBLOG_IP]:18080
 
 WEBLOG_IP - is IP adress of machine where Weblog is running. Adress can be found at top right corner.
 <p align="center"><img src="ip.png"/></p>
+As a consequence, if you are developing and running the Weblog inpsector app on the same localhost machine, you can just compile your project with `-D debugip=localhost:18080` flag.
