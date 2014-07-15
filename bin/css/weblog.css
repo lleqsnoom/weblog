@@ -163,6 +163,17 @@
 		#debugtab {
 			/*width: 50%;*/
 		}
+		
+		.fps{
+		   color: #ff0000 !important;
+		}
+		.mem{
+		   color: #008aff !important;
+		}
+		.ms{
+		   color: #ffc600 !important;
+		}
+		
 		.details {
 			position: absolute;
 			overflow: auto;

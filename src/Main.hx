@@ -22,7 +22,7 @@ class Main
 	
 	static function main() 
 	{
-		var app:Module = Angular.module("weblog", ["nvd3ChartDirectives", "infinite-scroll"]);
+		var app:Module = Angular.module("weblog", ["infinite-scroll"]);
 		app.controller("pl.bigsoda.weblog.controllers.LogController", LogController);
 		app.controller("pl.bigsoda.weblog.controllers.DebugController", DebugController);
 		app.controller("pl.bigsoda.weblog.controllers.InspectController", InspectController);

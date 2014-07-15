@@ -63,7 +63,7 @@ class SocketService implements IService
 		//data.data = Json.parse(data.data);
 		data = Json.parse(data);
 
-		var max:UInt = 100;
+		var max:UInt = 101;
 		
 		if (data.type == "log") {
 			logData.insert(0, {

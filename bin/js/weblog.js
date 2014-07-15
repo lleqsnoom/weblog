@@ -24,7 +24,7 @@ HxOverrides.remove = function(a,obj) {
 };
 var Main = function() { };
 Main.main = function() {
-	var app = angular.module("weblog",["nvd3ChartDirectives","infinite-scroll"]);
+	var app = angular.module("weblog",["infinite-scroll"]);
 	app.controller("pl.bigsoda.weblog.controllers.LogController",pl.bigsoda.weblog.controllers.LogController);
 	app.controller("pl.bigsoda.weblog.controllers.DebugController",pl.bigsoda.weblog.controllers.DebugController);
 	app.controller("pl.bigsoda.weblog.controllers.InspectController",pl.bigsoda.weblog.controllers.InspectController);
@@ -186,6 +186,10 @@ pl.bigsoda.weblog.controllers.StatsController = $hx_exports.pl.bigsoda.weblog.co
 	this.timeout = timeout;
 	this.sce = sce;
 	this.socketService = socketService;
+	scope.config = { title : "Products", tooltips : true, labels : false, mouseover : function() {
+	}, mouseout : function() {
+	}, click : function() {
+	}, legend : { display : true, position : "right"}};
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getStatsData().then($bind(this,this.onSocketData));
 };
@@ -206,25 +210,66 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 			_g.select(_g.socketService.getStatsSocketData());
 		},1000);
 	}
+	,drawData: function(data,field,max,fillColor,lineColor,ctx,width,height,offset) {
+		var ho = height / 3 + offset;
+		ctx.beginPath();
+		ctx.fillStyle = fillColor;
+		ctx.strokeStyle = lineColor;
+		ctx.lineWidth = 1;
+		ctx.moveTo(0,ho);
+		var _g = 0;
+		while(_g < 101) {
+			var i = _g++;
+			if(i > data.length - 1) ctx.lineTo(width / 100 * i,ho); else {
+				var val = Reflect.field(data[i],field) / max;
+				var sval = val * (height / 3 - 10);
+				ctx.lineTo(width / 100 * i,(height / 3 - sval | 0) + offset);
+			}
+		}
+		ctx.lineTo(width,ho);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+	}
 	,select: function(data) {
 		var _g = this;
 		this.scope.$apply(function() {
-			var d = [{ key : "fps", values : []},{ key : "mem", values : []},{ key : "ms", values : []}];
+			var c = document.getElementById("statsCanvas");
+			var height = $(window).height();
+			var width = $(window).width();
+			var height1 = 300;
+			$('#statsCanvas').width(width).height(height1);
+			$('#statsCanvas').attr("width",width).attr("height",height1);
+			var ctx = c.getContext("2d");
+			ctx.fillStyle = "#111111";
+			ctx.fillRect(0,0,width,height1);
+			var maxMEM = 0.0;
+			var maxFPS = 0.0;
+			var maxMS = 0.0;
 			var _g1 = 0;
-			while(_g1 < 100) {
+			var _g2 = data.length;
+			while(_g1 < _g2) {
 				var i = _g1++;
-				if(i > data.length - 1) {
-					d[0].values[i] = [i,0];
-					d[1].values[i] = [i,0];
-					d[2].values[i] = [i,0];
-				} else {
-					d[0].values[i] = [i,data[i].fps];
-					d[1].values[i] = [i,data[i].mem];
-					d[2].values[i] = [i,data[i].ms];
-				}
+				maxFPS = Math.max(maxFPS,data[i].fps);
+				maxMEM = Math.max(maxMEM,data[i].mem);
+				maxMS = Math.max(maxMS,data[i].ms);
 			}
-			console.log(d);
-			_g.scope.statsChartData = d;
+			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height1,0);
+			_g.drawData(data,"mem",maxMEM,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height1,100);
+			_g.drawData(data,"ms",maxMS,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height1,200);
+			ctx.fillStyle = "#111111";
+			ctx.fillRect(0,99,width,3);
+			ctx.fillRect(0,199,width,3);
+			ctx.fillRect(0,299,width,3);
+			ctx.fillStyle = "rgba(255, 0, 0, 1)";
+			ctx.fillRect(0,99,width,1);
+			ctx.fillStyle = "rgba(255, 198, 0, 1)";
+			ctx.fillRect(0,199,width,1);
+			ctx.fillStyle = "rgba(0, 138, 255, 1)";
+			ctx.fillRect(0,299,width,1);
+			_g.scope.fps = data[0].fps;
+			_g.scope.mem = data[0].mem;
+			_g.scope.ms = data[0].ms;
 		});
 	}
 	,__class__: pl.bigsoda.weblog.controllers.StatsController
@@ -311,7 +356,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,index: null
 	,onSocketData: function(data) {
 		data = JSON.parse(data);
-		var max = 100;
+		var max = 101;
 		if(data.type == "log") {
 			var x = { id : this.index, time : new Date(), device : data.device, message : data.data};
 			this.logData.splice(0,0,x);
@@ -413,6 +458,15 @@ var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
 if(Array.prototype.indexOf) HxOverrides.indexOf = function(a,o,i) {
 	return Array.prototype.indexOf.call(a,o,i);
+};
+Math.NaN = Number.NaN;
+Math.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY;
+Math.POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
+Math.isFinite = function(i) {
+	return isFinite(i);
+};
+Math.isNaN = function(i1) {
+	return isNaN(i1);
 };
 String.prototype.__class__ = String;
 Date.prototype.__class__ = Date;

@@ -12,13 +12,8 @@
 	
 	
 	<script src="http://code.jquery.com/jquery.min.js"></script>
-	<!--
-	
-	-->
+
 	<script src="js/angular.js"></script>
-	<script src="js/angularjs-nvd3-directives.min.js"></script>
-	<script src="js/d3.v3.min.js"></script>
-	<script src="js/nv.d3.js"></script>
 
 	<script src="js/jquery.pnotify.js"></script>
 	<script src="js/ng-infinite-scroll.js"></script>
@@ -210,6 +205,21 @@ library.json = {
 		<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" ng-show="selectedTab=='stats'">			
 			
 			<div class="content" width="100" height="100">
+			<p calss="fps" style="color: #ff0000; font-size: 24px; padding-left: 10px;padding-top:20px;">{{fps}} fps</p>
+			<p calss="ms" style="color: #ffc600; font-size: 24px; padding-left: 10px;">{{ms}} ms</p>
+			<p calss="mem" style="color: #008aff; font-size: 24px; padding-left: 10px;">{{mem}} mb</p>
+			
+			
+			<canvas id="statsCanvas" width="100" height="100"
+			style="border:1px solid #000000;">
+			</canvas>
+			
+			<script>
+			</script>
+			
+			
+			
+			<!--
 			<nvd3-line-chart
 			    data="statsChartData"
 		        id="exampleId"
@@ -222,6 +232,8 @@ library.json = {
 		        showLegend="true">
 		        <svg></svg>
 			</nvd3-line-chart>
+			-->
+			
 			</div>
 
 		</div>
