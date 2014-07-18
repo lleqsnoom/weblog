@@ -235,13 +235,13 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 		var _g = this;
 		this.scope.$apply(function() {
 			var c = document.getElementById("statsCanvas");
-			var height = $(window).height();
-			var width = $(window).width();
+			var height = $('#stats').height();
+			var width = $('#stats').width();
 			var height1 = 300;
 			$('#statsCanvas').width(width).height(height1);
 			$('#statsCanvas').attr("width",width).attr("height",height1);
 			var ctx = c.getContext("2d");
-			ctx.fillStyle = "#111111";
+			ctx.fillStyle = "#f1f1f1";
 			ctx.fillRect(0,0,width,height1);
 			var maxMEM = 0.0;
 			var maxFPS = 0.0;
@@ -257,7 +257,7 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height1,0);
 			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height1,100);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height1,200);
-			ctx.fillStyle = "#111111";
+			ctx.fillStyle = "#f1f1f1";
 			ctx.fillRect(0,99,width,3);
 			ctx.fillRect(0,199,width,3);
 			ctx.fillRect(0,299,width,3);
@@ -358,7 +358,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		data = JSON.parse(data);
 		var max = 101;
 		if(data.type == "log") {
-			var x = { id : this.index, time : new Date(), device : data.device, message : data.data};
+			var x = { id : this.index, time : new Date(), device : data.device, data : data.data, msg : data.msg};
 			this.logData.splice(0,0,x);
 			if((function($this) {
 				var $r;
@@ -392,7 +392,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) this.statsSocketData.pop();
 		}
 		if(data.type == "debug") {
-			var x3 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml("<pre id='debug'>" + library.json.prettyPrint(data.data) + "</pre>")};
+			var x3 = { id : this.index, time : new Date(), device : data.device, data : this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data.data) + "</pre>"), msg : data.msg};
 			this.debugData.splice(0,0,x3);
 			if((function($this) {
 				var $r;
@@ -404,13 +404,13 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) this.debugData.pop();
 		}
 		if(data.type == "inspect") {
-			this.inspectSocketData = this.sce.trustAsHtml("<pre id='debug'>" + library.json.prettyPrint(data.data) + "</pre>");
-			var x4 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml("<pre id='debug'>" + library.json.prettyPrint(data.data) + "</pre>")};
+			this.inspectSocketData = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data.data) + "</pre>");
+			var x4 = { id : this.index, time : new Date(), device : data.device, data : this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data.data) + "</pre>"), msg : data.msg};
 			this.inspectData.splice(0,0,x4);
 			if(this.inspectData.length > 1) this.inspectData.pop();
 		}
 		if(data.type == "test") {
-			var x5 = { id : this.index, time : new Date(), device : data.device, message : this.sce.trustAsHtml(this.formatMunit(data.data))};
+			var x5 = { id : this.index, time : new Date(), device : data.device, data : this.sce.trustAsHtml(this.formatMunit(data.data)), msg : data.msg};
 			this.testData.splice(0,0,x5);
 		}
 		this.index++;

@@ -108,7 +108,8 @@ class Weblog{
 
 
 	public static function log(data:Dynamic):Void {
-		send(data, "log");
+		//send(data, "log");
+		debug(data);
 	}
 	
 	public static function debug(data:Dynamic):Void {
@@ -184,11 +185,29 @@ class Weblog{
 
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip == null) return;
-
+		
+		var msg:String = "";
+		
+		if(data == null){
+			msg = "null";
+		}else if(Std.is(data, String) || Std.is(data, Int) || Std.is(data, Float) || Std.is(data, Bool)){
+			msg = Std.string(data);
+		}else if(Std.is(data, Array) || Std.is(data, List)){
+			msg = "Array";
+		}else if(Reflect.isFunction(data)){
+			msg = "function";
+		}else if(Reflect.isObject(data)){
+			msg = "Object";
+		}else{
+			msg = "unknown";
+		}
+		
+		
 		var r:haxe.Http = new haxe.Http("http://" + debugip);
 		r.addHeader("Accept" , "application/json");
 		r.setPostData( Json.stringify({
 				data: readObjectReflect(data),
+				msg: msg,
 				append: true,
 				type: type,
 			})

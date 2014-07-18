@@ -70,7 +70,8 @@ class SocketService implements IService
 				id: index,
 				time: Date.now(),
 				device: data.device,
-				message: data.data,
+				data: data.data,
+				msg: data.msg,
 			});
 			if (logData.length > max) logData.pop();
 		}
@@ -88,19 +89,21 @@ class SocketService implements IService
 				id: index,
 				time: Date.now(),
 				device: data.device,
-				message: sce.trustAsHtml("<pre id='debug'>" + formatJson(data.data) + "</pre>"),
+				data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>"),
+				msg: data.msg,
 			});
 			if (debugData.length > max) debugData.pop();
 		}
 		
 
 		if (data.type == "inspect") {
-			inspectSocketData = sce.trustAsHtml("<pre id='debug'>" + formatJson(data.data) + "</pre>");
+			inspectSocketData = sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>");
 			inspectData.insert(0, {
 				id: index,
 				time: Date.now(),
 				device: data.device,
-				message: sce.trustAsHtml("<pre id='debug'>" + formatJson(data.data) + "</pre>"),
+				data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>"),
+				msg: data.msg,
 			});
 			if (inspectData.length > 1) inspectData.pop();
 		}
@@ -111,7 +114,8 @@ class SocketService implements IService
 				id: index,
 				time: Date.now(),
 				device: data.device,
-				message: sce.trustAsHtml(formatMunit(data.data)),
+				data: sce.trustAsHtml(formatMunit(data.data)),
+				msg: data.msg,
 			});
 		}
 		

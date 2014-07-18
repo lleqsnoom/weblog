@@ -194,3 +194,13 @@
 			/*overflow: auto;*/
 			/*ox-sizing: border-box;*/
 		}
+
+		.jsonprint {
+
+
+		}
+
+		pre{
+			width: 100%;
+			height: 100%;
+		}
