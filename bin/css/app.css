@@ -1,0 +1,58 @@
+
+		<div id="app">
+			<div id="dbg">
+				<div id="devices">devices</div>
+				<div id="debug">debug</div>
+				<div id="inspect">inspect</div>
+				<div id="stats">stats</div>
+				<div id="logs">logs</div>
+			</div>
+		</div>
+
+#app {
+
+}
+
+#dbg div{
+	border: solid 1px;
+}
+
+#devices {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 50px;
+	top: 0;
+}
+
+#debug {
+	position: absolute;
+	left: 0;
+	top: 50px;
+	bottom: 30%;
+	width: 40%;
+}
+
+#inspect {
+	position: absolute;
+	left: 40%;
+	top: 50px;
+	bottom: 30%;
+	width: 40%;
+}
+
+#stats {
+	position: absolute;
+	right: 0;
+	top: 50px;
+	bottom: 30%;
+	width: 20%;
+}
+
+#logs {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 30%;
+}

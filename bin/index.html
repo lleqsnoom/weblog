@@ -15,17 +15,29 @@
 	<script src="js/angular.js"></script>
 	<script src="js/jquery.pnotify.js"></script>
 	<script src="js/ng-infinite-scroll.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
 	<script src="js/base64.js"></script>
 	<script src="js/socket.io.js"></script>
 	<script src="js/json2html.js"></script>
-	
+	<!--	
 	<link rel="stylesheet" href="css/weblog.css">
 	<link rel="stylesheet" href="css/bootstrap.slate.css">
 	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
 	<link rel="stylesheet" href="css/jquery.pnotify.default.icons.css">
+
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
+	-->
 	
-	
+	<link rel="stylesheet" href="css/app.css">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
 </head>
 <body>	
 
@@ -60,13 +72,69 @@ library.json = {
 		<div id="app">
 			<div id="dbg">
 				<div id="devices">devices</div>
-				<div id="debug">debug</div>
 				<div id="inspect">inspect</div>
 				<div id="stats">stats</div>
-				<div id="logs">logs</div>
+			</div>
+		</div>
+
+
+
+
+
+		<div ng-controller="pl.bigsoda.weblog.controllers.LogController" id="logs">			
+			
+			
+			<div class="content">
+				<table class="table table-striped" class="contab" infinite-scroll="nextPage($event)">
+					
+					<thead >
+						<tr>
+							<th>#</th>
+							<th>TIME</th>
+							<th>DEVICE</th>
+							<th>MESSAGE</th>
+							<th>LABEL</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr style="" ng-repeat="log in logs">							
+							<td>{{log.id}}</td>
+							<td>{{log.time | date:'HH:mm:ss'}}</td>
+							<td>{{log.device}}</td>
+							<td>{{log.message}}</td>
+							<td>{{log.label}}</td>
+						</tr>
+					</tbody>
+					
+				</table>
+				
+				<center>
+				<div class="loader" ng-show="ajaxProgress"><img src="img/ajax-loader.gif" /></div>
+				</center>
+			</div>
+		</div>
+
+
+
+
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" id="debug">			
+			<div class="details"  id="debug" ng-bind-html="selectedDebugItem">
+				
 			</div>
 		</div>
 		
+
+
+
+
+		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController" ng-show="selectedTab=='inspect'">			
+			<div class="details full" ng-bind-html="selectedInspectItem">
+				
+			</div>
+		</div>
 		<!--
 		<div class="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
 			<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
@@ -137,10 +205,10 @@ library.json = {
 		
 		
 			
-		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" ng-show="selectedTab=='debug'">			
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" id="debug">			
 			
 			
-			<div class="content debug">
+			<div class="content">
 				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
 					
 					<thead>
@@ -162,9 +230,6 @@ library.json = {
 				</table>
 			</div>
 			
-			<div class="details" ng-bind-html="selectedDebugItem">
-				
-			</div>
 		</div>
 		
 		
