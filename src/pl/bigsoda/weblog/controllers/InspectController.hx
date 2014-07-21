@@ -36,7 +36,7 @@ class InspectController implements IController
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		Console.log("onSocketData");
+		//Console.log("onSocketData");
 		scope.logs = data;
 		untyped __js__("setInterval")(function(){
 			select(socketService.getInspectSocketData());
@@ -47,6 +47,9 @@ class InspectController implements IController
 	
 	public function select(msg)
 	{
+
+		//Console.log("onSocketData");
+		//Console.log(msg);
 		scope.$apply(function () {
             scope.selectedInspectItem = msg;
         });

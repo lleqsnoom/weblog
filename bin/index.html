@@ -19,6 +19,7 @@
 	<script src="js/ng-infinite-scroll.js"></script>
 	<script src="js/base64.js"></script>
 	<script src="js/socket.io.js"></script>
+	<script src="js/tab-navigator.js"></script>
 	<!--<script src="js/json2html.js"></script>-->
 	<!--	
 =======
@@ -33,6 +34,7 @@
 	-->
 	
 	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/tab-navigator.css">
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -86,7 +88,12 @@ library.json = {
 
 
 
-		<div id="devices" class="border">devices</div>
+		<div id="devices" class="border tabNavigator" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
+		    <ul class="nav nav-tabs marginBottom" id="devicesList">
+		        <li class="active "><a href="#home" class="backgroundRed">Home </a>
+		    </ul>
+
+		</div>
 
 
 

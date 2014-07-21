@@ -54,7 +54,7 @@ class StatsController implements IController
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		Console.log("onSocketData StatsController");
+		///Console.log("onSocketData StatsController");
 		scope.logs = data;
 		//scope.selectedDebugItem = data;
 		untyped __js__("setInterval")(function(){
@@ -90,6 +90,7 @@ class StatsController implements IController
 	}
 	public function select(data:Array<Dynamic>):Void
 	{
+		//Console.log(data);
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
