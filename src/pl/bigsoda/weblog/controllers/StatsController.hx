@@ -91,6 +91,7 @@ class StatsController implements IController
 	public function select(data:Array<Dynamic>):Void
 	{
 		//Console.log(data);
+		//return;
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
@@ -135,10 +136,11 @@ class StatsController implements IController
 			/*
 			Console.log(d);
 			scope.statsChartData = d;*/
-			
-			scope.fps = data[0].fps;
-			scope.mem = data[0].mem;
-			scope.ms = data[0].ms;
+			try{
+				scope.fps = data[0].fps;
+				scope.mem = data[0].mem;
+				scope.ms = data[0].ms;	
+			}catch(err:Dynamic){}
 			
         });
 	}

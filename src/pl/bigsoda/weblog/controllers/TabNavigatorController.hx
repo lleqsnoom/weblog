@@ -23,9 +23,11 @@ class TabNavigatorController implements IController
 
 
 
+		
 		untyped __js__("setInterval")(function(){
 			select(socketService.getDevices());	
 		}, 1000);
+
 	}
 	
 	function select(devices) 
@@ -33,10 +35,6 @@ class TabNavigatorController implements IController
 		for(i in 0...devices.length){
 			untyped __js__("createTab")(devices[i]);
 		}
-
-
-//        craeteNewTabAndLoadUrl("", "./SamplePage.html", "#" + tabId);
-//		Console.log(devices);
 	}
 	function setClass(value) {
 		return value == rootScope.selectedTab?"active":null;

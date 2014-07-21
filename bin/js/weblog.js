@@ -298,9 +298,12 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 			ctx.fillRect(0,199,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
 			ctx.fillRect(0,299,width,1);
-			_g.scope.fps = data[0].fps;
-			_g.scope.mem = data[0].mem;
-			_g.scope.ms = data[0].ms;
+			try {
+				_g.scope.fps = data[0].fps;
+				_g.scope.mem = data[0].mem;
+				_g.scope.ms = data[0].ms;
+			} catch( err ) {
+			}
 		});
 	}
 	,__class__: pl.bigsoda.weblog.controllers.StatsController

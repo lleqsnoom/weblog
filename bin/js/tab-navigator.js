@@ -43,17 +43,8 @@ function registerComposeButtonEvent() {
 }
 
 function createTab(tabId){
-    console.log(tabId+":");
-    console.log(document.getElementById(tabId));
     if(document.getElementById(tabId) == null){
-
-
-        console.log("-------------- is null");
-
-
-
         $('.nav-tabs').append('<li id="'+tabId+'"><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>'+tabId+'</a></li>');
-        //$('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
 
         $(this).tab('show');
         showTab(tabId);
