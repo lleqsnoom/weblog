@@ -13,6 +13,7 @@ class TabNavigatorController implements IController
 	var rootScope:Dynamic;
 	var scope:Dynamic;
 	var socketService:SocketService;
+	private var lastTabs:String = "";
 	
 	@inject("$scope", "$window", "$http", "$document", "$timeout", "$rootScope", "pl.bigsoda.weblog.servicess.SocketService")
 	public function new(scope, window, http, document, timeout, rootScope, socketService) 
@@ -24,9 +25,6 @@ class TabNavigatorController implements IController
 		rootScope.selectedTab = "log";
 		AngularHelper.map(this.scope, this);
 
-
-
-		
 		untyped __js__("setInterval")(function(){
 			select(socketService.getDevices());	
 		}, 100);
@@ -42,17 +40,15 @@ class TabNavigatorController implements IController
 	{
 		socketService.delDevice(id);
 	}
+	
 	function tabClick(id) 
 	{
-		Console.log("--------------------------------------------------------------------- CLICK: " + id);
+		if(!socketService.deviceExists(id)) return;
+
 		socketService.setCurrDevice(id);
 		scope.currentId = id;
-		/*for(i in 0...devices.length){
-			untyped __js__("createTab")(devices[i]);
-		}*/
 	}
 	
-	private var lastTabs:String = "";
 	function select(devices:Array<String>) 
 	{
 		if (lastTabs == devices.toString()) return;
@@ -70,6 +66,7 @@ class TabNavigatorController implements IController
         });
 		
 	}
+
 	function setClass(value) {
 		return value == rootScope.selectedTab?"active":null;
 	}

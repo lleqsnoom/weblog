@@ -79,25 +79,6 @@ class SocketService implements IService
 		statsDeferred = q.defer();
 		testDeferred = q.defer();
 		inspectDeferred = q.defer();
-		
-		/*
-		socketData = new Array<Dynamic>();
-		logData = new Array<Dynamic>();
-		debugData = new Array<Dynamic>();
-		statsData = new Array<Dynamic>();
-		inspectData = new Array<Dynamic>();
-		testData = new Array<Dynamic>();
-		socketData = {
-			logData: logData,
-			debugData: debugData,
-			inspectData: inspectData,
-			testData: testData,
-			statsData: statsData,
-		}
-		*/
-	
-
-
 
 
 		untyped __js__("console.log('SocketService')");
@@ -208,10 +189,21 @@ class SocketService implements IService
 		updateArr.push(f);
 	}
 	public function delDevice(id):Void {
+		Console.log("DELETE DEVICE");
 		logsData.remove(id);
+		Console.log(getDevices());
+		var devs = getDevices();
+		device = devs[devs.length - 1];
+		setCurrDevice(device);
 	}
 	public function getDevice():String {
 		return device;
+	}
+	public function deviceExists(id):Bool {
+		for(i in logsData.keys()){
+			if(id == i) return true;
+		}
+		return false;
 	}
 	public function getDevices():Array<String> {
 		var a:Array<String> = new Array<String>();
@@ -252,22 +244,27 @@ class SocketService implements IService
 		return inspectDeferred.promise;
 	}
 	public function getInspectSocketData():Dynamic {
+		if(!logsData.exists(device))return null;
 		return logsData.get(device).inspectData[0];
 		//return inspectSocketData;
 	}
 	public function getDebugSocketData():Dynamic {
+		if(!logsData.exists(device))return null;
 		return logsData.get(device).debugData;
 		//return inspectSocketData;
 	}
 	public function setDebugSocketItem(item:Dynamic):Void {
+		if(!logsData.exists(device))return null;
 		logsData.get(device).debugDataItem = item;
 		//return inspectSocketData;
 	}
 	public function getDebugSocketItem():Dynamic {
+		if(!logsData.exists(device))return null;
 		return logsData.get(device).debugDataItem;
 		//return inspectSocketData;
 	}
 	public function getStatsSocketData():Dynamic {
+		if(!logsData.exists(device))return null;
 		return logsData.get(device).statsData;
 		//return statsSocketData;
 	}

@@ -97,6 +97,7 @@ class StatsController implements IController
 	{
 		//Console.log(data);
 		//return;
+		if(data == null) return;
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");

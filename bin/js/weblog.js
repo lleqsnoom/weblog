@@ -281,6 +281,7 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 	}
 	,select: function(data) {
 		var _g = this;
+		if(data == null) return;
 		this.scope.$apply(function() {
 			var c = document.getElementById("statsCanvas");
 			var height = $('#stats').height() - 110;
@@ -302,14 +303,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f1f1f1";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -342,6 +343,7 @@ pl.bigsoda.weblog.controllers.TabNavigatorController.prototype = {
 	rootScope: null
 	,scope: null
 	,socketService: null
+	,lastTabs: null
 	,update: function() {
 		this.scope.currentId = this.socketService.getDevice();
 	}
@@ -349,11 +351,10 @@ pl.bigsoda.weblog.controllers.TabNavigatorController.prototype = {
 		this.socketService.delDevice(id);
 	}
 	,tabClick: function(id) {
-		console.log("--------------------------------------------------------------------- CLICK: " + id);
+		if(!this.socketService.deviceExists(id)) return;
 		this.socketService.setCurrDevice(id);
 		this.scope.currentId = id;
 	}
-	,lastTabs: null
 	,select: function(devices) {
 		var _g = this;
 		if(this.lastTabs == devices.toString()) return;
@@ -558,10 +559,23 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.updateArr.push(f);
 	}
 	,delDevice: function(id) {
+		console.log("DELETE DEVICE");
 		this.logsData.remove(id);
+		js.Console.log(this.getDevices());
+		var devs = this.getDevices();
+		this.device = devs[devs.length - 1];
+		this.setCurrDevice(this.device);
 	}
 	,getDevice: function() {
 		return this.device;
+	}
+	,deviceExists: function(id) {
+		var $it0 = this.logsData.keys();
+		while( $it0.hasNext() ) {
+			var i = $it0.next();
+			if(id == i) return true;
+		}
+		return false;
 	}
 	,getDevices: function() {
 		var a = new Array();
@@ -598,18 +612,23 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		return this.inspectDeferred.promise;
 	}
 	,getInspectSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).inspectData[0];
 	}
 	,getDebugSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).debugData;
 	}
 	,setDebugSocketItem: function(item) {
+		if(!this.logsData.exists(this.device)) return null;
 		this.logsData.get(this.device).debugDataItem = item;
 	}
 	,getDebugSocketItem: function() {
+		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).debugDataItem;
 	}
 	,getStatsSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).statsData;
 	}
 	,getTestData: function() {
