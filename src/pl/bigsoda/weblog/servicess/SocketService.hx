@@ -130,7 +130,10 @@ class SocketService implements IService
 		for (i in 0...updateArr.length) {
 			updateArr[i]();
 		}
-		rootScope.$apply();
+		
+		try{
+			untyped __js__("setTimeout")(function(){ rootScope.$apply(); }, 1);
+		}catch(e:Dynamic){}
 		
 	}
 	

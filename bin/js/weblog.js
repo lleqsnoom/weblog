@@ -250,14 +250,13 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 	,sce: null
 	,socketService: null
 	,update: function() {
-		this.select(this.socketService.getStatsSocketData());
 	}
 	,onSocketData: function(data) {
 		var _g = this;
 		this.scope.logs = data;
 		setInterval(function() {
 			_g.select(_g.socketService.getStatsSocketData());
-		},1000);
+		},300);
 	}
 	,drawData: function(data,field,max,fillColor,lineColor,ctx,width,height,offset) {
 		var ho = height / 3 + offset;
@@ -439,6 +438,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,logsData: null
 	,max: null
 	,setCurrDevice: function(id) {
+		var _g = this;
 		var devLogs;
 		devLogs = this.logsData.get(id);
 		if(devLogs == null) return;
@@ -454,12 +454,17 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
 		var _g1 = 0;
-		var _g = this.updateArr.length;
-		while(_g1 < _g) {
+		var _g2 = this.updateArr.length;
+		while(_g1 < _g2) {
 			var i = _g1++;
 			this.updateArr[i]();
 		}
-		this.rootScope.$apply();
+		try {
+			setTimeout(function() {
+				_g.rootScope.$apply();
+			},1);
+		} catch( e ) {
+		}
 	}
 	,onSocketData: function(data) {
 		var sdata = JSON.parse(data);

@@ -54,7 +54,7 @@ class StatsController implements IController
 	}
 	
 	public function update():Void {
-		select(socketService.getStatsSocketData());	
+		//select(socketService.getStatsSocketData());	
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
@@ -64,7 +64,7 @@ class StatsController implements IController
 		//scope.selectedDebugItem = data;
 		untyped __js__("setInterval")(function(){
 			select(socketService.getStatsSocketData());	
-		}, 1000);
+		}, 300);
 	}
 	private function drawData(data:Array<Dynamic>, field:String, max:Float, fillColor, lineColor,  ctx, width, height, offset):Void{	
 		
