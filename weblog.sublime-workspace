@@ -4,6 +4,7 @@
 		"selected_items":
 		[
 			[
+<<<<<<< HEAD
 				"tab",
 				"tabId"
 			],
@@ -58,6 +59,10 @@
 			[
 				"typ",
 				"typedef"
+=======
+				"log",
+				"logs"
+>>>>>>> master
 			],
 			[
 				"int",
@@ -179,7 +184,11 @@
 			"file": "haxe/src/Weblog.hx",
 			"settings":
 			{
+<<<<<<< HEAD
 				"buffer_size": 7022,
+=======
+				"buffer_size": 4193,
+>>>>>>> master
 				"line_ending": "Unix"
 			}
 		},
@@ -187,11 +196,16 @@
 			"file": "bin/index.html",
 			"settings":
 			{
+<<<<<<< HEAD
 				"buffer_size": 8047,
+=======
+				"buffer_size": 5681,
+>>>>>>> master
 				"line_ending": "Windows"
 			}
 		},
 		{
+<<<<<<< HEAD
 			"file": "bin/css/tab-navigator.css",
 			"settings":
 			{
@@ -222,6 +236,36 @@
 			"settings":
 			{
 				"buffer_size": 1221,
+=======
+			"file": "src/pl/bigsoda/weblog/controllers/StatsController.hx",
+			"settings":
+			{
+				"buffer_size": 1698,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/css/nv.d3.css",
+			"settings":
+			{
+				"buffer_size": 12737,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pl/bigsoda/weblog/controllers/InspectController.hx",
+			"settings":
+			{
+				"buffer_size": 1163,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/pl/bigsoda/weblog/servicess/SocketService.hx",
+			"settings":
+			{
+				"buffer_size": 4185,
+>>>>>>> master
 				"line_ending": "Windows"
 			}
 		},
@@ -229,11 +273,16 @@
 			"file": "src/pl/bigsoda/weblog/controllers/DebugController.hx",
 			"settings":
 			{
+<<<<<<< HEAD
 				"buffer_size": 1000,
+=======
+				"buffer_size": 998,
+>>>>>>> master
 				"line_ending": "Windows"
 			}
 		},
 		{
+<<<<<<< HEAD
 			"file": "bin/haxelib.json",
 			"settings":
 			{
@@ -255,6 +304,29 @@
 			{
 				"buffer_size": 980,
 				"line_ending": "Windows"
+=======
+			"file": "src/Main.hx",
+			"settings":
+			{
+				"buffer_size": 1313,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/Users/tkwiatek/Dysk Google/______projekty/weblog_test/Source/Main.hx",
+			"settings":
+			{
+				"buffer_size": 585,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/tkwiatek/Dysk Google/______projekty/weblog_test/project.xml",
+			"settings":
+			{
+				"buffer_size": 401,
+				"line_ending": "Unix"
+>>>>>>> master
 			}
 		}
 	],
@@ -314,11 +386,14 @@
 	},
 	"file_history":
 	[
+<<<<<<< HEAD
 		"/Users/tkwiatek/Desktop/github/weblog/bin/css/nv.d3.css",
 		"/Users/tkwiatek/Desktop/github/weblog/src/Main.hx",
 		"/Users/tkwiatek/Dysk Google/______projekty/weblog_test/Source/Main.hx",
 		"/Users/tkwiatek/Dysk Google/______projekty/weblog_test/project.xml",
 		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t___ copy/src/pl/bigsoda/weblog/servicess/SocketService.hx",
+=======
+>>>>>>> master
 		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/src/pl/bigsoda/weblog/controllers/StatsController.hx",
 		"/Users/tkwiatek/Dysk Google/______projekty/weblog_t/README.md",
 		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Bacon/Extensions/BigsodaUI/src/pl/bigsoda/view/ui/Label.hx",
@@ -441,7 +516,16 @@
 		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/ComoyoAPI.hx",
 		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/XstreamRESTAPI.hx",
 		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/model/api/XstreamAPI.hx",
+<<<<<<< HEAD
 		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/gesture/GestureEvent.hx"
+=======
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/gesture/GestureEvent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/api/rest/RESTResponse.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/api/rest/RESTRequest.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/data/AppData.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/gesture/GestureAgent.hx",
+		"/Users/tkwiatek/Dysk Google/______projekty/haxe/Extensions/BigsodaUI/src/pl/bigsoda/view/events/ListEvent.hx"
+>>>>>>> master
 	],
 	"find":
 	{
@@ -484,7 +568,11 @@
 	"groups":
 	[
 		{
+<<<<<<< HEAD
 			"selected": 9,
+=======
+			"selected": 1,
+>>>>>>> master
 			"sheets":
 			[
 				{
@@ -493,15 +581,24 @@
 					"semi_transient": false,
 					"settings":
 					{
+<<<<<<< HEAD
 						"buffer_size": 7022,
+=======
+						"buffer_size": 4193,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								4505,
 								4505
+=======
+								2127,
+								2113
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -615,10 +712,17 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 3668.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
+=======
+						"translation.y": 2093.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+>>>>>>> master
 					"type": "text"
 				},
 				{
@@ -627,15 +731,24 @@
 					"semi_transient": false,
 					"settings":
 					{
+<<<<<<< HEAD
 						"buffer_size": 8047,
+=======
+						"buffer_size": 5681,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								2392,
 								2392
+=======
+								5242,
+								5242
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -748,32 +861,55 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 559.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 7,
+=======
+						"translation.y": 2318.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+<<<<<<< HEAD
 					"file": "bin/css/tab-navigator.css",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 323,
+=======
+					"file": "src/pl/bigsoda/weblog/controllers/StatsController.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1698,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								319,
 								0
+=======
+								1398,
+								1398
+>>>>>>> master
 							]
 						],
 						"settings":
 						{
+<<<<<<< HEAD
 							"auto_name": ".nav-tabs > li .close {",
+=======
+>>>>>>> master
 							"codeintel": true,
 							"codeintel_config":
 							{
@@ -877,6 +1013,7 @@
 								"Python Django": "Python"
 							},
 							"codeintel_tooltips": "popup",
+<<<<<<< HEAD
 							"sublime_auto_complete": true,
 							"syntax": "Packages/CSS/CSS.tmLanguage",
 							"translate_tabs_to_spaces": false
@@ -886,28 +1023,56 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 8,
+=======
+							"haxe-build-id": 0,
+							"sublime_auto_complete": true,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 53.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+<<<<<<< HEAD
 					"file": "bin/js/tab-navigator.js",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 3479,
+=======
+					"file": "bin/css/nv.d3.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12737,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								1220,
 								1220
+=======
+								6655,
+								6655
+>>>>>>> master
 							]
 						],
 						"settings":
 						{
+<<<<<<< HEAD
 							"auto_name": "/**",
+=======
+>>>>>>> master
 							"codeintel": true,
 							"codeintel_config":
 							{
@@ -1012,6 +1177,7 @@
 							},
 							"codeintel_tooltips": "popup",
 							"sublime_auto_complete": true,
+<<<<<<< HEAD
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1021,27 +1187,52 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
+=======
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 9850.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 4,
+<<<<<<< HEAD
 					"file": "src/pl/bigsoda/weblog/controllers/StatsController.hx",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 3729,
+=======
+					"file": "src/pl/bigsoda/weblog/controllers/InspectController.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1163,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								1058,
 								1058
+=======
+								815,
+								762
+>>>>>>> master
 							]
 						],
 						"settings":
 						{
+<<<<<<< HEAD
 							"codeintel": true,
 							"codeintel_config":
 							{
@@ -1147,31 +1338,54 @@
 							"codeintel_tooltips": "popup",
 							"haxe-build-id": 0,
 							"sublime_auto_complete": true,
+=======
+							"haxe-build-id": 0,
+>>>>>>> master
 							"syntax": "Packages/Haxe/Haxe.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 563.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
+=======
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 5,
+<<<<<<< HEAD
 					"file": "src/pl/bigsoda/weblog/controllers/InspectController.hx",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 1221,
+=======
+					"file": "src/pl/bigsoda/weblog/servicess/SocketService.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4185,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								881,
 								881
+=======
+								3188,
+								3188
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -1285,10 +1499,17 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
+=======
+						"translation.y": 1298.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+>>>>>>> master
 					"type": "text"
 				},
 				{
@@ -1297,15 +1518,54 @@
 					"semi_transient": false,
 					"settings":
 					{
+<<<<<<< HEAD
 						"buffer_size": 1000,
+=======
+						"buffer_size": 998,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/Main.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1313,
+>>>>>>> master
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+<<<<<<< HEAD
 								946,
 								963
+=======
+								672,
+								672
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -1422,6 +1682,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+<<<<<<< HEAD
 					"stack_index": 5,
 					"type": "text"
 				},
@@ -1453,23 +1714,39 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
+=======
+					"stack_index": 4,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 8,
+<<<<<<< HEAD
 					"file": "src/pl/bigsoda/weblog/controllers/TestController.hx",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 817,
+=======
+					"file": "/Users/tkwiatek/Dysk Google/______projekty/weblog_test/Source/Main.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 585,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								761,
 								761
+=======
+								277,
+								277
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -1586,24 +1863,41 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+<<<<<<< HEAD
 					"stack_index": 9,
+=======
+					"stack_index": 7,
+>>>>>>> master
 					"type": "text"
 				},
 				{
 					"buffer": 9,
+<<<<<<< HEAD
 					"file": "src/pl/bigsoda/weblog/controllers/TabNavigatorController.hx",
 					"semi_transient": false,
 					"settings":
 					{
 						"buffer_size": 980,
+=======
+					"file": "/Users/tkwiatek/Dysk Google/______projekty/weblog_test/project.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 401,
+>>>>>>> master
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								790,
 								799
+=======
+								284,
+								284
+>>>>>>> master
 							]
 						],
 						"settings":
@@ -1711,16 +2005,25 @@
 								"Python Django": "Python"
 							},
 							"codeintel_tooltips": "popup",
+<<<<<<< HEAD
 							"haxe-build-id": 0,
 							"sublime_auto_complete": true,
 							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+=======
+							"sublime_auto_complete": true,
+							"syntax": "Packages/XML/XML.tmLanguage",
+>>>>>>> master
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+<<<<<<< HEAD
 					"stack_index": 0,
+=======
+					"stack_index": 8,
+>>>>>>> master
 					"type": "text"
 				}
 			]
