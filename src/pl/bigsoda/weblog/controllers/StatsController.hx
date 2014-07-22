@@ -4,6 +4,7 @@ import hxangular.AngularHelper;
 import hxangular.haxe.IController;
 import js.Console;
 import haxe.Json;
+import pl.bigsoda.weblog.servicess.SocketService;
 /**
  * ...
  * @author tkwiatek
@@ -17,7 +18,7 @@ class StatsController implements IController
 	var timeout:Dynamic;
 	var socketData:Dynamic;
 	var sce:Dynamic;
-	var socketService:Dynamic;
+	var socketService:SocketService;
 	
 	@inject("$scope", "$window", "$http", "$document", "$timeout", "$rootScope", "pl.bigsoda.weblog.servicess.SocketService", "$sce")
 	public function new(scope, window, http, document, timeout, rootScope, socketService, sce) 
@@ -26,7 +27,6 @@ class StatsController implements IController
 		this.http = http;
 		this.timeout = timeout;
 		this.sce = sce;
-
 		this.socketService = socketService;
 		
 		
@@ -49,17 +49,22 @@ class StatsController implements IController
 				
 		AngularHelper.map(this.scope, this);
 		socketService.getStatsData().then(onSocketData);
+		socketService.addUpdateCallback(update);
 
+	}
+	
+	public function update():Void {
+		//select(socketService.getStatsSocketData());	
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		Console.log("onSocketData StatsController");
+		///Console.log("onSocketData StatsController");
 		scope.logs = data;
 		//scope.selectedDebugItem = data;
 		untyped __js__("setInterval")(function(){
 			select(socketService.getStatsSocketData());	
-		}, 1000);
+		}, 300);
 	}
 	private function drawData(data:Array<Dynamic>, field:String, max:Float, fillColor, lineColor,  ctx, width, height, offset):Void{	
 		
@@ -90,18 +95,21 @@ class StatsController implements IController
 	}
 	public function select(data:Array<Dynamic>):Void
 	{
+		//Console.log(data);
+		//return;
+		if(data == null) return;
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
-			var height = untyped __js__("$(window).height()");
-			var width = untyped __js__("$(window).width()");
-			var height = 300;
+			var height = untyped __js__("$('#stats').height()") - 110;
+			var width = untyped __js__("$('#stats').width()");
+			//var height = 300;
 			
 			untyped __js__("$('#statsCanvas')").width(width).height(height);
 			untyped __js__("$('#statsCanvas')").attr('width', width).attr('height', height);
 			
 			var ctx = c.getContext("2d");
-			ctx.fillStyle = "#111111";
+			ctx.fillStyle = "#f1f1f1";
 			ctx.fillRect(0,0,width,height);
 			
 			
@@ -116,28 +124,29 @@ class StatsController implements IController
 			
 			}
 			
-			drawData(data, "fps", maxFPS, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 1)", ctx, width, height, 0);
-			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, 100);
-			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, 200);
+			drawData(data, "fps", maxFPS, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 1)", ctx, width, height, Std.int(height*0));
+			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, Std.int(height*(1/3)));
+			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, Std.int(height*(2/3)));
 			
-			ctx.fillStyle = "#111111";
-			ctx.fillRect(0,100-1,width,3);
-			ctx.fillRect(0,200-1,width,3);
-			ctx.fillRect(0,300-1,width,3);
+			ctx.fillStyle = "#f1f1f1";
+			ctx.fillRect(0,Std.int(height*(1/3))-1,width,3);
+			ctx.fillRect(0,Std.int(height*(2/3))-1,width,3);
+			ctx.fillRect(0,Std.int(height*(3/3))-1,width,3);
 			
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,100-1,width,1);
+			ctx.fillRect(0,Std.int(height*(1/3))-1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
-			ctx.fillRect(0,200-1,width,1);
+			ctx.fillRect(0,Std.int(height*(2/3))-1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
-			ctx.fillRect(0,300-1,width,1);
+			ctx.fillRect(0,Std.int(height*(3/3))-1,width,1);
 			/*
 			Console.log(d);
 			scope.statsChartData = d;*/
-			
-			scope.fps = data[0].fps;
-			scope.mem = data[0].mem;
-			scope.ms = data[0].ms;
+			try{
+				scope.fps = data[0].fps;
+				scope.mem = data[0].mem;
+				scope.ms = data[0].ms;	
+			}catch(err:Dynamic){}
 			
         });
 	}

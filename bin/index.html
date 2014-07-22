@@ -17,18 +17,34 @@
 
 	<script src="js/jquery.pnotify.js"></script>
 	<script src="js/ng-infinite-scroll.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
 	<script src="js/base64.js"></script>
 	<script src="js/socket.io.js"></script>
-	<script src="js/json2html.js"></script>
+	<script src="js/tab-navigator.js"></script>
+	<!--<script src="js/json2html.js"></script>-->
+	<!--	
+=======
 	
 	<link rel="stylesheet" href="css/nv.d3.css">
 	<link rel="stylesheet" href="css/weblog.css">
 	<link rel="stylesheet" href="css/bootstrap.slate.css">
 	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
 	<link rel="stylesheet" href="css/jquery.pnotify.default.icons.css">
+
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
+	-->
 	
-	
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/tab-navigator.css">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
 </head>
 <body>	
 
@@ -60,6 +76,105 @@ library.json = {
 	
 	
 
+
+
+
+
+
+
+
+
+
+
+
+
+		<div id="devices" class="border tabNavigator" style="padding-top: 8px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
+		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
+				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
+					<a href="{'#' + item.id}"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
+				</li>
+		    </ul>
+		</div>
+
+
+
+
+
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController">
+
+			<div id="logs" class="border">
+				<div class="content">
+					<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
+						
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>TIME</th>
+								<th>MESSAGE</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr style="" ng-repeat="log in logs" ng-click="select(log.data, log.id)" ng-class="{debugSelected: log.id === selectedId}">							
+								<td>{{log.id}}</td>
+								<td>{{log.time | date:'HH:mm:ss'}}</td>
+								<td>{{log.msg}}</td>
+							</tr>
+						</tbody>
+						
+					</table>
+				</div>
+
+			</div>
+
+
+			<div ng-bind-html="selectedDebugItem" class="border" id="debug_obj">
+				
+			</div>
+
+		</div>
+		
+
+
+
+
+		
+			
+		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController">			
+			<div ng-bind-html="selectedInspectItem" id="inspect_obj" class="border">
+				
+			</div>
+		</div>
+
+
+
+
+
+
+	<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" id="stats" class="border">			
+			
+		<div class="content" width="100" height="100">
+		<p calss="fps" style="color: #ff0000; font-size: 16px; padding-left: 10px;padding-top:10px;">{{fps}} fps</p>
+		<p calss="ms" style="color: #ffc600; font-size: 16px; padding-left: 10px;">{{ms}} ms</p>
+		<p calss="mem" style="color: #008aff; font-size: 16px; padding-left: 10px;">{{mem | number:2}} mb</p>
+		
+		
+		<canvas id="statsCanvas" width="100" height="100"
+		style="border: none;position: absolute; top: 110px;">
+		</canvas>
+		
+		</div>
+
+	</div>
+
+
+	<div id="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
+		<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
+	</div>
+
+
+
+		<!--
 		<div class="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
 			<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
 		</div>
@@ -132,10 +247,10 @@ library.json = {
 		
 		
 			
-		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" ng-show="selectedTab=='debug'">			
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" id="debug">			
 			
 			
-			<div class="content debug">
+			<div class="content">
 				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
 					
 					<thead>
@@ -143,7 +258,6 @@ library.json = {
 							<th>ID</th>
 							<th>TIME</th>
 							<th>DEVICE</th>
-							<!--<th>MESSAGE</th>-->
 						</tr>
 					</thead>
 					
@@ -152,16 +266,12 @@ library.json = {
 							<td>{{log.id}}</td>
 							<td>{{log.time | date:'HH:mm:ss'}}</td>
 							<td>{{log.device}}</td>
-							<!--<td ng-bind-html="log.message"></td>-->
 						</tr>
 					</tbody>
 					
 				</table>
 			</div>
 			
-			<div class="details" ng-bind-html="selectedDebugItem">
-				
-			</div>
 		</div>
 		
 		
@@ -199,8 +309,6 @@ library.json = {
 			</div>
 		</div>
 		
-		
-		
 			
 		<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" ng-show="selectedTab=='stats'">			
 			
@@ -216,28 +324,10 @@ library.json = {
 			
 			<script>
 			</script>
-			
-			
-			
-			<!--
-			<nvd3-line-chart
-			    data="statsChartData"
-		        id="exampleId"
-		        width="550"
-		        height="300"
-		        xAxisTickFormat="xAxisTickFormatFunction()"
-		        yAxisTickFormat="yAxisTickFormatFunction()"
-		        showXAxis="true"
-		        showYAxis="true"
-		        showLegend="true">
-		        <svg></svg>
-			</nvd3-line-chart>
-			-->
-			
 			</div>
 
 		</div>
-		
+		-->
 	
 	
 	<script src="js/weblog.js"></script>

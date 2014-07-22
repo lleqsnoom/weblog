@@ -13,23 +13,12 @@ haxelib install node-webkit
 
 Features
 =========
-logs:
-<p align="center"><img src="logs.png"/></p>
-
-
-
-Object debugging:
-<p align="center"><img src="debug.png"/></p>
-
-
-
-Object inspect:
-<p align="center"><img src="inspect.png"/></p>
-
-
-
-Realtime stats:
-<p align="center"><img src="stats.png"/></p>
+-Logs
+-Object debugging
+-Object inspect
+-Realtime stats
+-Multiple devices at the same time
+<p align="center"><img src="app.png"/></p>
 
 
 

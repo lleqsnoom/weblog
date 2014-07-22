@@ -108,7 +108,8 @@ class Weblog{
 
 
 	public static function log(data:Dynamic):Void {
-		send(data, "log");
+		//send(data, "log");
+		debug(data);
 	}
 	
 	public static function debug(data:Dynamic):Void {
@@ -184,13 +185,32 @@ class Weblog{
 
 		var debugip = Compiler.getDefine("debugip");
 		if (debugip == null) return;
-
+		
+		var msg:String = "";
+		
+		if(data == null){
+			msg = "null";
+		}else if(Std.is(data, String) || Std.is(data, Int) || Std.is(data, Float) || Std.is(data, Bool)){
+			msg = Std.string(data);
+		}else if(Std.is(data, Array) || Std.is(data, List)){
+			msg = "Array";
+		}else if(Reflect.isFunction(data)){
+			msg = "function";
+		}else if(Reflect.isObject(data)){
+			msg = "Object";
+		}else{
+			msg = "unknown";
+		}
+		
+		
 		var r:haxe.Http = new haxe.Http("http://" + debugip);
 		r.addHeader("Accept" , "application/json");
 		r.setPostData( Json.stringify({
 				data: readObjectReflect(data),
+				msg: msg,
 				append: true,
 				type: type,
+				dev: device,
 			})
 		);
 		r.request(true);
@@ -258,5 +278,41 @@ class Weblog{
 	private static function readObjectJson(o:Dynamic):String {
 		return Json.stringify(o);
 	}
+	
+	
+	#if flash
+	public static var device:String = "Flash_" + Std.int(Math.random() * 10000);
+	#elseif js
+	public static var device:String = "JavaScript_" + Std.int(Math.random() * 10000);
+	#elseif html5
+	public static var device:String = "HTML5_" + Std.int(Math.random() * 10000);
+	#elseif php
+	public static var device:String = "PHP_" + Std.int(Math.random() * 10000);
+	#elseif ios
+	public static var device:String = "IOS_" + Std.int(Math.random() * 10000);
+	#elseif android
+	public static var device:String = "Android_" + Std.int(Math.random() * 10000);
+	#elseif mac
+	public static var device:String = "Mac_" + Std.int(Math.random() * 10000);
+	#elseif windows
+	public static var device:String = "Windows_" + Std.int(Math.random() * 10000);
+	#elseif linux
+	public static var device:String = "Linux_" + Std.int(Math.random() * 10000);
+	#elseif tizen
+	public static var device:String = "Tizen_" + Std.int(Math.random() * 10000);
+	#elseif blackberry
+	public static var device:String = "BlackBerry_" + Std.int(Math.random() * 10000);
+	#elseif neko
+	public static var device:String = "Neko_" + Std.int(Math.random() * 10000);
+	#elseif cpp
+	public static var device:String = "Cpp_" + Std.int(Math.random() * 10000);
+	#else
+	public static var device:String = "Unknown_" + Std.int(Math.random() * 10000);
+	#end
+	
+	
+	
+	
+	
 
 }
