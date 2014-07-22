@@ -100,9 +100,9 @@ class StatsController implements IController
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
-			var height = untyped __js__("$('#stats').height()");
+			var height = untyped __js__("$('#stats').height()") - 110;
 			var width = untyped __js__("$('#stats').width()");
-			var height = 300;
+			//var height = 300;
 			
 			untyped __js__("$('#statsCanvas')").width(width).height(height);
 			untyped __js__("$('#statsCanvas')").attr('width', width).attr('height', height);
@@ -123,21 +123,21 @@ class StatsController implements IController
 			
 			}
 			
-			drawData(data, "fps", maxFPS, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 1)", ctx, width, height, 0);
-			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, 100);
-			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, 200);
+			drawData(data, "fps", maxFPS, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 1)", ctx, width, height, Std.int(height*0));
+			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, Std.int(height*(1/3)));
+			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, Std.int(height*(2/3)));
 			
 			ctx.fillStyle = "#f1f1f1";
-			ctx.fillRect(0,100-1,width,3);
-			ctx.fillRect(0,200-1,width,3);
-			ctx.fillRect(0,300-1,width,3);
+			ctx.fillRect(0,Std.int(height*(1/3))-1,width,3);
+			ctx.fillRect(0,Std.int(height*(2/3))-1,width,3);
+			ctx.fillRect(0,Std.int(height*(3/3))-1,width,3);
 			
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,100-1,width,1);
+			ctx.fillRect(0,Std.int(height*(1/3))-1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
-			ctx.fillRect(0,200-1,width,1);
+			ctx.fillRect(0,Std.int(height*(2/3))-1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
-			ctx.fillRect(0,300-1,width,1);
+			ctx.fillRect(0,Std.int(height*(3/3))-1,width,1);
 			/*
 			Console.log(d);
 			scope.statsChartData = d;*/
