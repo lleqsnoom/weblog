@@ -81,6 +81,12 @@ haxe.ds.StringMap.prototype = {
 	,exists: function(key) {
 		return this.h.hasOwnProperty("$" + key);
 	}
+	,remove: function(key) {
+		key = "$" + key;
+		if(!this.h.hasOwnProperty(key)) return false;
+		delete(this.h[key]);
+		return true;
+	}
 	,keys: function() {
 		var a = [];
 		for( var key in this.h ) {
@@ -118,8 +124,10 @@ pl.bigsoda.weblog.controllers.DebugController = $hx_exports.pl.bigsoda.weblog.co
 	this.http = http;
 	this.timeout = timeout;
 	this.sce = sce;
+	this.socketService = socketService;
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getDebugData().then($bind(this,this.onSocketData));
+	socketService.addUpdateCallback($bind(this,this.update));
 };
 pl.bigsoda.weblog.controllers.DebugController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.DebugController.prototype = {
@@ -129,10 +137,16 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,timeout: null
 	,socketData: null
 	,sce: null
+	,socketService: null
+	,update: function() {
+		this.scope.logs = this.socketService.getDebugSocketData();
+		this.scope.selectedDebugItem = this.socketService.getDebugSocketItem();
+	}
 	,onSocketData: function(data) {
 		this.scope.logs = data;
 	}
 	,select: function(msg,id) {
+		this.socketService.setDebugSocketItem(msg);
 		this.scope.selectedDebugItem = msg;
 		this.scope.selectedId = id;
 	}
@@ -224,6 +238,7 @@ pl.bigsoda.weblog.controllers.StatsController = $hx_exports.pl.bigsoda.weblog.co
 	}, legend : { display : true, position : "right"}};
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getStatsData().then($bind(this,this.onSocketData));
+	socketService.addUpdateCallback($bind(this,this.update));
 };
 pl.bigsoda.weblog.controllers.StatsController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.StatsController.prototype = {
@@ -234,6 +249,9 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 	,socketData: null
 	,sce: null
 	,socketService: null
+	,update: function() {
+		this.select(this.socketService.getStatsSocketData());
+	}
 	,onSocketData: function(data) {
 		var _g = this;
 		this.scope.logs = data;
@@ -309,26 +327,49 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 	,__class__: pl.bigsoda.weblog.controllers.StatsController
 };
 pl.bigsoda.weblog.controllers.TabNavigatorController = $hx_exports.pl.bigsoda.weblog.controllers.TabNavigatorController = function(scope,window,http,document,timeout,rootScope,socketService) {
+	this.lastTabs = "";
 	var _g = this;
 	this.scope = scope;
 	this.rootScope = rootScope;
+	this.socketService = socketService;
 	rootScope.selectedTab = "log";
 	hxangular.AngularHelper.map(this.scope,this);
 	setInterval(function() {
 		_g.select(socketService.getDevices());
-	},1000);
+	},100);
+	socketService.addUpdateCallback($bind(this,this.update));
 };
 pl.bigsoda.weblog.controllers.TabNavigatorController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.TabNavigatorController.prototype = {
 	rootScope: null
 	,scope: null
+	,socketService: null
+	,update: function() {
+		this.scope.currentId = this.socketService.getDevice();
+	}
+	,tabCloseClick: function(id) {
+		this.socketService.delDevice(id);
+	}
+	,tabClick: function(id) {
+		console.log("--------------------------------------------------------------------- CLICK: " + id);
+		this.socketService.setCurrDevice(id);
+		this.scope.currentId = id;
+	}
+	,lastTabs: null
 	,select: function(devices) {
+		var _g = this;
+		if(this.lastTabs == devices.toString()) return;
+		this.lastTabs = devices.toString();
+		var titems = new Array();
 		var _g1 = 0;
-		var _g = devices.length;
-		while(_g1 < _g) {
+		var _g2 = devices.length;
+		while(_g1 < _g2) {
 			var i = _g1++;
-			createTab(devices[i]);
+			titems.push({ id : devices[i]});
 		}
+		this.scope.$apply(function() {
+			_g.scope.items = titems;
+		});
 	}
 	,setClass: function(value) {
 		if(value == this.rootScope.selectedTab) return "active"; else return null;
@@ -359,13 +400,14 @@ pl.bigsoda.weblog.controllers.TestController.prototype = {
 };
 pl.bigsoda.weblog.servicess = {};
 pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
+	this.updateArr = new Array();
 	this.max = 101;
 	this.logsData = new haxe.ds.StringMap();
 	this.index = 0;
 	this.init = false;
-	this.statsSocketData = new Array();
 	this.rootScope = rootScope;
 	this.sce = sce;
+	this.q = q;
 	this.logDeferred = q.defer();
 	this.debugDeferred = q.defer();
 	this.statsDeferred = q.defer();
@@ -390,23 +432,46 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,testDeferred: null
 	,rootScope: null
 	,inspectSocketData: null
-	,statsSocketData: null
 	,init: null
 	,sce: null
 	,index: null
 	,device: null
+	,q: null
 	,logsData: null
 	,max: null
+	,setCurrDevice: function(id) {
+		var devLogs;
+		devLogs = this.logsData.get(id);
+		if(devLogs == null) return;
+		this.device = id;
+		this.logDeferred = this.q.defer();
+		this.debugDeferred = this.q.defer();
+		this.statsDeferred = this.q.defer();
+		this.testDeferred = this.q.defer();
+		this.inspectDeferred = this.q.defer();
+		this.logDeferred.resolve(devLogs.logData);
+		this.debugDeferred.resolve(devLogs.debugData);
+		this.inspectDeferred.resolve(devLogs.inspectData);
+		this.testDeferred.resolve(devLogs.testData);
+		this.statsDeferred.resolve(devLogs.statsData);
+		var _g1 = 0;
+		var _g = this.updateArr.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.updateArr[i]();
+		}
+		this.rootScope.$apply();
+	}
 	,onSocketData: function(data) {
 		var sdata = JSON.parse(data);
+		var did = null;
 		var devLogs;
 		if(!this.logsData.exists(sdata.dev)) {
-			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), statsData : new Array(), inspectData : new Array()};
+			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null};
 			this.logsData.set(sdata.dev,value);
-			this.device = sdata.dev;
+			did = this.device = sdata.dev;
 		}
 		devLogs = this.logsData.get(sdata.dev);
-		this.device = sdata.dev;
 		var _g = sdata.type;
 		switch(_g) {
 		case "log":
@@ -482,6 +547,17 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
 		this.rootScope.$apply();
+		if(did != null) this.setCurrDevice(did);
+	}
+	,updateArr: null
+	,addUpdateCallback: function(f) {
+		this.updateArr.push(f);
+	}
+	,delDevice: function(id) {
+		this.logsData.remove(id);
+	}
+	,getDevice: function() {
+		return this.device;
 	}
 	,getDevices: function() {
 		var a = new Array();
@@ -519,6 +595,15 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	}
 	,getInspectSocketData: function() {
 		return this.logsData.get(this.device).inspectData[0];
+	}
+	,getDebugSocketData: function() {
+		return this.logsData.get(this.device).debugData;
+	}
+	,setDebugSocketItem: function(item) {
+		this.logsData.get(this.device).debugDataItem = item;
+	}
+	,getDebugSocketItem: function() {
+		return this.logsData.get(this.device).debugDataItem;
 	}
 	,getStatsSocketData: function() {
 		return this.logsData.get(this.device).statsData;

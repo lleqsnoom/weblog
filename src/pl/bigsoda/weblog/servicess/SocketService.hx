@@ -22,6 +22,7 @@ typedef LogsModel = {
 	var testData:Array<LogLineModel>;
 	var statsData:Array<Dynamic>;
 	var inspectData:Array<Dynamic>;
+	var debugDataItem:Dynamic;
 }
 
 typedef LogLineModel = {
@@ -50,11 +51,11 @@ class SocketService implements IService
 	private var testDeferred:Dynamic;
 	private var rootScope:Dynamic;
 	private var inspectSocketData:Dynamic;
-	private var statsSocketData:Array<Dynamic> = new Array<Dynamic>();
 	private var init:Bool = false;
 	private var sce:Dynamic;
 	private var index:Float = 0;
 	private var device:String;
+	private var q:Dynamic;
 
 
 
@@ -70,6 +71,7 @@ class SocketService implements IService
 	{
 		this.rootScope = rootScope;
 		this.sce = sce;
+		this.q = q;
 
 
 		logDeferred = q.defer();
@@ -103,11 +105,40 @@ class SocketService implements IService
 		socket.on("data", onSocketData);
 	}
 	
+	public function setCurrDevice(id):Void {
+		
+
+		var devLogs:LogsModel;
+		devLogs = logsData.get(id);
+		if (devLogs == null) return;
+		device = id;
+		
+		
+		logDeferred = q.defer();
+		debugDeferred = q.defer();
+		statsDeferred = q.defer();
+		testDeferred = q.defer();
+		inspectDeferred = q.defer();
+		
+		
+		logDeferred.resolve(devLogs.logData);
+		debugDeferred.resolve(devLogs.debugData);
+		inspectDeferred.resolve(devLogs.inspectData);
+		testDeferred.resolve(devLogs.testData);
+		statsDeferred.resolve(devLogs.statsData);
+		
+		for (i in 0...updateArr.length) {
+			updateArr[i]();
+		}
+		rootScope.$apply();
+		
+	}
+	
 	public function onSocketData(data:Dynamic):Void {
 		//data.data = Json.parse(data.data);
 
 		var sdata:SocketLogModel = Json.parse(data);
-
+		var did:String = null;
 		var devLogs:LogsModel;
 		if(!logsData.exists(sdata.dev)){
 			logsData.set(sdata.dev, {
@@ -116,12 +147,12 @@ class SocketService implements IService
 					testData: new Array<LogLineModel>(),
 					statsData: new Array<Dynamic>(),
 					inspectData: new Array<Dynamic>(),
-
+					debugDataItem: null
 				});
-			device = sdata.dev;
+			did = device = sdata.dev;
 		}
 		devLogs = logsData.get(sdata.dev);
-		device = sdata.dev;
+		//device = sdata.dev;
 
 
 		switch(sdata.type){
@@ -157,62 +188,6 @@ class SocketService implements IService
 				if (devLogs.inspectData.length > max) devLogs.inspectData.pop();
 		}
 
-
-		/*
-		if (data.type == "log") {
-			logData.insert(0, {
-				id: index,
-				time: Date.now(),
-				device: data.device,
-				data: data.data,
-				msg: data.msg,
-			});
-			if (logData.length > max) logData.pop();
-		}
-		
-		if (data.type == "stats") {
-			statsSocketData.insert(0, data.data);
-			statsData.insert(0, data.data);
-			if (statsData.length > max) statsData.pop();
-			if (statsSocketData.length > max) statsSocketData.pop();
-		}
-		
-
-		if (data.type == "debug") {
-			debugData.insert(0, {
-				id: index,
-				time: Date.now(),
-				device: data.device,
-				data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>"),
-				msg: data.msg,
-			});
-			if (debugData.length > max) debugData.pop();
-		}
-		
-
-		if (data.type == "inspect") {
-			inspectSocketData = sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>");
-			inspectData.insert(0, {
-				id: index,
-				time: Date.now(),
-				device: data.device,
-				data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(data.data) + "</pre>"),
-				msg: data.msg,
-			});
-			if (inspectData.length > 1) inspectData.pop();
-		}
-		
-
-		if (data.type == "test") {
-			testData.insert(0, {
-				id: index,
-				time: Date.now(),
-				device: data.device,
-				data: sce.trustAsHtml(formatMunit(data.data)),
-				msg: data.msg,
-			});
-		}*/
-		
 		index++;
 		
 		logDeferred.resolve(devLogs.logData);
@@ -222,8 +197,19 @@ class SocketService implements IService
 		statsDeferred.resolve(devLogs.statsData);
 		
 		rootScope.$apply();
+		
+		if (did != null) setCurrDevice(did);
 	}
-
+	private var updateArr:Array<Dynamic> = new Array<Dynamic>();
+	public function addUpdateCallback(f:Dynamic):Void {
+		updateArr.push(f);
+	}
+	public function delDevice(id):Void {
+		logsData.remove(id);
+	}
+	public function getDevice():String {
+		return device;
+	}
 	public function getDevices():Array<String> {
 		var a:Array<String> = new Array<String>();
 		for(i in logsData.keys()){
@@ -264,6 +250,18 @@ class SocketService implements IService
 	}
 	public function getInspectSocketData():Dynamic {
 		return logsData.get(device).inspectData[0];
+		//return inspectSocketData;
+	}
+	public function getDebugSocketData():Dynamic {
+		return logsData.get(device).debugData;
+		//return inspectSocketData;
+	}
+	public function setDebugSocketItem(item:Dynamic):Void {
+		logsData.get(device).debugDataItem = item;
+		//return inspectSocketData;
+	}
+	public function getDebugSocketItem():Dynamic {
+		return logsData.get(device).debugDataItem;
 		//return inspectSocketData;
 	}
 	public function getStatsSocketData():Dynamic {

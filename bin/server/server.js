@@ -49,8 +49,8 @@ var server = http.createServer(function(request, response) {
 				response.writeHead(200);
 				response.end("");
 			}catch(e){
-				console.log("error");
-				console.log(e);
+				//console.log("error");
+				//console.log(e);
 			}
 		}else{
 			try{
@@ -58,8 +58,8 @@ var server = http.createServer(function(request, response) {
 				response.writeHead(200);
 				response.end("");
 			}catch(e){
-				console.log("error");
-				console.log(e);
+				//console.log("error");
+				//console.log(e);
 			}
 		}
 	
@@ -71,7 +71,7 @@ var server = http.createServer(function(request, response) {
 
 try{
 	server.listen(port, function() {
-		console.log((new Date()) + ' Server is listening on port ' + port);
+		//console.log((new Date()) + ' Server is listening on port ' + port);
 	});
 }catch(err){
 	
@@ -79,7 +79,7 @@ try{
 
 
 process.on('uncaughtException', function(err) {
-	console.log("Error: " + err);
+	//console.log("Error: " + err);
 	//alert("Error: " + err);
 });
 

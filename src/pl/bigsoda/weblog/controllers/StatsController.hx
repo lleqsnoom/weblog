@@ -4,6 +4,7 @@ import hxangular.AngularHelper;
 import hxangular.haxe.IController;
 import js.Console;
 import haxe.Json;
+import pl.bigsoda.weblog.servicess.SocketService;
 /**
  * ...
  * @author tkwiatek
@@ -17,7 +18,7 @@ class StatsController implements IController
 	var timeout:Dynamic;
 	var socketData:Dynamic;
 	var sce:Dynamic;
-	var socketService:Dynamic;
+	var socketService:SocketService;
 	
 	@inject("$scope", "$window", "$http", "$document", "$timeout", "$rootScope", "pl.bigsoda.weblog.servicess.SocketService", "$sce")
 	public function new(scope, window, http, document, timeout, rootScope, socketService, sce) 
@@ -26,7 +27,6 @@ class StatsController implements IController
 		this.http = http;
 		this.timeout = timeout;
 		this.sce = sce;
-
 		this.socketService = socketService;
 		
 		
@@ -49,7 +49,12 @@ class StatsController implements IController
 				
 		AngularHelper.map(this.scope, this);
 		socketService.getStatsData().then(onSocketData);
+		socketService.addUpdateCallback(update);
 
+	}
+	
+	public function update():Void {
+		select(socketService.getStatsSocketData());	
 	}
 	
 	private function onSocketData(data:Dynamic):Void 

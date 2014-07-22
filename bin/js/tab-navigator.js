@@ -30,7 +30,7 @@ function registerComposeButtonEvent() {
         var tabId = "compose" + composeCount; //this is id on tab content div where the 
         composeCount = composeCount + 1; //increment compose count
 
-        $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>Compose</a></li>');
+        $('.nav-tabs').append('<li ng-click="tabClick('+tabId+')"><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>Compose</a></li>');
         //$('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
 
         craeteNewTabAndLoadUrl("", "./SamplePage.html", "#" + tabId);
@@ -44,7 +44,7 @@ function registerComposeButtonEvent() {
 
 function createTab(tabId){
     if(document.getElementById(tabId) == null){
-        $('.nav-tabs').append('<li id="'+tabId+'"><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>'+tabId+'</a></li>');
+        $('.nav-tabs').append("<li id='"+tabId+"' ng-click=\"tabClick('"+tabId+"')\"><a href='#" + tabId + "'><button class='close closeTab' type='button' >×</button>"+tabId+"</a></li>");
 
         $(this).tab('show');
         showTab(tabId);

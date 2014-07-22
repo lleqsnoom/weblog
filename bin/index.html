@@ -89,10 +89,11 @@ library.json = {
 
 
 		<div id="devices" class="border tabNavigator" style="padding-top: 8px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
-		    <ul class="nav nav-tabs marginBottom" id="devicesList">
-		        <li class="active "><a href="#home" class="backgroundRed">Home </a>
+		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
+				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
+					<a href="{'#' + item.id}"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
+				</li>
 		    </ul>
-
 		</div>
 
 
