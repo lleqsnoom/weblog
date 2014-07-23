@@ -101,7 +101,7 @@ class StatsController implements IController
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
-			var height = untyped __js__("$('#stats').height()") - 110;
+			var height = untyped __js__("$('#stats').height()") - 135;
 			var width = untyped __js__("$('#stats').width()");
 			//var height = 300;
 			
@@ -109,7 +109,7 @@ class StatsController implements IController
 			untyped __js__("$('#statsCanvas')").attr('width', width).attr('height', height);
 			
 			var ctx = c.getContext("2d");
-			ctx.fillStyle = "#f1f1f1";
+			ctx.fillStyle = "#f5f5f5";
 			ctx.fillRect(0,0,width,height);
 			
 			
@@ -128,7 +128,7 @@ class StatsController implements IController
 			drawData(data, "ms", maxMS, "rgba(255, 198, 0, 0.3)", "rgba(255, 198, 0, 1)", ctx, width, height, Std.int(height*(1/3)));
 			drawData(data, "mem", maxMEM, "rgba(0, 138, 255, 0.3)", "rgba(0, 138, 255, 1)", ctx, width, height, Std.int(height*(2/3)));
 			
-			ctx.fillStyle = "#f1f1f1";
+			ctx.fillStyle = "#f5f5f5";
 			ctx.fillRect(0,Std.int(height*(1/3))-1,width,3);
 			ctx.fillRect(0,Std.int(height*(2/3))-1,width,3);
 			ctx.fillRect(0,Std.int(height*(3/3))-1,width,3);
