@@ -1,6 +1,6 @@
 {
   "name": "weblog",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "devDependencies": {
 	"mkdirp": "latest",
 	"mv": "latest",
@@ -14,10 +14,10 @@
     "title": "weblog",
     "toolbar": false,
     "frame": true,
-    "width": 800,
-    "height": 600,
+    "width": 700,
+    "height": 500,
     "position": "center",
-    "min_width": 768,
+    "min_width": 500,
     "show": false,
 	"icon": "weblogicon.png"
   }
