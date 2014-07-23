@@ -2,14 +2,8 @@
   "name": "weblog",
   "version": "1.0.0",
   "devDependencies": {
-	"mkdirp": "latest",
-	"mv": "latest",
-	"remove": "latest",
-	"walkdir": "latest",
-	"watchr": "latest"
   },
-  "main": "index.html",
-  "chromium-args" : "--disable-threaded-compositing --enable-smooth-scrolling",
+  "main": "./index.html",
   "window": {
     "title": "weblog",
     "toolbar": false,
@@ -17,8 +11,9 @@
     "width": 700,
     "height": 500,
     "position": "center",
-    "min_width": 500,
-    "show": false,
+    "min_width": 700,
+    "min_height": 500,
+    "show": true,
 	"icon": "weblogicon.png"
   }
 }
