@@ -1,25 +1,18 @@
 {
   "name": "weblog",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "devDependencies": {
-    "grunt": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-node-webkit-builder": "latest",
-    "grunt-contrib-concat": "latest",
-    "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-watch": "^0.6.1"
   },
   "main": "bin/index.html",
   "window": {
     "title": "weblog",
     "toolbar": true,
     "frame": true,
-    "width": 800,
-    "height": 600,
+    "width": 700,
+    "height": 500,
     "position": "center",
-    "min_width": 800,
-    "min_height": 600,
+    "min_width": 700,
+    "min_height": 500,
     "show": true,
 	"icon": "weblogicon.png"
   }
