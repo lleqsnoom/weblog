@@ -284,12 +284,12 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 		if(data == null) return;
 		this.scope.$apply(function() {
 			var c = document.getElementById("statsCanvas");
-			var height = $('#stats').height() - 110;
+			var height = $('#stats').height() - 135;
 			var width = $('#stats').width();
 			$('#statsCanvas').width(width).height(height);
 			$('#statsCanvas').attr("width",width).attr("height",height);
 			var ctx = c.getContext("2d");
-			ctx.fillStyle = "#f1f1f1";
+			ctx.fillStyle = "#f5f5f5";
 			ctx.fillRect(0,0,width,height);
 			var maxMEM = 0.0;
 			var maxFPS = 0.0;
@@ -303,14 +303,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
-			ctx.fillStyle = "#f1f1f1";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
+			ctx.fillStyle = "#f5f5f5";
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";

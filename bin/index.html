@@ -88,7 +88,7 @@ library.json = {
 
 
 
-		<div id="devices" class="border tabNavigator" style="padding-top: 8px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
+		<div id="devices" class="border tabNavigator" style="padding-top: 7px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
 		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
 				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
 					<a href="{'#' + item.id}"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
@@ -115,10 +115,10 @@ library.json = {
 						</thead>
 						
 						<tbody>
-							<tr style="" ng-repeat="log in logs" ng-click="select(log.data, log.id)" ng-class="{debugSelected: log.id === selectedId}">							
-								<td>{{log.id}}</td>
-								<td>{{log.time | date:'HH:mm:ss'}}</td>
-								<td>{{log.msg}}</td>
+							<tr style="" ng-repeat="log in logs" ng-click="::select(log.data, log.id)" ng-class="::{debugSelected: log.id === selectedId}">							
+								<td>{{::log.id}}</td>
+								<td>{{::log.time | date:'HH:mm:ss'}}</td>
+								<td>{{::log.msg}}</td>
 							</tr>
 						</tbody>
 						
@@ -128,8 +128,11 @@ library.json = {
 			</div>
 
 
-			<div ng-bind-html="selectedDebugItem" class="border" id="debug_obj">
+			<div class="border" id="debug_box">
+				<div class="title_label"><span>Object</span></div>
 				
+				<div ng-bind-html="selectedDebugItem" id="debug_obj">
+				</div>
 			</div>
 
 		</div>
@@ -140,10 +143,16 @@ library.json = {
 
 		
 			
-		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController">			
-			<div ng-bind-html="selectedInspectItem" id="inspect_obj" class="border">
+		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController">	
+			
+			<div id="inspect_box" class="border">
+				<div class="title_label"><span>Inspect</span></div>
+				
+				<div ng-bind-html="selectedInspectItem" id="inspect_obj">
+				</div>
 				
 			</div>
+			
 		</div>
 
 
@@ -152,19 +161,19 @@ library.json = {
 
 
 	<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" id="stats" class="border">			
-			
+		
+		<div class="title_label"><span>Stats</span></div>
+				
 		<div class="content" width="100" height="100">
 		<p calss="fps" style="color: #ff0000; font-size: 16px; padding-left: 10px;padding-top:10px;">{{fps}} fps</p>
 		<p calss="ms" style="color: #ffc600; font-size: 16px; padding-left: 10px;">{{ms}} ms</p>
 		<p calss="mem" style="color: #008aff; font-size: 16px; padding-left: 10px;">{{mem | number:2}} mb</p>
 		
-		
-		<canvas id="statsCanvas" width="100" height="100"
-		style="border: none;position: absolute; top: 110px;">
+		<canvas id="statsCanvas" width="100" height="100" style="border: none;position: absolute; top: 135px;">
 		</canvas>
 		
 		</div>
-
+		
 	</div>
 
 
@@ -173,162 +182,6 @@ library.json = {
 	</div>
 
 
-
-		<!--
-		<div class="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
-			<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
-		</div>
-
-			
-		<div class="tabNavigator" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
-			<ul class="nav nav-tabs">
-				<li ng-class="setClass('log')" ng-click="selectTab('log')">
-					<a href="#">Log</a>
-				</li>
-				<li ng-class="setClass('debug')" ng-click="selectTab('debug')">
-					<a href="#">Debug</a>
-				</li>
-				<li ng-class="setClass('inspect')" ng-click="selectTab('inspect')">
-					<a href="#">Inspect</a>
-				</li>
-				<li ng-class="setClass('test')" ng-click="selectTab('test')">
-					<a href="#">Test</a>
-				</li>
-				<li ng-class="setClass('stats')" ng-click="selectTab('stats')">
-					<a href="#">Stats</a>
-				</li>
-			</ul>
-		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			
-		<div ng-controller="pl.bigsoda.weblog.controllers.LogController" ng-show="selectedTab=='log'">			
-			
-			
-			<div class="content">
-				<table class="table table-striped" class="contab" infinite-scroll="nextPage($event)">
-					
-					<thead >
-						<tr>
-							<th>ID</th>
-							<th>TIME</th>
-							<th>DEVICE</th>
-							<th>MESSAGE</th>
-						</tr>
-					</thead>
-					
-					<tbody id="logs">
-						<tr style="" ng-repeat="log in logs">							
-							<td>{{log.id}}</td>
-							<td>{{log.time | date:'HH:mm:ss'}}</td>
-							<td>{{log.device}}</td>
-							<td>{{log.message}}</td>
-						</tr>
-					</tbody>
-					
-				</table>
-				
-				<center>
-				<div class="loader" ng-show="ajaxProgress"><img src="img/ajax-loader.gif" /></div>
-				</center>
-			</div>
-		</div>
-		
-		
-		
-			
-		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController" id="debug">			
-			
-			
-			<div class="content">
-				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
-					
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>TIME</th>
-							<th>DEVICE</th>
-						</tr>
-					</thead>
-					
-					<tbody id="logs">
-						<tr style="" ng-repeat="log in logs" ng-click="select(log.message, log.id)" ng-class="{debugSelected: log.id === selectedId}">							
-							<td>{{log.id}}</td>
-							<td>{{log.time | date:'HH:mm:ss'}}</td>
-							<td>{{log.device}}</td>
-						</tr>
-					</tbody>
-					
-				</table>
-			</div>
-			
-		</div>
-		
-		
-		
-			
-		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController" ng-show="selectedTab=='inspect'">			
-			<div class="details full" ng-bind-html="selectedInspectItem">
-				
-			</div>
-
-		</div>
-		
-		
-		
-			
-		<div ng-controller="pl.bigsoda.weblog.controllers.TestController" ng-show="selectedTab=='test'">
-			
-			
-			<div class="content">
-				<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
-					
-					<thead>
-						<tr>
-							<th>MESSAGE</th>
-						</tr>
-					</thead>
-					
-					<tbody id="logs">
-						<tr style="" ng-repeat="log in logs">
-							<td ng-bind-html="log.message"></td>
-						</tr>
-					</tbody>
-					
-				</table>
-			</div>
-		</div>
-		
-			
-		<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" ng-show="selectedTab=='stats'">			
-			
-			<div class="content" width="100" height="100">
-			<p calss="fps" style="color: #ff0000; font-size: 24px; padding-left: 10px;padding-top:20px;">{{fps}} fps</p>
-			<p calss="ms" style="color: #ffc600; font-size: 24px; padding-left: 10px;">{{ms}} ms</p>
-			<p calss="mem" style="color: #008aff; font-size: 24px; padding-left: 10px;">{{mem}} mb</p>
-			
-			
-			<canvas id="statsCanvas" width="100" height="100"
-			style="border:1px solid #000000;">
-			</canvas>
-			
-			<script>
-			</script>
-			</div>
-
-		</div>
-		-->
-	
 	
 	<script src="js/weblog.js"></script>
 

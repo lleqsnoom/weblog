@@ -19,12 +19,33 @@
 #debug_obj {
 	position: absolute;
 	left: 0;
+	top: 25px;
+	bottom: 0;
+	right: 0;
+	border: none;
+}
+
+#debug_box {
+	background-color: #f5f5f5;
+	position: absolute;
+	left: 0;
 	top: 50px;
 	bottom: 30%;
 	width: 60%;
 }
 
 #inspect_obj {
+	position: absolute;
+	left: 0;
+	top: 25px;
+	bottom: 0;
+	right: 0;
+	border: none;
+	/*overflow:auto;*/
+}
+
+#inspect_box {
+	background-color: #f5f5f5;
 	position: absolute;
 	left: 60%;
 	top: 50px;
@@ -33,6 +54,7 @@
 }
 
 #stats {
+	background-color: #f5f5f5;
 	position: absolute;
 	right: 0;
 	top: 50px;
@@ -116,4 +138,19 @@ pre, #debug {
 
 .json-string {
    color: #ADA007;
+}
+
+.title_label {
+	width: 100%;
+	background-color: #aaaaaa;
+	border: none;
+	height: 25px;
+	line-height: 25px;
+	padding-left: 10px;
+	color: #333;
+}
+
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+	background-color: #aaaaaa !important;
 }
