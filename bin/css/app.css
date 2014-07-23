@@ -12,7 +12,7 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	height: 50px;
+	height: 30px;
 	top: 0;
 }
 
@@ -29,9 +29,11 @@
 	background-color: #f5f5f5;
 	position: absolute;
 	left: 0;
-	top: 50px;
+	top: 34px;
 	bottom: 30%;
 	width: 60%;
+
+	border-right: solid 1px #89aac8;
 }
 
 #inspect_obj {
@@ -48,33 +50,44 @@
 	background-color: #f5f5f5;
 	position: absolute;
 	left: 60%;
-	top: 50px;
+	top: 34px;
 	bottom: 30%;
 	width: 25%;
+	border-right: solid 1px #89aac8;
 }
 
 #stats {
 	background-color: #f5f5f5;
 	position: absolute;
 	right: 0;
-	top: 50px;
+	top: 34px;
 	bottom: 30%;
 	width: 15%;
 }
 
-#logs {
+#logs_box {
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	height: 30%;
+}
+
+#logs {
+	position: absolute;
+	left: 0;
+	top: 25px;
+	bottom: 0;
+	right: 0;
+	border: none;
 	overflow: auto;
 }
 
 #ip {
 	position: absolute;
-	top: 16px;
-	right: 20px;
+	top: 8px;
+	right: 8px;
+	font-size: 12px;
 }
 
 
@@ -113,7 +126,7 @@
 
 
 .border{
-	border: solid 1px #aaaaaa;
+	/*border: solid 1px #aaaaaa;*/
 }
 
 
@@ -142,15 +155,62 @@ pre, #debug {
 
 .title_label {
 	width: 100%;
-	background-color: #aaaaaa;
+	background-color: #2f4450;
 	border: none;
 	height: 25px;
 	line-height: 25px;
 	padding-left: 10px;
-	color: #333;
+	padding-top: 1px;
+	color: #89aac8;
+	font-size: 12px;
 }
-
-
+ul, menu, dir {
+	display: block;
+	list-style-type: disc;
+	-webkit-margin-before: 0.4em;
+	-webkit-margin-after: 0.4em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 20px;
+}
+.nav-tabs>li>a {
+	border: none;
+}
+.nav>li>a {
+	position: relative;
+	display: block;
+	padding: 6px 10px;
+    font-size: 13px;
+}
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-	background-color: #aaaaaa !important;
+	background-color: #2f4450 !important;
 }
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+	color: #555;
+	cursor: default;
+	background-color: #fff;
+	border: none;
+}
+.nav-tabs {
+	border: none;
+}
+.nav-tabs > li .close {
+    margin: -2px 0 0 10px;
+    font-size: 18px;
+	color: #89aac8;
+}
+.close {
+	text-shadow: none;
+	filter: alpha(opacity=100);
+	opacity: 1.0;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+	color: #89aac8;
+}
+
+	
+#debugtab{
+	font-size: 12px;
+}
+	
+

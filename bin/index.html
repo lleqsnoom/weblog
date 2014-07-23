@@ -11,69 +11,21 @@
 	
 	
 	
-	<script src="http://code.jquery.com/jquery.min.js"></script>
-
+	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/angular.js"></script>
-
-	<script src="js/jquery.pnotify.js"></script>
 	<script src="js/ng-infinite-scroll.js"></script>
 	<script src="js/base64.js"></script>
 	<script src="js/socket.io.js"></script>
-	<script src="js/tab-navigator.js"></script>
-	<!--<script src="js/json2html.js"></script>-->
-	<!--	
-=======
-	
-	<link rel="stylesheet" href="css/nv.d3.css">
-	<link rel="stylesheet" href="css/weblog.css">
-	<link rel="stylesheet" href="css/bootstrap.slate.css">
-	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
-	<link rel="stylesheet" href="css/jquery.pnotify.default.icons.css">
+	<script src="js/library.json.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>	
-	-->
+
 	
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/app.css">
-	<link rel="stylesheet" href="css/tab-navigator.css">
-
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 </head>
 <body>	
-
-		<script>
-			if (!library)
-   var library = {};
-
-library.json = {
-   replacer: function(match, pIndent, pKey, pVal, pEnd) {
-      var key = '<span class=json-key>';
-      var val = '<span class=json-value>';
-      var str = '<span class=json-string>';
-      var r = pIndent || '';
-      if (pKey)
-         r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
-      if (pVal)
-         r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
-      return r + (pEnd || '');
-      },
-   prettyPrint: function(obj) {
-      var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
-      return JSON.stringify(obj, null, 3)
-         .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
-         .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-         .replace(jsonLine, library.json.replacer);
-      }
-   };
-		</script>
-	
 	
 
 
@@ -88,10 +40,10 @@ library.json = {
 
 
 
-		<div id="devices" class="border tabNavigator" style="padding-top: 7px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
+		<div id="devices" class="border tabNavigator" style="padding-top: 0px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
 		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
 				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
-					<a href="{'#' + item.id}"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
+					<a href="#"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
 				</li>
 		    </ul>
 		</div>
@@ -102,29 +54,38 @@ library.json = {
 
 		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController">
 
-			<div id="logs" class="border">
-				<div class="content">
-					<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
-						
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>TIME</th>
-								<th>MESSAGE</th>
-							</tr>
-						</thead>
-						
-						<tbody>
-							<tr style="" ng-repeat="log in logs" ng-click="::select(log.data, log.id)" ng-class="::{debugSelected: log.id === selectedId}">							
-								<td>{{::log.id}}</td>
-								<td>{{::log.time | date:'HH:mm:ss'}}</td>
-								<td>{{::log.msg}}</td>
-							</tr>
-						</tbody>
-						
-					</table>
-				</div>
 
+			<div id="logs_box">
+
+				<div class="title_label"><span>Logs</span></div>
+
+				<div id="logs" class="border">
+
+					<div class="content">
+						<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
+							
+							<!--
+							<thead>
+								<tr>
+									<th style="width: 70px;">ID</th>
+									<th style="width: 100px;">TIME</th>
+									<th>MESSAGE</th>
+								</tr>
+							</thead>
+							-->
+
+							<tbody>
+								<tr style="" ng-repeat="log in logs" ng-click="::select(log.data, log.id)" ng-class="::{debugSelected: log.id === selectedId}">							
+									<td style="width: 70px;">{{::log.id}}</td>
+									<td style="width: 100px;">{{::log.time | date:'HH:mm:ss'}}</td>
+									<td>{{::log.msg}}</td>
+								</tr>
+							</tbody>
+							
+						</table>
+					</div>
+
+				</div>
 			</div>
 
 
@@ -178,7 +139,7 @@ library.json = {
 
 
 	<div id="ip" ng-controller="pl.bigsoda.weblog.controllers.ServerAdressController">
-		<span>To launch use: -Ddebugip={{serverIP}}:18080</span>
+		<span>-Ddebugip={{serverIP}}:18080</span>
 	</div>
 
 
