@@ -31,7 +31,7 @@
 		<div id="devices" class="border tabNavigator" style="padding-top: 0px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
 		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
 				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
-					<a href="#"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)" >×</button>{{item.id}}</a>
+					<a href="#"><button class='close closeTab' type='button' ng-click="tabCloseClick(item.id)">×</button>{{item.id}}</a>
 				</li>
 		    </ul>
 		</div>
@@ -70,7 +70,16 @@
 
 
 			<div class="border" id="debug_box">
-				<div class="title_label"><span>Object</span></div>
+				<div class="title_label">
+					<span>Object</span>
+
+					<!--
+					<div class="input-group input-group-sm">
+						<input type="text" class="form-control" ng-model="search" placeholder="Search">
+					</div>
+					-->
+					
+				</div>
 				
 				<div ng-bind-html="selectedDebugItem" id="debug_obj">
 				</div>

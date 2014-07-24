@@ -35,6 +35,15 @@ class DebugController implements IController
 		socketService.addUpdateCallback(update);
 		
 	}
+
+	private function updateSearch():Void {
+		//search
+		
+	}
+
+	private function searchObject(o:Dynamic, str:String):Dynamic {
+
+	}
 	
 	public function update():Void {
 		scope.logs = socketService.getDebugSocketData();
