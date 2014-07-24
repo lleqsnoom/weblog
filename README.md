@@ -13,17 +13,22 @@ haxelib install node-webkit
 
 Features
 =========
--Logs
--Object debugging
--Object inspect
--Realtime stats
--Multiple devices at the same time
+- Logs
+- Object debugging
+- Object inspect
+- Realtime stats
+- Multiple devices at the same time
 <p align="center"><img src="app.png"/></p>
 
 
 
 Installation
 =========
+```sh
+haxelib install weblog
+```
+
+For development version use:
 ```sh
 haxelib git weblog https://github.com/zasmarkany/weblog.git
 ```
