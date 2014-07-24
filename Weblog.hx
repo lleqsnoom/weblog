@@ -198,6 +198,10 @@ class Weblog{
 			msg = "unknown";
 		}
 		
+		if(Compiler.getDefine("weblogid") != null){
+			device = Compiler.getDefine("weblogid");
+		}
+		
 		
 		var r:haxe.Http = new haxe.Http("http://" + debugip);
 		r.addHeader("Accept" , "application/json");
