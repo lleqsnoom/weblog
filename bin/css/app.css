@@ -214,3 +214,18 @@ ul, menu, dir {
 }
 	
 
+
+
+
+
+.table-striped>tbody>tr:nth-child(odd)>td, .table-striped>tbody>tr:nth-child(odd)>th {
+	background-color: #f9f9f9;
+}
+
+.table-striped>tbody>tr:nth-child(even)>td, .table-striped>tbody>tr:nth-child(even)>th {
+	background-color: #ffffff;
+}
+
+.table-striped>tbody>tr.active>td  {
+	background-color: #cedae1 !important;
+}
