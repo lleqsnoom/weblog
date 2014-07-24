@@ -51,7 +51,7 @@ class DebugController implements IController
 	public function select(msg, id)
 	{
 		socketService.setDebugSocketItem(msg);
-		scope.selectedDebugItem = msg;
+		scope.selectedDebugItem = sce.trustAsHtml("<pre class='jsonprint'>" + socketService.formatJson(msg) + "</pre>");
 		scope.selectedId = id;
 	}
 }

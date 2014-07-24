@@ -147,7 +147,7 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	}
 	,select: function(msg,id) {
 		this.socketService.setDebugSocketItem(msg);
-		this.scope.selectedDebugItem = msg;
+		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(msg) + "</pre>");
 		this.scope.selectedId = id;
 	}
 	,__class__: pl.bigsoda.weblog.controllers.DebugController
@@ -493,7 +493,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) devLogs.logData.pop();
 			break;
 		case "debug":
-			var x1 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>"), msg : sdata.msg};
+			var x1 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
 			devLogs.debugData.splice(0,0,x1);
 			if((function($this) {
 				var $r;

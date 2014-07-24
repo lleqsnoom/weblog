@@ -152,7 +152,8 @@ class SocketService implements IService
 				devLogs.debugData.insert(0, {
 					id: index,
 					time: Date.now(),
-					data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(sdata.data) + "</pre>"),
+					//data: sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(sdata.data) + "</pre>"),
+					data: sdata.data,
 					msg: sdata.msg,
 				});
 				if (devLogs.debugData.length > max) devLogs.debugData.pop();
@@ -226,7 +227,7 @@ class SocketService implements IService
 		return "<p><b>" + desc + "</b></p><p>" + result + "</p>";
 	}
 	
-	inline function formatJson(object:Dynamic):String 
+	inline public function formatJson(object:Dynamic):String 
 	{
 		return untyped __js__("library.json.prettyPrint")(object);
 	}
