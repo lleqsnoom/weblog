@@ -28,18 +28,6 @@
 <body>	
 	
 
-
-
-
-
-
-
-
-
-
-
-
-
 		<div id="devices" class="border tabNavigator" style="padding-top: 0px;" ng-controller="pl.bigsoda.weblog.controllers.TabNavigatorController">
 		    <ul class="nav nav-tabs marginBottom" id="devicesList" >
 				<li id="item.id" ng-click="tabClick(item.id)" ng-repeat="item in items" ng-class="{active: item.id == currentId}">
@@ -52,8 +40,9 @@
 
 
 
-		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController">
 
+
+		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController">
 
 			<div id="logs_box">
 
@@ -62,20 +51,11 @@
 				<div id="logs" class="border">
 
 					<div class="content">
+	
 						<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
 							
-							<!--
-							<thead>
-								<tr>
-									<th style="width: 70px;">ID</th>
-									<th style="width: 100px;">TIME</th>
-									<th>MESSAGE</th>
-								</tr>
-							</thead>
-							-->
-
 							<tbody>
-								<tr style="" ng-repeat="log in logs" ng-click="::select(log.data, log.id)" ng-class="::{debugSelected: log.id === selectedId}">							
+								<tr style="" ng-repeat="log in logs" ng-click="select(log.data, log.id)" ng-class="{active: log.id == selectedId}">							
 									<td style="width: 70px;">{{::log.id}}</td>
 									<td style="width: 100px;">{{::log.time | date:'HH:mm:ss'}}</td>
 									<td>{{::log.msg}}</td>
