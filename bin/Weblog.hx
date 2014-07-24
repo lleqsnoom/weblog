@@ -12,6 +12,16 @@ package ;
 	import openfl.system.System;
 #end 
 
+#if flash
+	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestHeader;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
+	import flash.Lib;
+	import flash.system.System;
+#end 
 
 import haxe.Json;
 import haxe.macro.Compiler;
@@ -74,7 +84,7 @@ class Weblog{
 		tictoc.remove(id);
 	}
 
-	#if openfl
+	#if (openfl || flash)
 
 	public static function statsStart():Void {
 		Lib.current.stage.addEventListener(Event.ENTER_FRAME, updateStats);
