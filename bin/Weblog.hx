@@ -47,6 +47,11 @@ class Weblog{
 	private static var memMax:Float;
 	private static var ms:Int;
 	private static var fps:Int;
+	
+	public static var synchronous:Bool = false;
+	
+	
+	
 	private static var stats:Stats = {
 	    fps: 0,
 	    ms: 0,
@@ -142,7 +147,9 @@ class Weblog{
 		_isRunning = true;
 		
 		#if (neko || cpp)
-            Thread.create(inspectThread);
+			if(!synchronous) {
+				Thread.create(inspectThread);
+			}
         #else       
             haxe.Timer.delay(function():Void {
 				send(_inspectable, "inspect");
@@ -157,25 +164,14 @@ class Weblog{
 	
 	private static function send(data:Dynamic, type:String):Void {
 	
-		/*
-		#if openfl
-
-			var l:URLLoader = new URLLoader();
-			var r:URLRequest = new URLRequest("http://" + debugip);
-			r.requestHeaders = [new URLRequestHeader("Accept", "application/json")];
-			r.method = URLRequestMethod.POST;
-			r.data = Json.stringify({
-					data: readObjectReflect(data),
-					append: true,
-					type: type,
-				});			
-			l.load(r);
-
-		#else
-		*/
 
 		#if (neko || cpp)
-            Thread.create(function():Void{ sendData(data, type); });
+			if(synchronous) {
+				sendData(data, type);
+			}else{
+				Thread.create(function():Void{ sendData(data, type); });
+			}
+            
         #else       
             sendData(data, type);
         #end
@@ -200,6 +196,10 @@ class Weblog{
 			msg = "Object";
 		}else{
 			msg = "unknown";
+		}
+		
+		if(Compiler.getDefine("weblogid") != null){
+			device = Compiler.getDefine("weblogid");
 		}
 		
 		

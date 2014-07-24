@@ -107,6 +107,11 @@ class Main extends Sprite{
 }
 ```
 
+To use synchronyus communication (usefun for neko targets):
+```
+Weblog.synchronous = true;
+```
+
 
 Project Compilation
 =========
@@ -114,6 +119,11 @@ To use this library application need ip and port.
 Lime/haxe project have to copiled with additional flag:
 ```sh
 lime test [platform] -Ddebugip=[WEBLOG_IP]:18080
+```
+
+To set fixed tab name use:
+```
+-Dweblogid=APP_NAME
 ```
 
 WEBLOG_IP - is IP adress of machine where Weblog is running. Adress can be found at top right corner.
