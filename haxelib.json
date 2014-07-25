@@ -4,7 +4,7 @@
     "license": "MIT",
     "tags": ["log", "debug", "remote", "html5", "openfl", "haxe"],
     "description": "remote logging tool for haxe",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "releasenote": "",
     "contributors": ["tkwiatek"],
     "dependencies": {
