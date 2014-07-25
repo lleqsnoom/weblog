@@ -249,6 +249,15 @@ class SocketService implements IService
 		return logsData.get(device).inspectData[0];
 		//return inspectSocketData;
 	}
+	public function clearDebugSocketData():Void {
+		Console.log("clearDebugSocketData");
+		if(!logsData.exists(device))return;
+		Console.log("clearDebugSocketData!!!");
+		logsData.get(device).debugData = new Array<LogLineModel>();
+		logsData.get(device).logData = new Array<LogLineModel>();
+		setCurrDevice(device);
+	}
+
 	public function getDebugSocketData():Dynamic {
 		if(!logsData.exists(device))return null;
 		return logsData.get(device).debugData;

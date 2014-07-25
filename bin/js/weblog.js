@@ -335,6 +335,9 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,fillWindow: function(data) {
 		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data) + "</pre>");
 	}
+	,clear: function() {
+		this.socketService.clearDebugSocketData();
+	}
 	,__class__: pl.bigsoda.weblog.controllers.DebugController
 };
 pl.bigsoda.weblog.controllers.InspectController = $hx_exports.pl.bigsoda.weblog.controllers.InspectController = function(scope,window,http,document,timeout,rootScope,socketService,sce) {
@@ -806,6 +809,14 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getInspectSocketData: function() {
 		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).inspectData[0];
+	}
+	,clearDebugSocketData: function() {
+		console.log("clearDebugSocketData");
+		if(!this.logsData.exists(this.device)) return;
+		console.log("clearDebugSocketData!!!");
+		this.logsData.get(this.device).debugData = new Array();
+		this.logsData.get(this.device).logData = new Array();
+		this.setCurrDevice(this.device);
 	}
 	,getDebugSocketData: function() {
 		if(!this.logsData.exists(this.device)) return null;
