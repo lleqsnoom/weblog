@@ -113,4 +113,8 @@ class DebugController implements IController
 		//scope.selectedDebugItem = sce.trustAsHtml("<pre class='jsonprint'>" + socketService.formatJson(data) + "</pre>");
 		scope.selectedDebugItem = sce.trustAsHtml("<pre class='jsonprint'>" + socketService.formatJson(data) + "</pre>");
 	}
+
+	public function clear():Void {
+		socketService.clearDebugSocketData();
+	}
 }

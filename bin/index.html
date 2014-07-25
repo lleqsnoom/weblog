@@ -47,7 +47,12 @@
 
 			<div id="logs_box">
 
-				<div class="title_label"><span>Logs</span></div>
+				<div class="title_label">
+					<span>Logs</span>
+
+					<button type="submit" class="btn btn-danger btn-xs" ng-click="clear()" style="position: absolute; top: 3px; right: 3px;height: 19px;font-size: 11px;">Clear</button>
+
+				</div>
 
 				<div id="logs" class="border">
 
@@ -75,7 +80,7 @@
 					<span>Object</span>
 
 					
-					<div class="input-group input-group-sm" style="position: absolute; top: 3px; right: 3px;">
+					<div class="input-group input-group-xs" style="position: absolute; top: 3px; right: 3px;">
 						<input type="text" class="form-control" ng-change="filter()" ng-model="filterStr" placeholder="Filter" style="height: 19px;font-size: 10px;">
 					</div>
 					
