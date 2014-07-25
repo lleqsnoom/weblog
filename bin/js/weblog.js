@@ -283,10 +283,9 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,sce: null
 	,socketService: null
 	,msg: null
-	,updateSearch: function() {
-	}
 	,filter: function() {
 		this.fillWindow(this.filterObj(this.scope.msg,this.scope.filterStr));
+		this.socketService.setFilterObj(this.scope.filterStr);
 	}
 	,filterObj: function(o,s) {
 		if(s == "" || s == null) return o;
@@ -320,7 +319,9 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	}
 	,update: function() {
 		this.scope.logs = this.socketService.getDebugSocketData();
-		this.scope.selectedDebugItem = this.socketService.getDebugSocketItem();
+		this.scope.msg = this.socketService.getDebugSocketItem();
+		this.scope.filterStr = this.socketService.getFilterObj();
+		this.filter();
 	}
 	,onSocketData: function(data) {
 		this.scope.logs = data;
@@ -328,7 +329,6 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,select: function(msg,id) {
 		this.scope.msg = msg;
 		this.socketService.setDebugSocketItem(msg);
-		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(msg) + "</pre>");
 		this.fillWindow(this.filterObj(msg,this.scope.filterStr));
 		this.scope.selectedId = id;
 	}
@@ -512,6 +512,9 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				_g.scope.mem = data[0].mem;
 				_g.scope.ms = data[0].ms;
 			} catch( err ) {
+				_g.scope.fps = "";
+				_g.scope.mem = "";
+				_g.scope.ms = "";
 			}
 		});
 	}
@@ -667,7 +670,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		var did = null;
 		var devLogs;
 		if(!this.logsData.exists(sdata.dev)) {
-			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null};
+			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null};
 			this.logsData.set(sdata.dev,value);
 			did = this.device = sdata.dev;
 		}
@@ -836,6 +839,22 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	}
 	,getTestData: function() {
 		return this.testDeferred.promise;
+	}
+	,getFilterObj: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).filterObj;
+	}
+	,setFilterObj: function(s) {
+		if(!this.logsData.exists(this.device)) return;
+		this.logsData.get(this.device).filterObj = s;
+	}
+	,getFilterInsp: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).filterInsp;
+	}
+	,setFilterInsp: function(s) {
+		if(!this.logsData.exists(this.device)) return;
+		this.logsData.get(this.device).filterObj = s;
 	}
 	,__class__: pl.bigsoda.weblog.servicess.SocketService
 };

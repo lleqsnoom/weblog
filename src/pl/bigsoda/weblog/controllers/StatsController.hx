@@ -146,7 +146,11 @@ class StatsController implements IController
 				scope.fps = data[0].fps;
 				scope.mem = data[0].mem;
 				scope.ms = data[0].ms;	
-			}catch(err:Dynamic){}
+			}catch(err:Dynamic){
+				scope.fps = "";
+				scope.mem = "";
+				scope.ms = "";	
+			}
 			
         });
 	}
