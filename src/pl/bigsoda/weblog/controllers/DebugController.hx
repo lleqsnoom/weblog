@@ -37,15 +37,10 @@ class DebugController implements IController
 		
 	}
 
-	private function updateSearch():Void {
-		//search
-		
-	}
 
 	public function filter():Void {
 		fillWindow( filterObj(scope.msg, scope.filterStr) );
-		//scope.filterStr;
-		//res = JSON.search( data, '//person[name="Peter"]' );
+		socketService.setFilterObj(scope.filterStr);
 	}
 
 	public function filterObj(o:Dynamic, s:String):Dynamic {
@@ -90,7 +85,10 @@ class DebugController implements IController
 	
 	public function update():Void {
 		scope.logs = socketService.getDebugSocketData();
-		scope.selectedDebugItem = socketService.getDebugSocketItem();
+		scope.msg = socketService.getDebugSocketItem();
+		scope.filterStr = socketService.getFilterObj();
+		filter();
+		//scope.selectedDebugItem = socketService.getDebugSocketItem();
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
@@ -104,7 +102,6 @@ class DebugController implements IController
 	{
 		scope.msg = msg;
 		socketService.setDebugSocketItem(msg);
-		scope.selectedDebugItem = sce.trustAsHtml("<pre class='jsonprint'>" + socketService.formatJson(msg) + "</pre>");
 		fillWindow( filterObj(msg, scope.filterStr) );
 		scope.selectedId = id;
 	}

@@ -23,6 +23,8 @@ typedef LogsModel = {
 	var statsData:Array<Dynamic>;
 	var inspectData:Array<Dynamic>;
 	var debugDataItem:Dynamic;
+	var filterObj:String;
+	var filterInsp:String;
 }
 
 typedef LogLineModel = {
@@ -131,7 +133,9 @@ class SocketService implements IService
 					testData: new Array<LogLineModel>(),
 					statsData: new Array<Dynamic>(),
 					inspectData: new Array<Dynamic>(),
-					debugDataItem: null
+					debugDataItem: null,
+					filterObj: null,
+					filterInsp: null,
 				});
 			did = device = sdata.dev;
 		}
@@ -281,4 +285,25 @@ class SocketService implements IService
 	public function getTestData():Dynamic {
 		return testDeferred.promise;
 	}
+
+
+	public function getFilterObj():String {
+		if(!logsData.exists(device)) return null;
+		return logsData.get(device).filterObj;
+	}
+	public function setFilterObj(s:String):Void {
+		if(!logsData.exists(device)) return;
+		logsData.get(device).filterObj = s;
+	}
+
+	public function getFilterInsp():String {
+		if(!logsData.exists(device)) return null;
+		return logsData.get(device).filterInsp;
+	}
+	public function setFilterInsp(s:String):Void {
+		if(!logsData.exists(device)) return;
+		logsData.get(device).filterObj = s;
+	}
+
+
 }
