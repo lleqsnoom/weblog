@@ -18,6 +18,7 @@
 	<script src="js/socket.io.js"></script>
 	<script src="js/library.json.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/defiant-latest.min.js"></script>
 
 
 	
@@ -73,11 +74,11 @@
 				<div class="title_label">
 					<span>Object</span>
 
-					<!--
-					<div class="input-group input-group-sm">
-						<input type="text" class="form-control" ng-model="search" placeholder="Search">
+					
+					<div class="input-group input-group-sm" style="position: absolute; top: 3px; right: 3px;">
+						<input type="text" class="form-control" ng-change="filter()" ng-model="filterStr" placeholder="Filter" style="height: 19px;font-size: 10px;">
 					</div>
-					-->
+					
 					
 				</div>
 				

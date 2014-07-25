@@ -4,6 +4,7 @@ $hx_exports.pl.bigsoda = $hx_exports.pl.bigsoda || {};
 $hx_exports.pl.bigsoda.weblog = $hx_exports.pl.bigsoda.weblog || {};
 $hx_exports.pl.bigsoda.weblog.controllers = $hx_exports.pl.bigsoda.weblog.controllers || {};
 var HxOverrides = function() { };
+HxOverrides.__name__ = true;
 HxOverrides.indexOf = function(a,obj,i) {
 	var len = a.length;
 	if(i < 0) {
@@ -30,6 +31,7 @@ HxOverrides.iter = function(a) {
 	}};
 };
 var Main = function() { };
+Main.__name__ = true;
 Main.main = function() {
 	var app = angular.module("weblog",["infinite-scroll"]);
 	app.controller("pl.bigsoda.weblog.controllers.LogController",pl.bigsoda.weblog.controllers.LogController);
@@ -41,7 +43,10 @@ Main.main = function() {
 	app.service("pl.bigsoda.weblog.servicess.SocketService",pl.bigsoda.weblog.servicess.SocketService);
 };
 var IMap = function() { };
+IMap.__name__ = true;
+Math.__name__ = true;
 var Reflect = function() { };
+Reflect.__name__ = true;
 Reflect.field = function(o,field) {
 	try {
 		return o[field];
@@ -52,7 +57,23 @@ Reflect.field = function(o,field) {
 Reflect.setField = function(o,field,value) {
 	o[field] = value;
 };
+Reflect.fields = function(o) {
+	var a = [];
+	if(o != null) {
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+		for( var f in o ) {
+		if(f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o,f)) a.push(f);
+		}
+	}
+	return a;
+};
+var Std = function() { };
+Std.__name__ = true;
+Std.string = function(s) {
+	return js.Boot.__string_rec(s,"");
+};
 var Type = function() { };
+Type.__name__ = true;
 Type.getClass = function(o) {
 	if(o == null) return null;
 	if((o instanceof Array) && o.__enum__ == null) return Array; else return o.__class__;
@@ -64,11 +85,15 @@ Type.getInstanceFields = function(c) {
 	HxOverrides.remove(a,"__properties__");
 	return a;
 };
+var _UInt = {};
+_UInt.UInt_Impl_ = function() { };
+_UInt.UInt_Impl_.__name__ = true;
 var haxe = {};
 haxe.ds = {};
 haxe.ds.StringMap = function() {
 	this.h = { };
 };
+haxe.ds.StringMap.__name__ = true;
 haxe.ds.StringMap.__interfaces__ = [IMap];
 haxe.ds.StringMap.prototype = {
 	h: null
@@ -98,6 +123,7 @@ haxe.ds.StringMap.prototype = {
 };
 var hxangular = {};
 hxangular.AngularHelper = function() { };
+hxangular.AngularHelper.__name__ = true;
 hxangular.AngularHelper.map = function(scope,instance) {
 	var fields = Type.getInstanceFields(Type.getClass(instance));
 	var _g1 = 0;
@@ -109,9 +135,126 @@ hxangular.AngularHelper.map = function(scope,instance) {
 };
 hxangular.haxe = {};
 hxangular.haxe.IController = function() { };
+hxangular.haxe.IController.__name__ = true;
 hxangular.haxe.IService = function() { };
+hxangular.haxe.IService.__name__ = true;
 var js = {};
+js.Boot = function() { };
+js.Boot.__name__ = true;
+js.Boot.getClass = function(o) {
+	if((o instanceof Array) && o.__enum__ == null) return Array; else return o.__class__;
+};
+js.Boot.__string_rec = function(o,s) {
+	if(o == null) return "null";
+	if(s.length >= 5) return "<...>";
+	var t = typeof(o);
+	if(t == "function" && (o.__name__ || o.__ename__)) t = "object";
+	switch(t) {
+	case "object":
+		if(o instanceof Array) {
+			if(o.__enum__) {
+				if(o.length == 2) return o[0];
+				var str = o[0] + "(";
+				s += "\t";
+				var _g1 = 2;
+				var _g = o.length;
+				while(_g1 < _g) {
+					var i = _g1++;
+					if(i != 2) str += "," + js.Boot.__string_rec(o[i],s); else str += js.Boot.__string_rec(o[i],s);
+				}
+				return str + ")";
+			}
+			var l = o.length;
+			var i1;
+			var str1 = "[";
+			s += "\t";
+			var _g2 = 0;
+			while(_g2 < l) {
+				var i2 = _g2++;
+				str1 += (i2 > 0?",":"") + js.Boot.__string_rec(o[i2],s);
+			}
+			str1 += "]";
+			return str1;
+		}
+		var tostr;
+		try {
+			tostr = o.toString;
+		} catch( e ) {
+			return "???";
+		}
+		if(tostr != null && tostr != Object.toString) {
+			var s2 = o.toString();
+			if(s2 != "[object Object]") return s2;
+		}
+		var k = null;
+		var str2 = "{\n";
+		s += "\t";
+		var hasp = o.hasOwnProperty != null;
+		for( var k in o ) {
+		if(hasp && !o.hasOwnProperty(k)) {
+			continue;
+		}
+		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
+			continue;
+		}
+		if(str2.length != 2) str2 += ", \n";
+		str2 += s + k + " : " + js.Boot.__string_rec(o[k],s);
+		}
+		s = s.substring(1);
+		str2 += "\n" + s + "}";
+		return str2;
+	case "function":
+		return "<function>";
+	case "string":
+		return o;
+	default:
+		return String(o);
+	}
+};
+js.Boot.__interfLoop = function(cc,cl) {
+	if(cc == null) return false;
+	if(cc == cl) return true;
+	var intf = cc.__interfaces__;
+	if(intf != null) {
+		var _g1 = 0;
+		var _g = intf.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var i1 = intf[i];
+			if(i1 == cl || js.Boot.__interfLoop(i1,cl)) return true;
+		}
+	}
+	return js.Boot.__interfLoop(cc.__super__,cl);
+};
+js.Boot.__instanceof = function(o,cl) {
+	if(cl == null) return false;
+	switch(cl) {
+	case Int:
+		return (o|0) === o;
+	case Float:
+		return typeof(o) == "number";
+	case Bool:
+		return typeof(o) == "boolean";
+	case String:
+		return typeof(o) == "string";
+	case Array:
+		return (o instanceof Array) && o.__enum__ == null;
+	case Dynamic:
+		return true;
+	default:
+		if(o != null) {
+			if(typeof(cl) == "function") {
+				if(o instanceof cl) return true;
+				if(js.Boot.__interfLoop(js.Boot.getClass(o),cl)) return true;
+			}
+		} else return false;
+		if(cl == Class && o.__name__ != null) return true;
+		if(cl == Enum && o.__ename__ != null) return true;
+		return o.__enum__ == cl;
+	}
+};
 js.Console = function() { };
+js.Console.__name__ = true;
 js.Console.log = function(d) {
 	console.log(d);
 };
@@ -129,6 +272,7 @@ pl.bigsoda.weblog.controllers.DebugController = $hx_exports.pl.bigsoda.weblog.co
 	socketService.getDebugData().then($bind(this,this.onSocketData));
 	socketService.addUpdateCallback($bind(this,this.update));
 };
+pl.bigsoda.weblog.controllers.DebugController.__name__ = true;
 pl.bigsoda.weblog.controllers.DebugController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	scope: null
@@ -138,6 +282,42 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,socketData: null
 	,sce: null
 	,socketService: null
+	,msg: null
+	,updateSearch: function() {
+	}
+	,filter: function() {
+		this.fillWindow(this.filterObj(this.scope.msg,this.scope.filterStr));
+	}
+	,filterObj: function(o,s) {
+		if(s == "" || s == null) return o;
+		s = s.toLowerCase();
+		var f = Reflect.fields(o);
+		var e = { };
+		var key;
+		var val;
+		var _g1 = 0;
+		var _g = f.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			key = f[i];
+			val = Reflect.field(o,key);
+			if(key.toLowerCase().indexOf(s) > -1) {
+				e[key] = val;
+				continue;
+			}
+			if(typeof(val) == "string" || typeof(val) == "number" || ((val | 0) === val) || js.Boot.__instanceof(val,_UInt.UInt_Impl_) || typeof(val) == "boolean" || js.Boot.__instanceof(val,null)) {
+				if(Std.string(val).toLowerCase().indexOf(s) > -1) {
+					e[key] = val;
+					continue;
+				}
+			} else {
+				var res = this.filterObj(val,s);
+				if(res != null) e[key] = res;
+			}
+		}
+		if(Reflect.fields(e).length == 0) return null;
+		return e;
+	}
 	,update: function() {
 		this.scope.logs = this.socketService.getDebugSocketData();
 		this.scope.selectedDebugItem = this.socketService.getDebugSocketItem();
@@ -146,9 +326,14 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 		this.scope.logs = data;
 	}
 	,select: function(msg,id) {
+		this.scope.msg = msg;
 		this.socketService.setDebugSocketItem(msg);
 		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(msg) + "</pre>");
+		this.fillWindow(this.filterObj(msg,this.scope.filterStr));
 		this.scope.selectedId = id;
+	}
+	,fillWindow: function(data) {
+		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data) + "</pre>");
 	}
 	,__class__: pl.bigsoda.weblog.controllers.DebugController
 };
@@ -161,6 +346,7 @@ pl.bigsoda.weblog.controllers.InspectController = $hx_exports.pl.bigsoda.weblog.
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getInspectData().then($bind(this,this.onSocketData));
 };
+pl.bigsoda.weblog.controllers.InspectController.__name__ = true;
 pl.bigsoda.weblog.controllers.InspectController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.InspectController.prototype = {
 	scope: null
@@ -192,6 +378,7 @@ pl.bigsoda.weblog.controllers.LogController = $hx_exports.pl.bigsoda.weblog.cont
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getLogData().then($bind(this,this.onSocketData));
 };
+pl.bigsoda.weblog.controllers.LogController.__name__ = true;
 pl.bigsoda.weblog.controllers.LogController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.LogController.prototype = {
 	scope: null
@@ -219,6 +406,7 @@ pl.bigsoda.weblog.controllers.ServerAdressController = $hx_exports.pl.bigsoda.we
 		}
 	});
 };
+pl.bigsoda.weblog.controllers.ServerAdressController.__name__ = true;
 pl.bigsoda.weblog.controllers.ServerAdressController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.ServerAdressController.prototype = {
 	rootScope: null
@@ -240,6 +428,7 @@ pl.bigsoda.weblog.controllers.StatsController = $hx_exports.pl.bigsoda.weblog.co
 	socketService.getStatsData().then($bind(this,this.onSocketData));
 	socketService.addUpdateCallback($bind(this,this.update));
 };
+pl.bigsoda.weblog.controllers.StatsController.__name__ = true;
 pl.bigsoda.weblog.controllers.StatsController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.StatsController.prototype = {
 	scope: null
@@ -303,14 +492,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -338,6 +527,7 @@ pl.bigsoda.weblog.controllers.TabNavigatorController = $hx_exports.pl.bigsoda.we
 	},100);
 	socketService.addUpdateCallback($bind(this,this.update));
 };
+pl.bigsoda.weblog.controllers.TabNavigatorController.__name__ = true;
 pl.bigsoda.weblog.controllers.TabNavigatorController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.TabNavigatorController.prototype = {
 	rootScope: null
@@ -385,6 +575,7 @@ pl.bigsoda.weblog.controllers.TestController = $hx_exports.pl.bigsoda.weblog.con
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getTestData().then($bind(this,this.onSocketData));
 };
+pl.bigsoda.weblog.controllers.TestController.__name__ = true;
 pl.bigsoda.weblog.controllers.TestController.__interfaces__ = [hxangular.haxe.IController];
 pl.bigsoda.weblog.controllers.TestController.prototype = {
 	scope: null
@@ -416,6 +607,7 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	var socket = io.connect('http://localhost:18081/');
 	socket.on("data",$bind(this,this.onSocketData));
 };
+pl.bigsoda.weblog.servicess.SocketService.__name__ = true;
 pl.bigsoda.weblog.servicess.SocketService.__interfaces__ = [hxangular.haxe.IService];
 pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	socketData: null
@@ -651,7 +843,18 @@ Math.isNaN = function(i1) {
 	return isNaN(i1);
 };
 String.prototype.__class__ = String;
+String.__name__ = true;
+Array.__name__ = true;
 Date.prototype.__class__ = Date;
+Date.__name__ = ["Date"];
+var Int = { __name__ : ["Int"]};
+var Dynamic = { __name__ : ["Dynamic"]};
+var Float = Number;
+Float.__name__ = ["Float"];
+var Bool = Boolean;
+Bool.__ename__ = ["Bool"];
+var Class = { __name__ : ["Class"]};
+var Enum = { };
 pl.bigsoda.weblog.controllers.DebugController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.controllers.InspectController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.controllers.LogController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
