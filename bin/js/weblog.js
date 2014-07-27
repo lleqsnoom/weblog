@@ -476,8 +476,8 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 		if(data == null) return;
 		this.scope.$apply(function() {
 			var c = document.getElementById("statsCanvas");
-			var height = $('#stats').height() - 135;
-			var width = $('#stats').width();
+			var height = $('#stats_box').height() - 135;
+			var width = $('#stats_box').width();
 			$('#statsCanvas').width(width).height(height);
 			$('#statsCanvas').attr("width",width).attr("height",height);
 			var ctx = c.getContext("2d");
@@ -495,14 +495,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -597,13 +597,14 @@ pl.bigsoda.weblog.controllers.TestController.prototype = {
 pl.bigsoda.weblog.servicess = {};
 pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.updateArr = new Array();
-	this.max = 101;
+	this.max = 1001;
 	this.logsData = new haxe.ds.StringMap();
 	this.index = 0;
 	this.init = false;
 	this.rootScope = rootScope;
 	this.sce = sce;
 	this.q = q;
+	rootScope.view = "default";
 	this.logDeferred = q.defer();
 	this.debugDeferred = q.defer();
 	this.statsDeferred = q.defer();
@@ -719,28 +720,12 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		case "stats":
 			var x3 = sdata.data;
 			devLogs.statsData.splice(0,0,x3);
-			if((function($this) {
-				var $r;
-				var a3 = devLogs.statsData.length;
-				var b3 = $this.max;
-				var aNeg3 = a3 < 0;
-				var bNeg3 = b3 < 0;
-				$r = aNeg3 != bNeg3?aNeg3:a3 > b3;
-				return $r;
-			}(this))) devLogs.statsData.pop();
+			if(devLogs.statsData.length > 101) devLogs.statsData.pop();
 			break;
 		case "inspect":
 			var x4 = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>");
 			devLogs.inspectData.splice(0,0,x4);
-			if((function($this) {
-				var $r;
-				var a4 = devLogs.inspectData.length;
-				var b4 = $this.max;
-				var aNeg4 = a4 < 0;
-				var bNeg4 = b4 < 0;
-				$r = aNeg4 != bNeg4?aNeg4:a4 > b4;
-				return $r;
-			}(this))) devLogs.inspectData.pop();
+			if(devLogs.inspectData.length > 101) devLogs.inspectData.pop();
 			break;
 		}
 		this.index++;

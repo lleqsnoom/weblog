@@ -101,8 +101,8 @@ class StatsController implements IController
 		scope.$apply(function () {
 						
 			var c = untyped __js__("document.getElementById")("statsCanvas");
-			var height = untyped __js__("$('#stats').height()") - 135;
-			var width = untyped __js__("$('#stats').width()");
+			var height = untyped __js__("$('#stats_box').height()") - 135;
+			var width = untyped __js__("$('#stats_box').width()");
 			//var height = 300;
 			
 			untyped __js__("$('#statsCanvas')").width(width).height(height);

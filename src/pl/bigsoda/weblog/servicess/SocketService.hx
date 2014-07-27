@@ -65,7 +65,7 @@ class SocketService implements IService
 
 
 	private var logsData:Map<String, LogsModel> = new Map<String, LogsModel>();
-	private var max:UInt = 101;
+	private var max:UInt = 1001;
 
 	
 	@inject("$q", "$rootScope", "$sce")
@@ -74,6 +74,7 @@ class SocketService implements IService
 		this.rootScope = rootScope;
 		this.sce = sce;
 		this.q = q;
+		rootScope.view = 'default';
 
 
 		logDeferred = q.defer();
@@ -171,10 +172,10 @@ class SocketService implements IService
 				if (devLogs.testData.length > max) devLogs.testData.pop();
 			case "stats":
 				devLogs.statsData.insert(0, sdata.data);
-				if (devLogs.statsData.length > max) devLogs.statsData.pop();
+				if (devLogs.statsData.length > 101) devLogs.statsData.pop();
 			case "inspect":
 				devLogs.inspectData.insert(0, sce.trustAsHtml("<pre class='jsonprint'>" + formatJson(sdata.data) + "</pre>"));
-				if (devLogs.inspectData.length > max) devLogs.inspectData.pop();
+				if (devLogs.inspectData.length > 101) devLogs.inspectData.pop();
 		}
 
 		index++;
