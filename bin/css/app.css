@@ -1,3 +1,83 @@
+/*
+logs_box
+debug_box
+inspect_box
+stats_box
+*/
+
+
+#logs_box.default {
+	bottom: 0;
+	left: 40px;
+	right: 0;
+	height: 30%;
+	display: block;
+	border: none;
+}
+#debug_box.default {
+	left: 40px;
+	top: 34px;
+	bottom: 30%;
+	right: 40%;
+	display: block;
+	border: none;
+	border-right: solid 1px #89aac8;
+}
+#inspect_box.default {
+	left: 60%;
+	top: 34px;
+	bottom: 30%;
+	width: 25%;
+	display: block;
+	border: none;
+	border-right: solid 1px #89aac8;
+}
+#stats_box.default {
+	right: 0;
+	top: 34px;
+	bottom: 30%;
+	width: 15%;
+	display: block;
+	border: none;
+}
+
+
+
+#logs_box.logsDebug {
+	top: 34px;
+	left: 40px;
+	bottom: 0;
+	right: 40%;
+	display: block;
+	border: none;
+	border-right: solid 1px #89aac8;
+}
+#debug_box.logsDebug {
+	top: 34px;
+	right: 0;
+	bottom: 0;
+	width: 40%;
+	display: block;
+	border: none;
+}
+#inspect_box.logsDebug {
+	display: none;
+}
+#stats_box.logsDebug {
+	display: none;
+}
+
+
+#views_box {
+	position: absolute;
+	top: 34px;
+	left: 0;
+	bottom: 0;
+	width: 40px;
+	background-color: #566674;
+	padding-top: 25px;
+}
+
 
 
 #app {
@@ -10,7 +90,7 @@
 
 #devices {
 	position: absolute;
-	left: 0;
+	left: 45px;
 	right: 0;
 	height: 30px;
 	top: 0;
@@ -28,12 +108,7 @@
 #debug_box {
 	background-color: #f5f5f5;
 	position: absolute;
-	left: 0;
-	top: 34px;
-	bottom: 30%;
-	width: 60%;
 
-	border-right: solid 1px #89aac8;
 }
 
 #inspect_obj {
@@ -49,28 +124,15 @@
 #inspect_box {
 	background-color: #f5f5f5;
 	position: absolute;
-	left: 60%;
-	top: 34px;
-	bottom: 30%;
-	width: 25%;
-	border-right: solid 1px #89aac8;
 }
 
-#stats {
+#stats_box {
 	background-color: #f5f5f5;
 	position: absolute;
-	right: 0;
-	top: 34px;
-	bottom: 30%;
-	width: 15%;
 }
 
 #logs_box {
 	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 30%;
 }
 
 #logs {
@@ -95,8 +157,24 @@
 
 
 
-
-
+button.views{
+	width: 40px;
+	height: 40px;
+   border-radius:0px !important;
+   border: none !important;
+    outline:none;
+    background-color: #566674;
+    color: #89aac8;
+}
+button.viewsActive{
+	width: 40px;
+	height: 40px;
+   border-radius:0px !important;
+   border: none !important;
+    outline:none;
+    background-color: #2f4050;
+    color: #89aac8;
+}
 
 
 

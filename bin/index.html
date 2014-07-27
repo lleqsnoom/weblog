@@ -2,14 +2,14 @@
 <meta charset="utf-8">
 <html lang="en" ng-app="weblog">
 <head>
-	<title>Weblog 1.1.1</title>
+	<title>Weblog 1.2.0</title>
 	
 	<script>
 		window.server = require("./server/server.js");
 		
 	</script>
 	
-	
+	<link href="css/font-awesome.css" rel="stylesheet">
 	
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/angular.js"></script>
@@ -38,13 +38,23 @@
 
 
 
+		<div id="views_box" class="border">
+			<div class="btn-group-vertical">
+				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'default'}" ng-click="$root.view = 'default'">
+					  <span class="fa fa-th-large"></span>
+				</button>
+				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'logsDebug'}" ng-click="$root.view = 'logsDebug'">
+			 		 <span class="fa fa-bars"></span>
+				</button>
+			</div>
+		</div>
 
 
 
 
 		<div ng-controller="pl.bigsoda.weblog.controllers.DebugController">
 
-			<div id="logs_box">
+			<div id="logs_box" class="{{$root.view}}">
 
 				<div class="title_label">
 					<span>Logs</span>
@@ -74,7 +84,7 @@
 			</div>
 
 
-			<div class="border" id="debug_box">
+			<div class="border {{$root.view}}" id="debug_box">
 				<div class="title_label">
 					<span>Object</span>
 
@@ -100,7 +110,7 @@
 			
 		<div ng-controller="pl.bigsoda.weblog.controllers.InspectController">	
 			
-			<div id="inspect_box" class="border">
+			<div id="inspect_box" class="border {{$root.view}}">
 				<div class="title_label"><span>Inspect</span></div>
 				
 				<div ng-bind-html="selectedInspectItem" id="inspect_obj">
@@ -115,7 +125,7 @@
 
 
 
-	<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" id="stats" class="border">			
+	<div ng-controller="pl.bigsoda.weblog.controllers.StatsController" id="stats_box" ng-class="" class="border {{$root.view}}">			
 		
 		<div class="title_label"><span>Stats</span></div>
 				
