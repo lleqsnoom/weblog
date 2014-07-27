@@ -39,6 +39,7 @@
 
 
 		<div id="views_box" class="border">
+			<div class="title_label" style="width: 100%, height: 24px;"></div>
 			<div class="btn-group-vertical">
 				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'default'}" ng-click="$root.view = 'default'">
 					  <span class="fa fa-th-large"></span>
@@ -46,6 +47,26 @@
 				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'logsDebug'}" ng-click="$root.view = 'logsDebug'">
 			 		 <span class="fa fa-bars"></span>
 				</button>
+				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'profiler'}" ng-click="$root.view = 'profiler'">
+			 		 <span class="fa fa-tachometer"></span>
+				</button>
+			</div>
+		</div>
+
+
+
+
+
+		<div ng-controller="pl.bigsoda.weblog.controllers.TictocController" class="border">
+			<div id="tictoc_box" class="{{$root.view}}">			
+
+				<div class="title_label">
+					<span>Tic-Toc</span>
+				</div>
+
+				<div>
+				</div>
+				
 			</div>
 		</div>
 

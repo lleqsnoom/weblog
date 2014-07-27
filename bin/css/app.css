@@ -40,6 +40,10 @@ stats_box
 	display: block;
 	border: none;
 }
+#tictoc_box.default {
+	display: none;
+}
+
 
 
 
@@ -66,6 +70,37 @@ stats_box
 #stats_box.logsDebug {
 	display: none;
 }
+#tictoc_box.logsDebug {
+	display: none;
+}
+
+
+
+
+
+#logs_box.profiler {
+	display: none;
+}
+#debug_box.profiler {
+	display: none;
+}
+#inspect_box.profiler {
+	display: none;
+}
+#stats_box.profiler {
+	display: none;
+}
+#tictoc_box.profiler {
+	top: 34px;
+	left: 40px;
+	bottom: 0;
+	right: 0;
+	display: block;
+	border: none;
+}
+
+
+
 
 
 #views_box {
@@ -75,7 +110,6 @@ stats_box
 	bottom: 0;
 	width: 40px;
 	background-color: #566674;
-	padding-top: 25px;
 }
 
 
@@ -90,7 +124,7 @@ stats_box
 
 #devices {
 	position: absolute;
-	left: 45px;
+	left: 5px;
 	right: 0;
 	height: 30px;
 	top: 0;
@@ -106,6 +140,12 @@ stats_box
 }
 
 #debug_box {
+	background-color: #f5f5f5;
+	position: absolute;
+
+}
+
+#tictoc_box {
 	background-color: #f5f5f5;
 	position: absolute;
 
@@ -172,7 +212,7 @@ button.viewsActive{
    border-radius:0px !important;
    border: none !important;
     outline:none;
-    background-color: #2f4050;
+    background-color: #2f4450;
     color: #89aac8;
 }
 

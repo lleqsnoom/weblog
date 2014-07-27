@@ -74,13 +74,15 @@ class Weblog{
 
 	public static function tic(id:String = ""):Void {
 		tictoc.set(id, haxe.Timer.stamp());
-		//trace("tic: " + haxe.Timer.stamp());
 	}
 
 	public static function toc(id:String = ""):Void {
 		var t:Float = tictoc.get(id);
 		//trace("toc: " + t);
-		log("tictoc for '"+id+"': " + (haxe.Timer.stamp() - t));
+		send({
+			id: id,
+			time: haxe.Timer.stamp() - t,
+			}, "tictoc");
 		tictoc.remove(id);
 	}
 
