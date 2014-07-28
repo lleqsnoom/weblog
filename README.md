@@ -61,7 +61,7 @@ class Main extends Sprite{
     public function new () {
 
         super ();
-
+        Weblog.tic("new");
 		
 		p = {
 			x: 0,
@@ -72,6 +72,7 @@ class Main extends Sprite{
 		};
 		
         Weblog.log("Hello :)");
+
 		
         Weblog.statsStart();
 
@@ -94,11 +95,18 @@ class Main extends Sprite{
         Weblog.inspect(p);
 
         stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+
+        Weblog.toc("new");
     }
 
     function onEnterFrame(e:Event):Void{
 		if(Math.random()*1000<10){
+
+	        Weblog.tic("debug");
 			Weblog.debug(p);
+	        Weblog.toc("debug");
+
 		}
         p.x = Math.random()*1000;
         p.y = Math.random()*1000;
