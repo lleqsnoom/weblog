@@ -34,30 +34,25 @@ class TictocController implements IController
 		AngularHelper.map(this.scope, this);
 		socketService.getTictocData().then(onSocketData);
 		socketService.addUpdateCallback(update);
+		scope.field = 'val';
+		scope.reverse = true;
 		
 	}
 	public function update():Void {
 		var data = socketService.getTictocSocketData();
-		scope.max = findMax(data);
+		scope.maxTime = socketService.getMaxTime();
 		scope.logs = data;
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		scope.max = findMax(data);
+		scope.maxTime = socketService.getMaxTime();
 		scope.logs = data;
 	}
 	
 	
 	private function findMaxLogs():Float {
-		var data:Array<Dynamic> = scope.logs;
-		if(data == null) return 0;
-		if(data.length < 1) return 0;
-		var mmax:Float = 0;
-		for(i in 0...data.length){
-			mmax = Math.max(mmax, data[i].val);
-		}
-		return mmax;
+		return socketService.getMaxTime();
 	}
 	
 	private function findMax(data:Array<Dynamic>):Float {

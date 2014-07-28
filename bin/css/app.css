@@ -179,7 +179,7 @@ stats_box
 {
 	position: absolute;
 	left: 0;
-	top: 25px;
+	top: 62px;
 	bottom: 0;
 	right: 0;
 	border: none;
@@ -344,7 +344,9 @@ ul, menu, dir {
 }
 	
 
-
+.hand {
+    cursor: pointer;
+}
 
 
 

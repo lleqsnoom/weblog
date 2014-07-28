@@ -26,6 +26,7 @@ typedef LogsModel = {
 	var debugDataItem:Dynamic;
 	var filterObj:String;
 	var filterInsp:String;
+	var maxTime:Float;
 }
 
 typedef LogLineModel = {
@@ -34,6 +35,7 @@ typedef LogLineModel = {
 	var data:String;
 	var msg:String;
 	@:optional var val:Float;
+	@:optional var valp:Float;
 }
 
 
@@ -68,7 +70,7 @@ class SocketService implements IService
 
 
 	private var logsData:Map<String, LogsModel> = new Map<String, LogsModel>();
-	private var max:UInt = 1001;
+	private var max:UInt = 501;
 
 	
 	@inject("$q", "$rootScope", "$sce")
@@ -114,8 +116,8 @@ class SocketService implements IService
 		debugDeferred.resolve(devLogs.debugData);
 		inspectDeferred.resolve(devLogs.inspectData);
 		testDeferred.resolve(devLogs.testData);
-		tictocDeferred.resolve(devLogs.statsData);
-		statsDeferred.resolve(devLogs.tictocData);
+		statsDeferred.resolve(devLogs.statsData);
+		tictocDeferred.resolve(devLogs.tictocData);
 		
 		for (i in 0...updateArr.length) {
 			updateArr[i]();
@@ -144,6 +146,7 @@ class SocketService implements IService
 					debugDataItem: null,
 					filterObj: null,
 					filterInsp: null,
+					maxTime: 0,
 				});
 			did = device = sdata.dev;
 		}
@@ -160,7 +163,18 @@ class SocketService implements IService
 					msg: sdata.data.id,
 					val: sdata.data.time,
 				});
-				if (devLogs.tictocData.length > max) devLogs.tictocData.pop();
+
+				//devLogs.maxTime = Math.max(devLogs.maxTime, sdata.data.time);
+
+				var mmax:Float = 0;
+				for(i in 0...devLogs.tictocData.length){
+					mmax = Math.max(mmax, devLogs.tictocData[i].val);
+				}
+				devLogs.maxTime = mmax;
+
+
+
+				if (devLogs.tictocData.length > 101) devLogs.tictocData.pop();
 			case "log":
 				devLogs.logData.insert(0, {
 					id: index,
@@ -274,9 +288,9 @@ class SocketService implements IService
 		//return inspectSocketData;
 	}
 	public function clearDebugSocketData():Void {
-		Console.log("clearDebugSocketData");
+//		Console.log("clearDebugSocketData");
 		if(!logsData.exists(device))return;
-		Console.log("clearDebugSocketData!!!");
+//		Console.log("clearDebugSocketData!!!");
 		logsData.get(device).debugData = new Array<LogLineModel>();
 		logsData.get(device).logData = new Array<LogLineModel>();
 		setCurrDevice(device);
@@ -310,6 +324,12 @@ class SocketService implements IService
 	}
 	public function getTestData():Dynamic {
 		return testDeferred.promise;
+	}
+
+
+	public function getMaxTime():Float {
+		if(!logsData.exists(device)) return null;
+		return logsData.get(device).maxTime;
 	}
 
 

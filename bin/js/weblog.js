@@ -496,14 +496,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -604,6 +604,8 @@ pl.bigsoda.weblog.controllers.TictocController = $hx_exports.pl.bigsoda.weblog.c
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getTictocData().then($bind(this,this.onSocketData));
 	socketService.addUpdateCallback($bind(this,this.update));
+	scope.field = "val";
+	scope.reverse = true;
 };
 pl.bigsoda.weblog.controllers.TictocController.__name__ = true;
 pl.bigsoda.weblog.controllers.TictocController.__interfaces__ = [hxangular.haxe.IController];
@@ -618,25 +620,15 @@ pl.bigsoda.weblog.controllers.TictocController.prototype = {
 	,msg: null
 	,update: function() {
 		var data = this.socketService.getTictocSocketData();
-		this.scope.max = this.findMax(data);
+		this.scope.maxTime = this.socketService.getMaxTime();
 		this.scope.logs = data;
 	}
 	,onSocketData: function(data) {
-		this.scope.max = this.findMax(data);
+		this.scope.maxTime = this.socketService.getMaxTime();
 		this.scope.logs = data;
 	}
 	,findMaxLogs: function() {
-		var data = this.scope.logs;
-		if(data == null) return 0;
-		if(data.length < 1) return 0;
-		var mmax = 0;
-		var _g1 = 0;
-		var _g = data.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			mmax = Math.max(mmax,data[i].val);
-		}
-		return mmax;
+		return this.socketService.getMaxTime();
 	}
 	,findMax: function(data) {
 		if(data == null) return 0;
@@ -655,7 +647,7 @@ pl.bigsoda.weblog.controllers.TictocController.prototype = {
 pl.bigsoda.weblog.servicess = {};
 pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.updateArr = new Array();
-	this.max = 1001;
+	this.max = 501;
 	this.logsData = new haxe.ds.StringMap();
 	this.index = 0;
 	this.init = false;
@@ -713,8 +705,8 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.debugDeferred.resolve(devLogs.debugData);
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
-		this.tictocDeferred.resolve(devLogs.statsData);
-		this.statsDeferred.resolve(devLogs.tictocData);
+		this.statsDeferred.resolve(devLogs.statsData);
+		this.tictocDeferred.resolve(devLogs.tictocData);
 		var _g1 = 0;
 		var _g2 = this.updateArr.length;
 		while(_g1 < _g2) {
@@ -733,7 +725,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		var did = null;
 		var devLogs;
 		if(!this.logsData.exists(sdata.dev)) {
-			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null};
+			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
 			this.logsData.set(sdata.dev,value);
 			did = this.device = sdata.dev;
 		}
@@ -743,26 +735,26 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		case "tictoc":
 			var x = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.data.id, val : sdata.data.time};
 			devLogs.tictocData.splice(0,0,x);
-			if((function($this) {
-				var $r;
-				var a = devLogs.tictocData.length;
-				var b = $this.max;
-				var aNeg = a < 0;
-				var bNeg = b < 0;
-				$r = aNeg != bNeg?aNeg:a > b;
-				return $r;
-			}(this))) devLogs.tictocData.pop();
+			var mmax = 0;
+			var _g2 = 0;
+			var _g1 = devLogs.tictocData.length;
+			while(_g2 < _g1) {
+				var i = _g2++;
+				mmax = Math.max(mmax,devLogs.tictocData[i].val);
+			}
+			devLogs.maxTime = mmax;
+			if(devLogs.tictocData.length > 101) devLogs.tictocData.pop();
 			break;
 		case "log":
 			var x1 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
 			devLogs.logData.splice(0,0,x1);
 			if((function($this) {
 				var $r;
-				var a1 = devLogs.logData.length;
-				var b1 = $this.max;
-				var aNeg1 = a1 < 0;
-				var bNeg1 = b1 < 0;
-				$r = aNeg1 != bNeg1?aNeg1:a1 > b1;
+				var a = devLogs.logData.length;
+				var b = $this.max;
+				var aNeg = a < 0;
+				var bNeg = b < 0;
+				$r = aNeg != bNeg?aNeg:a > b;
 				return $r;
 			}(this))) devLogs.logData.pop();
 			break;
@@ -771,11 +763,11 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			devLogs.debugData.splice(0,0,x2);
 			if((function($this) {
 				var $r;
-				var a2 = devLogs.debugData.length;
-				var b2 = $this.max;
-				var aNeg2 = a2 < 0;
-				var bNeg2 = b2 < 0;
-				$r = aNeg2 != bNeg2?aNeg2:a2 > b2;
+				var a1 = devLogs.debugData.length;
+				var b1 = $this.max;
+				var aNeg1 = a1 < 0;
+				var bNeg1 = b1 < 0;
+				$r = aNeg1 != bNeg1?aNeg1:a1 > b1;
 				return $r;
 			}(this))) devLogs.debugData.pop();
 			break;
@@ -784,11 +776,11 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			devLogs.testData.splice(0,0,x3);
 			if((function($this) {
 				var $r;
-				var a3 = devLogs.testData.length;
-				var b3 = $this.max;
-				var aNeg3 = a3 < 0;
-				var bNeg3 = b3 < 0;
-				$r = aNeg3 != bNeg3?aNeg3:a3 > b3;
+				var a2 = devLogs.testData.length;
+				var b2 = $this.max;
+				var aNeg2 = a2 < 0;
+				var bNeg2 = b2 < 0;
+				$r = aNeg2 != bNeg2?aNeg2:a2 > b2;
 				return $r;
 			}(this))) devLogs.testData.pop();
 			break;
@@ -878,9 +870,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		return this.logsData.get(this.device).inspectData[0];
 	}
 	,clearDebugSocketData: function() {
-		console.log("clearDebugSocketData");
 		if(!this.logsData.exists(this.device)) return;
-		console.log("clearDebugSocketData!!!");
 		this.logsData.get(this.device).debugData = new Array();
 		this.logsData.get(this.device).logData = new Array();
 		this.setCurrDevice(this.device);
@@ -907,6 +897,10 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	}
 	,getTestData: function() {
 		return this.testDeferred.promise;
+	}
+	,getMaxTime: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).maxTime;
 	}
 	,getFilterObj: function() {
 		if(!this.logsData.exists(this.device)) return null;
