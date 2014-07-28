@@ -39,6 +39,7 @@ Main.main = function() {
 	app.controller("pl.bigsoda.weblog.controllers.InspectController",pl.bigsoda.weblog.controllers.InspectController);
 	app.controller("pl.bigsoda.weblog.controllers.TabNavigatorController",pl.bigsoda.weblog.controllers.TabNavigatorController);
 	app.controller("pl.bigsoda.weblog.controllers.ServerAdressController",pl.bigsoda.weblog.controllers.ServerAdressController);
+	app.controller("pl.bigsoda.weblog.controllers.TictocController",pl.bigsoda.weblog.controllers.TictocController);
 	app.controller("pl.bigsoda.weblog.controllers.StatsController",pl.bigsoda.weblog.controllers.StatsController);
 	app.service("pl.bigsoda.weblog.servicess.SocketService",pl.bigsoda.weblog.servicess.SocketService);
 };
@@ -594,10 +595,59 @@ pl.bigsoda.weblog.controllers.TestController.prototype = {
 	}
 	,__class__: pl.bigsoda.weblog.controllers.TestController
 };
+pl.bigsoda.weblog.controllers.TictocController = $hx_exports.pl.bigsoda.weblog.controllers.TictocController = function(scope,window,http,document,timeout,rootScope,socketService,sce) {
+	this.scope = scope;
+	this.http = http;
+	this.timeout = timeout;
+	this.sce = sce;
+	this.socketService = socketService;
+	hxangular.AngularHelper.map(this.scope,this);
+	socketService.getTictocData().then($bind(this,this.onSocketData));
+	socketService.addUpdateCallback($bind(this,this.update));
+	scope.field = "val";
+	scope.reverse = true;
+};
+pl.bigsoda.weblog.controllers.TictocController.__name__ = true;
+pl.bigsoda.weblog.controllers.TictocController.__interfaces__ = [hxangular.haxe.IController];
+pl.bigsoda.weblog.controllers.TictocController.prototype = {
+	scope: null
+	,rootScope: null
+	,http: null
+	,timeout: null
+	,socketData: null
+	,sce: null
+	,socketService: null
+	,msg: null
+	,update: function() {
+		var data = this.socketService.getTictocSocketData();
+		this.scope.maxTime = this.socketService.getMaxTime();
+		this.scope.logs = data;
+	}
+	,onSocketData: function(data) {
+		this.scope.maxTime = this.socketService.getMaxTime();
+		this.scope.logs = data;
+	}
+	,findMaxLogs: function() {
+		return this.socketService.getMaxTime();
+	}
+	,findMax: function(data) {
+		if(data == null) return 0;
+		if(data.length < 1) return 0;
+		var mmax = 0;
+		var _g1 = 0;
+		var _g = data.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			mmax = Math.max(mmax,data[i].val);
+		}
+		return mmax;
+	}
+	,__class__: pl.bigsoda.weblog.controllers.TictocController
+};
 pl.bigsoda.weblog.servicess = {};
 pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.updateArr = new Array();
-	this.max = 1001;
+	this.max = 501;
 	this.logsData = new haxe.ds.StringMap();
 	this.index = 0;
 	this.init = false;
@@ -610,6 +660,7 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.statsDeferred = q.defer();
 	this.testDeferred = q.defer();
 	this.inspectDeferred = q.defer();
+	this.tictocDeferred = q.defer();
 	console.log('SocketService');
 	var socket = io.connect('http://localhost:18081/');
 	socket.on("data",$bind(this,this.onSocketData));
@@ -623,6 +674,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,statsData: null
 	,inspectData: null
 	,testData: null
+	,tictocDeferred: null
 	,logDeferred: null
 	,debugDeferred: null
 	,statsDeferred: null
@@ -648,11 +700,13 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.statsDeferred = this.q.defer();
 		this.testDeferred = this.q.defer();
 		this.inspectDeferred = this.q.defer();
+		this.tictocDeferred = this.q.defer();
 		this.logDeferred.resolve(devLogs.logData);
 		this.debugDeferred.resolve(devLogs.debugData);
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
+		this.tictocDeferred.resolve(devLogs.tictocData);
 		var _g1 = 0;
 		var _g2 = this.updateArr.length;
 		while(_g1 < _g2) {
@@ -671,16 +725,29 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		var did = null;
 		var devLogs;
 		if(!this.logsData.exists(sdata.dev)) {
-			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null};
+			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
 			this.logsData.set(sdata.dev,value);
 			did = this.device = sdata.dev;
 		}
 		devLogs = this.logsData.get(sdata.dev);
 		var _g = sdata.type;
 		switch(_g) {
+		case "tictoc":
+			var x = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.data.id, val : sdata.data.time};
+			devLogs.tictocData.splice(0,0,x);
+			var mmax = 0;
+			var _g2 = 0;
+			var _g1 = devLogs.tictocData.length;
+			while(_g2 < _g1) {
+				var i = _g2++;
+				mmax = Math.max(mmax,devLogs.tictocData[i].val);
+			}
+			devLogs.maxTime = mmax;
+			if(devLogs.tictocData.length > 101) devLogs.tictocData.pop();
+			break;
 		case "log":
-			var x = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
-			devLogs.logData.splice(0,0,x);
+			var x1 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
+			devLogs.logData.splice(0,0,x1);
 			if((function($this) {
 				var $r;
 				var a = devLogs.logData.length;
@@ -692,8 +759,8 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) devLogs.logData.pop();
 			break;
 		case "debug":
-			var x1 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
-			devLogs.debugData.splice(0,0,x1);
+			var x2 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
+			devLogs.debugData.splice(0,0,x2);
 			if((function($this) {
 				var $r;
 				var a1 = devLogs.debugData.length;
@@ -705,8 +772,8 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) devLogs.debugData.pop();
 			break;
 		case "test":
-			var x2 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml(this.formatMunit(sdata.data)), msg : sdata.msg};
-			devLogs.testData.splice(0,0,x2);
+			var x3 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml(this.formatMunit(sdata.data)), msg : sdata.msg};
+			devLogs.testData.splice(0,0,x3);
 			if((function($this) {
 				var $r;
 				var a2 = devLogs.testData.length;
@@ -718,13 +785,13 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			}(this))) devLogs.testData.pop();
 			break;
 		case "stats":
-			var x3 = sdata.data;
-			devLogs.statsData.splice(0,0,x3);
+			var x4 = sdata.data;
+			devLogs.statsData.splice(0,0,x4);
 			if(devLogs.statsData.length > 101) devLogs.statsData.pop();
 			break;
 		case "inspect":
-			var x4 = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>");
-			devLogs.inspectData.splice(0,0,x4);
+			var x5 = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>");
+			devLogs.inspectData.splice(0,0,x5);
 			if(devLogs.inspectData.length > 101) devLogs.inspectData.pop();
 			break;
 		}
@@ -734,6 +801,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
+		this.tictocDeferred.resolve(devLogs.tictocData);
 		this.rootScope.$apply();
 		if(did != null) this.setCurrDevice(did);
 	}
@@ -785,6 +853,9 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getLogData: function() {
 		return this.logDeferred.promise;
 	}
+	,getTictocData: function() {
+		return this.tictocDeferred.promise;
+	}
 	,getDebugData: function() {
 		return this.debugDeferred.promise;
 	}
@@ -799,9 +870,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		return this.logsData.get(this.device).inspectData[0];
 	}
 	,clearDebugSocketData: function() {
-		console.log("clearDebugSocketData");
 		if(!this.logsData.exists(this.device)) return;
-		console.log("clearDebugSocketData!!!");
 		this.logsData.get(this.device).debugData = new Array();
 		this.logsData.get(this.device).logData = new Array();
 		this.setCurrDevice(this.device);
@@ -809,6 +878,10 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getDebugSocketData: function() {
 		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).debugData;
+	}
+	,getTictocSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).tictocData;
 	}
 	,setDebugSocketItem: function(item) {
 		if(!this.logsData.exists(this.device)) return null;
@@ -824,6 +897,10 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	}
 	,getTestData: function() {
 		return this.testDeferred.promise;
+	}
+	,getMaxTime: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).maxTime;
 	}
 	,getFilterObj: function() {
 		if(!this.logsData.exists(this.device)) return null;
@@ -877,6 +954,7 @@ pl.bigsoda.weblog.controllers.ServerAdressController.$inject = ["$scope","$windo
 pl.bigsoda.weblog.controllers.StatsController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.controllers.TabNavigatorController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
 pl.bigsoda.weblog.controllers.TestController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"];
+pl.bigsoda.weblog.controllers.TictocController.$inject = ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"];
 pl.bigsoda.weblog.servicess.SocketService.$inject = ["$q","$rootScope","$sce"];
 pl.bigsoda.weblog.controllers.DebugController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
 pl.bigsoda.weblog.controllers.InspectController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
@@ -885,6 +963,7 @@ pl.bigsoda.weblog.controllers.ServerAdressController.__meta__ = { fields : { _ :
 pl.bigsoda.weblog.controllers.StatsController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
 pl.bigsoda.weblog.controllers.TabNavigatorController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"]}}};
 pl.bigsoda.weblog.controllers.TestController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService"]}}};
+pl.bigsoda.weblog.controllers.TictocController.__meta__ = { fields : { _ : { inject : ["$scope","$window","$http","$document","$timeout","$rootScope","pl.bigsoda.weblog.servicess.SocketService","$sce"]}}};
 pl.bigsoda.weblog.servicess.SocketService.__meta__ = { fields : { _ : { inject : ["$q","$rootScope","$sce"]}}};
 Main.main();
 })(typeof window != "undefined" ? window : exports);
