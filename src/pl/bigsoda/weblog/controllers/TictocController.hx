@@ -37,12 +37,37 @@ class TictocController implements IController
 		
 	}
 	public function update():Void {
-		scope.logs = socketService.getTictocSocketData();
+		var data = socketService.getTictocSocketData();
+		scope.max = findMax(data);
+		scope.logs = data;
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
+		scope.max = findMax(data);
 		scope.logs = data;
+	}
+	
+	
+	private function findMaxLogs():Float {
+		var data:Array<Dynamic> = scope.logs;
+		if(data == null) return 0;
+		if(data.length < 1) return 0;
+		var mmax:Float = 0;
+		for(i in 0...data.length){
+			mmax = Math.max(mmax, data[i].val);
+		}
+		return mmax;
+	}
+	
+	private function findMax(data:Array<Dynamic>):Float {
+		if(data == null) return 0;
+		if(data.length < 1) return 0;
+		var mmax:Float = 0;
+		for(i in 0...data.length){
+			mmax = Math.max(mmax, data[i].val);
+		}
+		return mmax;
 	}
 
 

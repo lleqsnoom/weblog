@@ -77,6 +77,7 @@ class Weblog{
 	}
 
 	public static function toc(id:String = ""):Void {
+		if(!tictoc.exists(id)) return;
 		var t:Float = tictoc.get(id);
 		//trace("toc: " + t);
 		send({
