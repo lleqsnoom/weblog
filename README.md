@@ -18,7 +18,10 @@ Features
 - Object inspect
 - Realtime stats
 - Multiple devices at the same time
-<p align="center"><img src="app.png"/></p>
+- Profiler
+<p align="center"><img src="full.png"/></p>
+<p align="center"><img src="simple.png"/></p>
+<p align="center"><img src="tictoc.png"/></p>
 
 
 
