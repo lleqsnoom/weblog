@@ -175,6 +175,18 @@ stats_box
 	position: absolute;
 }
 
+#profiles
+{
+	position: absolute;
+	left: 0;
+	top: 25px;
+	bottom: 0;
+	right: 0;
+	border: none;
+	overflow: auto;
+
+}
+
 #logs {
 	position: absolute;
 	left: 0;

@@ -66,9 +66,8 @@
 
 				<div>
 				
-
-					<div class="content">
-					<table class="table table-striped" id="" infinite-scroll="nextPage($event)">
+				<div id="profiles" class="border">
+					<table class="table table-striped">
 							
 							<tbody>
 								<tr style="" ng-repeat="log in logs | orderBy:'val':true" ng-click="select(log.data, log.id)" ng-class="{active: log.id == selectedId}">							
@@ -88,7 +87,6 @@
 							</tbody>
 							
 						</table>
-						
 				</div>
 				</div>
 				
