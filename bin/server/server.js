@@ -34,6 +34,9 @@ var server = http.createServer(function(request, response) {
 				//console.log(body);
 
 				response.writeHead(200);
+				response.header('Access-Control-Allow-Origin', '*');
+				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+				response.header('Access-Control-Allow-Headers', 'Content-Type');
 				response.end();
 				
 				return;
@@ -47,6 +50,9 @@ var server = http.createServer(function(request, response) {
 			try{
 				//var asset = fs.readFileSync("../weblog/bin" + "/index.html");
 				response.writeHead(200);
+				response.header('Access-Control-Allow-Origin', '*');
+				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+				response.header('Access-Control-Allow-Headers', 'Content-Type');
 				response.end("");
 			}catch(e){
 				//console.log("error");
@@ -56,6 +62,9 @@ var server = http.createServer(function(request, response) {
 			try{
 				//var asset = fs.readFileSync("../weblog/bin" + request.url);
 				response.writeHead(200);
+				response.header('Access-Control-Allow-Origin', '*');
+				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+				response.header('Access-Control-Allow-Headers', 'Content-Type');
 				response.end("");
 			}catch(e){
 				//console.log("error");
