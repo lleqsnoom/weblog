@@ -8,6 +8,7 @@ import pl.bigsoda.weblog.controllers.ServerAdressController;
 import pl.bigsoda.weblog.controllers.TestController;
 import pl.bigsoda.weblog.controllers.TictocController;
 import pl.bigsoda.weblog.controllers.StatsController;
+import pl.bigsoda.weblog.controllers.RemoteController;
 import pl.bigsoda.weblog.servicess.SocketService;
 import hxangular.Angular;
 import hxangular.Angular.Module;
@@ -31,6 +32,7 @@ class Main
 		app.controller("pl.bigsoda.weblog.controllers.ServerAdressController", ServerAdressController);
 		app.controller("pl.bigsoda.weblog.controllers.TictocController", TictocController);
 		app.controller("pl.bigsoda.weblog.controllers.StatsController", StatsController);
+		app.controller("pl.bigsoda.weblog.controllers.RemoteController", RemoteController);
 		app.service("pl.bigsoda.weblog.servicess.SocketService", SocketService);
 
 	}
