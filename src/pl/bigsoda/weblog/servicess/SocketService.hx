@@ -70,7 +70,7 @@ class SocketService implements IService
 
 
 	private var logsData:Map<String, LogsModel> = new Map<String, LogsModel>();
-	private var max:UInt = 501;
+	private var max:UInt = 1001;
 
 	
 	@inject("$q", "$rootScope", "$sce")

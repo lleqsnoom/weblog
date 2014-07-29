@@ -98,6 +98,28 @@ class DebugController implements IController
 		//scope.selectedDebugItem = data;
 	}
 	
+	
+	
+	public function selectRow(event:Dynamic)
+	{
+		var id:Int = untyped __js__("jQuery")(event.target).data("wlId");
+		if(id == null){
+			id = untyped __js__("jQuery")(event.target).parent().data("wlId");
+		}
+		for(i in 0...scope.logs.length){
+			if(scope.logs[i].id == id){
+				socketService.setDebugSocketItem(scope.logs[i].data);
+				fillWindow( filterObj(scope.logs[i].data, scope.filterStr) );
+				scope.selectedId = id;
+				break;
+			}
+		}
+		/*scope.msg = msg;
+		socketService.setDebugSocketItem(msg);
+		fillWindow( filterObj(msg, scope.filterStr) );
+		scope.selectedId = id;*/
+	}
+	
 	public function select(msg, id)
 	{
 		scope.msg = msg;
