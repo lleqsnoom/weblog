@@ -174,7 +174,7 @@
 						-->
 						
 						<div ng-mousedown="selectRow($event)">
-							<div ng-repeat="log in logs" style="width: 100%; height: 32px; border-bottom: 1px solid #dddddd;padding-top: 5px;padding-left: 5px;" data-wl-id="{{::log.id}}">
+							<div ng-repeat="log in logs" style="width: 100%; height: 32px; border-bottom: 1px solid #dddddd;padding-top: 5px;padding-left: 5px;" data-wl-id="{{::log.id}}" ng-class="{active: log.id == selectedId}">
 								<span style="width: 70px;display: inline-block;">{{::log.id}}</span>
 								<span style="width: 100px;display: inline-block;">{{::log.time | date:'HH:mm:ss'}}</span>
 								<span>{{::log.msg}}</span>
