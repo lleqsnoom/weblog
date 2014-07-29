@@ -18,6 +18,7 @@
 	<script src="js/socket.io.js"></script>
 	<script src="js/library.json.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular-virtual-scroll.min.js"></script>
 
 
 	
@@ -95,7 +96,6 @@
 
 				<div id="profiles" class="border">
 
-
 					<table class="table table-striped">
 							
 							<tbody>
@@ -105,8 +105,8 @@
 									<td style="width: 150px;">{{::log.msg}}</td>
 									<td>
 										<div style="height: 20px">
-											<div style="z-index: 100;position: relative;top: 0;left: 0;background-color: #ff9000; width: {{log.val/findMaxLogs()*100}}%;height: 15px;"></div>
-											<div style="z-index: 1000;position: relative;top: -5px;left: 0px;font-size: 10px;margin-top: -10px;width: {{log.val/findMaxLogs()*100}}%;padding-left: 4px;">
+											<div style="border-radius: 15px;z-index: 100;position: relative;top: 0;left: 0;background-color: #ff9000; width: {{log.val/findMaxLogs()*100}}%;height: 15px;"></div>
+											<div style="z-index: 1000;position: relative;top: -5px;left: 0px;font-size: 10px;margin-top: -9px;width: {{log.val/findMaxLogs()*100}}%;padding-left: 8px;">
 												<span style="color: #854b00;">{{::log.val*1000 | number: 2}}ms</span>
 											</div>
 										</div>
@@ -115,6 +115,27 @@
 							</tbody>
 							
 						</table>
+						
+						<!--
+						<div>
+							<div ng-repeat="log in logs | orderBy:field:reverse" ng-class="{active: log.id == selectedId}" style="width: 100%; height: 32px; border-bottom: 1px solid #dddddd;padding-top: 5px;padding-left: 5px;" data-wl-id="{{::log.id}}">
+								<span style="width: 70px;display: inline-block;">{{::log.id}}</span>
+								<span style="width: 100px;display: inline-block;">{{::log.time | date:'HH:mm:ss'}}</span>
+								<span style="width: 150px;display: inline-block;">{{::log.msg}}</span>
+								
+								<div style="position: relative;top: -20px;left: 320px; bottom: 0;">
+									<div style="padding-right: 330px;">
+										<div style="z-index: 100;position: relative;top: 0;left: 0;background-color: #ff9000; width: {{log.val/findMaxLogs()*100}}%;height: 15px;">
+										</div>
+									</div>
+									<div style="z-index: 1000;position: relative;top: -5px;left: 0px;font-size: 10px;margin-top: -10px;width: {{log.val/findMaxLogs()*100}}%;padding-left: 4px;">
+										<span style="color: #854b00;">{{::log.val*1000 | number: 2}}ms</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						-->
 				</div>
 				</div>
 				
@@ -138,11 +159,11 @@
 				<div id="logs" class="border">
 
 					<div class="content">
-	
+						<!--
 						<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
 							
-							<tbody>
-								<tr style="" ng-repeat="log in logs" ng-mousedown="select(log.data, log.id)" ng-class="{active: log.id == selectedId}">							
+							<tbody ng-mousedown="selectRow($event)">
+								<tr style="" ng-repeat="log in logs" ng-class="{active: log.id == selectedId}" data-wl-id="{{::log.id}}">					
 									<td style="width: 70px;">{{::log.id}}</td>
 									<td style="width: 100px;">{{::log.time | date:'HH:mm:ss'}}</td>
 									<td>{{::log.msg}}</td>
@@ -150,6 +171,16 @@
 							</tbody>
 							
 						</table>
+						-->
+						
+						<div ng-mousedown="selectRow($event)">
+							<div ng-repeat="log in logs" style="width: 100%; height: 32px; border-bottom: 1px solid #dddddd;padding-top: 5px;padding-left: 5px;" data-wl-id="{{::log.id}}" ng-class="{active: log.id == selectedId}">
+								<span style="width: 70px;display: inline-block;">{{::log.id}}</span>
+								<span style="width: 100px;display: inline-block;">{{::log.time | date:'HH:mm:ss'}}</span>
+								<span>{{::log.msg}}</span>
+							</div>
+						</div>
+						
 					</div>
 
 				</div>

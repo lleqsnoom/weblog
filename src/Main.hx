@@ -23,7 +23,7 @@ class Main
 	
 	static function main() 
 	{
-		var app:Module = Angular.module("weblog", ["infinite-scroll"]);
+		var app:Module = Angular.module("weblog", ["infinite-scroll", "sf.virtualScroll"]);
 		app.controller("pl.bigsoda.weblog.controllers.LogController", LogController);
 		app.controller("pl.bigsoda.weblog.controllers.DebugController", DebugController);
 		app.controller("pl.bigsoda.weblog.controllers.InspectController", InspectController);

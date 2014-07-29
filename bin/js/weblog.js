@@ -33,7 +33,7 @@ HxOverrides.iter = function(a) {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	var app = angular.module("weblog",["infinite-scroll"]);
+	var app = angular.module("weblog",["infinite-scroll","sf.virtualScroll"]);
 	app.controller("pl.bigsoda.weblog.controllers.LogController",pl.bigsoda.weblog.controllers.LogController);
 	app.controller("pl.bigsoda.weblog.controllers.DebugController",pl.bigsoda.weblog.controllers.DebugController);
 	app.controller("pl.bigsoda.weblog.controllers.InspectController",pl.bigsoda.weblog.controllers.InspectController);
@@ -327,6 +327,21 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,onSocketData: function(data) {
 		this.scope.logs = data;
 	}
+	,selectRow: function(event) {
+		var id = jQuery(event.target).data("wlId");
+		if(id == null) id = jQuery(event.target).parent().data("wlId");
+		var _g1 = 0;
+		var _g = this.scope.logs.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(this.scope.logs[i].id == id) {
+				this.socketService.setDebugSocketItem(this.scope.logs[i].data);
+				this.fillWindow(this.filterObj(this.scope.logs[i].data,this.scope.filterStr));
+				this.scope.selectedId = id;
+				break;
+			}
+		}
+	}
 	,select: function(msg,id) {
 		this.scope.msg = msg;
 		this.socketService.setDebugSocketItem(msg);
@@ -496,14 +511,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -647,7 +662,7 @@ pl.bigsoda.weblog.controllers.TictocController.prototype = {
 pl.bigsoda.weblog.servicess = {};
 pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.updateArr = new Array();
-	this.max = 501;
+	this.max = 1001;
 	this.logsData = new haxe.ds.StringMap();
 	this.index = 0;
 	this.init = false;

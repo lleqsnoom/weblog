@@ -312,6 +312,12 @@ ul, menu, dir {
 	-webkit-margin-end: 0px;
 	-webkit-padding-start: 20px;
 }
+
+
+div.active {
+	background-color: #cedae1 !important;
+}
+
 .nav-tabs>li>a {
 	border: none;
 }
