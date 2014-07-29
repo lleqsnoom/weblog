@@ -25,6 +25,11 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/app.css">
 
+
+	<link rel="stylesheet" href="lib/codemirror.css">
+	<script src="lib/codemirror.js"></script>
+	<script src="mode/haxe/haxe.js"></script>
+
 </head>
 <body>	
 	
@@ -51,10 +56,72 @@
 				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'profiler'}" ng-click="$root.view = 'profiler'">
 			 		 <span class="fa fa-tachometer"></span>
 				</button>
+				<button type="button" class="views" ng-class="{viewsActive: $root.view == 'remote'}" ng-click="$root.view = 'remote'">
+			 		 <span class="fa fa-edit"></span>
+				</button>
 			</div>
 		</div>
 
 
+
+
+
+		<div class="border">
+			<div id="edit_box" class="{{$root.view}}">			
+
+				<div class="title_label" style="z-index: 1000;">
+					<span>Execute remote code</span>
+				</div>
+
+				<style type="text/css">
+					#code-haxe, .CodeMirror, .CodeMirror-scroll{
+						height: 100%;
+						width: 100%;
+					}
+
+				    .wrap {
+				        position: absolute;
+						top: 25px; 
+						left:0; 
+						right: 0; 
+						bottom: 40%;
+				        background: #eee;
+				        padding: 0;
+				        box-sizing: border-box;
+				    }
+
+				</style>
+				<div class="wrap">
+					<textarea id="code-haxe" name="code-haxe">Math.cos(100);</textarea>
+				</div>
+
+			    <script>
+					var editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"), {
+				        lineNumbers: true,
+				        lineWrapping: false,
+				        indentUnit: 4,
+				        indentWithTabs: true,
+				        mode: {name: "haxe", globalVars: true}
+					});
+				    function selectTheme() {
+				        editor.refresh();
+				    }
+				    setTimeout(selectTheme, 1000);
+				</script>
+
+
+				<div class="title_label" style="z-index: 1000;bottom: 40%;position: absolute;left: 0;right: 0;">
+					<span>Output</span>
+
+					<button type="submit" class="btn btn-danger btn-xs" ng-click="run()" style="position: absolute; top: 3px; right: 3px;height: 19px;font-size: 11px;">Run</button>
+				</div>
+
+				<div style="position: absolute;height: 40%;bottom: 0;left: 0; right: 0;padding-top: 25px;">
+				</div>
+
+
+			</div>
+		</div>
 
 
 

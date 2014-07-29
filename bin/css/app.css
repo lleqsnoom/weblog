@@ -52,6 +52,9 @@ html,body{
 #tictoc_box.default {
 	display: none;
 }
+#edit_box.default {
+	display: none;	
+}
 
 
 
@@ -82,7 +85,9 @@ html,body{
 #tictoc_box.logsDebug {
 	display: none;
 }
-
+#edit_box.logsDebug {
+	display: none;	
+}
 
 
 
@@ -106,6 +111,36 @@ html,body{
 	right: 0;
 	display: block;
 	border: none;
+}
+#edit_box.profiler {
+	display: none;	
+}
+
+
+
+
+#logs_box.remote {
+	display: none;
+}
+#debug_box.remote {
+	display: none;
+}
+#inspect_box.remote {
+	display: none;
+}
+#stats_box.remote {
+	display: none;
+}
+#tictoc_box.remote {
+	display: none;
+}
+#edit_box.remote {
+	top: 34px;
+	left: 40px;
+	bottom: 0;
+	right: 0;
+	display: block;
+	border: none;	
 }
 
 
@@ -158,6 +193,10 @@ html,body{
 	background-color: #f5f5f5;
 	position: absolute;
 
+}
+#edit_box {
+	background-color: #f5f5f5;
+	position: absolute;
 }
 
 #inspect_obj {
