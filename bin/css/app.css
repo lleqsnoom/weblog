@@ -5,6 +5,15 @@ inspect_box
 stats_box
 */
 
+html,body{
+	-webkit-user-select: none;
+}
+
+.selectable {
+	-webkit-user-select: auto;
+}
+
+
 
 #logs_box.default {
 	bottom: 0;

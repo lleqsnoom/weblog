@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <html lang="en" ng-app="weblog">
 <head>
-	<title>Weblog 1.3.1</title>
+	<title>Weblog 1.3.2</title>
 	
 	<script>
 		window.server = require("./server/server.js");
@@ -142,7 +142,7 @@
 						<table class="table table-striped" id="debugtab" infinite-scroll="nextPage($event)">
 							
 							<tbody>
-								<tr style="" ng-repeat="log in logs" ng-click="select(log.data, log.id)" ng-class="{active: log.id == selectedId}">							
+								<tr style="" ng-repeat="log in logs" ng-mousedown="select(log.data, log.id)" ng-class="{active: log.id == selectedId}">							
 									<td style="width: 70px;">{{::log.id}}</td>
 									<td style="width: 100px;">{{::log.time | date:'HH:mm:ss'}}</td>
 									<td>{{::log.msg}}</td>
@@ -168,7 +168,7 @@
 					
 				</div>
 				
-				<div ng-bind-html="selectedDebugItem" id="debug_obj">
+				<div ng-bind-html="selectedDebugItem" id="debug_obj" class="selectable">
 				</div>
 			</div>
 
@@ -185,7 +185,7 @@
 			<div id="inspect_box" class="border {{$root.view}}">
 				<div class="title_label"><span>Inspect</span></div>
 				
-				<div ng-bind-html="selectedInspectItem" id="inspect_obj">
+				<div ng-bind-html="selectedInspectItem" id="inspect_obj" class="selectable">
 				</div>
 				
 			</div>
