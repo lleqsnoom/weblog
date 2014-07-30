@@ -23,7 +23,7 @@ var server = http.createServer(function(request, response) {
 			request.on('end', function () {
 
 				var POST = qs.parse(body);
-				//console.log(POST);
+				
 				try{
 					POST.device = request.headers["user-agent"];
 					ws_conn.emit("data", body);
@@ -39,8 +39,14 @@ var server = http.createServer(function(request, response) {
  					"Access-Control-Allow-Headers": "Content-Type",
 
  				});
-				response.end(JSON.stringify(remoteCodeArray));
-				remoteCodeArray = [];
+ 				var a = [];
+ 				for(var i = remoteCodeArray.length - 1 ; i > -1 ; i--) {
+ 					if(POST.dev == remoteCodeArray[i].dev){
+ 						a.push(remoteCodeArray[i]);
+ 						remoteCodeArray.splice(i, 1);
+ 					}
+ 				}
+				response.end(JSON.stringify(a));
 				
 				return;
 				

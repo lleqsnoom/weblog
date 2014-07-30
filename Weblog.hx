@@ -140,7 +140,34 @@ class Weblog{
 	}
 	
 	
+	public static function initRemote():Void {
+		runRemote();
+	}
 	
+	#if (neko || cpp)
+	private static function remoteThread():Void {
+		while (true) {
+			sendData({}, "remote");
+			Sys.sleep(10 / 1000);
+		}				
+	}
+    #end
+	
+	private static function runRemote():Void {
+		#if (neko || cpp)
+			if(!synchronous) {
+				Thread.create(remoteThread);
+			}
+        #else       
+            haxe.Timer.delay(function():Void {
+				send({}, "remote");
+                runRemote();
+            }, 10);
+        #end		
+	}
+
+
+
 	public static function inspect(data:Dynamic):Void {
 		_inspectable = data;
 		if(_isRunning) return;
@@ -232,7 +259,7 @@ class Weblog{
 			})
 		);
 		r.onData = function(d) {
-			trace(d);
+			//trace(d);
 			#if hscript
 				execute(d);
 			#end
@@ -263,7 +290,9 @@ class Weblog{
 		}
 
 	}
+
 	#end
+
 
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
 
