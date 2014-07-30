@@ -413,12 +413,24 @@ pl.bigsoda.weblog.controllers.LogController.prototype = {
 	,__class__: pl.bigsoda.weblog.controllers.LogController
 };
 pl.bigsoda.weblog.controllers.RemoteController = $hx_exports.pl.bigsoda.weblog.controllers.RemoteController = function(scope,window,http,document,timeout,rootScope,socketService,sce) {
+	this.lastLog = "";
+	var _g = this;
 	this.scope = scope;
 	this.http = http;
 	this.timeout = timeout;
 	this.sce = sce;
 	this.socketService = socketService;
+	this.window = window;
 	hxangular.AngularHelper.map(this.scope,this);
+	hxangular.AngularHelper.map(this.scope,this);
+	socketService.getOutputData().then($bind(this,this.onSocketData));
+	socketService.addUpdateCallback($bind(this,this.update));
+	setTimeout(function() {
+		_g.buildEditor();
+	},100);
+	setInterval(function() {
+		_g.update();
+	},10);
 };
 pl.bigsoda.weblog.controllers.RemoteController.__name__ = true;
 pl.bigsoda.weblog.controllers.RemoteController.__interfaces__ = [hxangular.haxe.IController];
@@ -426,14 +438,30 @@ pl.bigsoda.weblog.controllers.RemoteController.prototype = {
 	scope: null
 	,rootScope: null
 	,http: null
+	,window: null
 	,timeout: null
 	,socketData: null
 	,sce: null
 	,socketService: null
 	,msg: null
+	,lastLog: null
+	,update: function() {
+		this.scope.logs = this.socketService.getOutputSocketData();
+		if(this.scope.logs == null || this.scope.logs.length == 0 || this.scope.logs[0] == null) return;
+		if(this.scope.logs[0].data == this.lastLog) return;
+		this.lastLog = this.scope.last = this.scope.logs[0].data;
+	}
+	,onSocketData: function(data) {
+		js.Console.log("=================== " + Std.string(this.socketService.getOutputSocketData()));
+		this.scope.logs = data;
+		this.scope.last = this.scope.logs[0].data;
+	}
+	,buildEditor: function() {
+		this.scope.editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"),{ lineNumbers : true, lineWrapping : false, indentUnit : 4, indentWithTabs : true, mode : { name : "haxe", globalVars : true}});
+	}
 	,run: function(data) {
-		console.log(data);
-		console.log(this.scope.runCode);
+		this.window.server.addRemoteCode({ dev : this.socketService.getDevice(), code : this.scope.editor.getValue()});
+		js.Console.log(this.scope.editor.getValue());
 	}
 	,__class__: pl.bigsoda.weblog.controllers.RemoteController
 };
@@ -537,14 +565,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -697,6 +725,7 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.q = q;
 	rootScope.view = "default";
 	this.logDeferred = q.defer();
+	this.outputDeferred = q.defer();
 	this.debugDeferred = q.defer();
 	this.statsDeferred = q.defer();
 	this.testDeferred = q.defer();
@@ -711,12 +740,14 @@ pl.bigsoda.weblog.servicess.SocketService.__interfaces__ = [hxangular.haxe.IServ
 pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	socketData: null
 	,logData: null
+	,outputData: null
 	,debugData: null
 	,statsData: null
 	,inspectData: null
 	,testData: null
 	,tictocDeferred: null
 	,logDeferred: null
+	,outputDeferred: null
 	,debugDeferred: null
 	,statsDeferred: null
 	,inspectDeferred: null
@@ -737,12 +768,14 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		if(devLogs == null) return;
 		this.device = id;
 		this.logDeferred = this.q.defer();
+		this.outputDeferred = this.q.defer();
 		this.debugDeferred = this.q.defer();
 		this.statsDeferred = this.q.defer();
 		this.testDeferred = this.q.defer();
 		this.inspectDeferred = this.q.defer();
 		this.tictocDeferred = this.q.defer();
 		this.logDeferred.resolve(devLogs.logData);
+		this.outputDeferred.resolve(devLogs.outputData);
 		this.debugDeferred.resolve(devLogs.debugData);
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
@@ -766,7 +799,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		var did = null;
 		var devLogs;
 		if(!this.logsData.exists(sdata.dev)) {
-			var value = { logData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
+			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
 			this.logsData.set(sdata.dev,value);
 			did = this.device = sdata.dev;
 		}
@@ -799,40 +832,53 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 				return $r;
 			}(this))) devLogs.logData.pop();
 			break;
-		case "debug":
+		case "output":
 			var x2 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
-			devLogs.debugData.splice(0,0,x2);
+			devLogs.outputData.splice(0,0,x2);
 			if((function($this) {
 				var $r;
-				var a1 = devLogs.debugData.length;
+				var a1 = devLogs.outputData.length;
 				var b1 = $this.max;
 				var aNeg1 = a1 < 0;
 				var bNeg1 = b1 < 0;
 				$r = aNeg1 != bNeg1?aNeg1:a1 > b1;
 				return $r;
-			}(this))) devLogs.debugData.pop();
+			}(this))) devLogs.outputData.pop();
 			break;
-		case "test":
-			var x3 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml(this.formatMunit(sdata.data)), msg : sdata.msg};
-			devLogs.testData.splice(0,0,x3);
+		case "debug":
+			var x3 = { id : this.index, time : new Date(), data : sdata.data, msg : sdata.msg};
+			devLogs.debugData.splice(0,0,x3);
 			if((function($this) {
 				var $r;
-				var a2 = devLogs.testData.length;
+				var a2 = devLogs.debugData.length;
 				var b2 = $this.max;
 				var aNeg2 = a2 < 0;
 				var bNeg2 = b2 < 0;
 				$r = aNeg2 != bNeg2?aNeg2:a2 > b2;
 				return $r;
+			}(this))) devLogs.debugData.pop();
+			break;
+		case "test":
+			var x4 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml(this.formatMunit(sdata.data)), msg : sdata.msg};
+			devLogs.testData.splice(0,0,x4);
+			if((function($this) {
+				var $r;
+				var a3 = devLogs.testData.length;
+				var b3 = $this.max;
+				var aNeg3 = a3 < 0;
+				var bNeg3 = b3 < 0;
+				$r = aNeg3 != bNeg3?aNeg3:a3 > b3;
+				return $r;
 			}(this))) devLogs.testData.pop();
 			break;
 		case "stats":
-			var x4 = sdata.data;
-			devLogs.statsData.splice(0,0,x4);
+			var x5 = sdata.data;
+			devLogs.statsData.splice(0,0,x5);
 			if(devLogs.statsData.length > 101) devLogs.statsData.pop();
 			break;
 		case "inspect":
-			var x5 = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>");
-			devLogs.inspectData.splice(0,0,x5);
+			var x6 = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(sdata.data) + "</pre>");
+			devLogs.inspectData.splice(0,0,x6);
 			if(devLogs.inspectData.length > 101) devLogs.inspectData.pop();
 			break;
 		}
@@ -900,6 +946,9 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getDebugData: function() {
 		return this.debugDeferred.promise;
 	}
+	,getOutputData: function() {
+		return this.outputDeferred.promise;
+	}
 	,getStatsData: function() {
 		return this.statsDeferred.promise;
 	}
@@ -919,6 +968,10 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,getDebugSocketData: function() {
 		if(!this.logsData.exists(this.device)) return null;
 		return this.logsData.get(this.device).debugData;
+	}
+	,getOutputSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).outputData;
 	}
 	,getTictocSocketData: function() {
 		if(!this.logsData.exists(this.device)) return null;

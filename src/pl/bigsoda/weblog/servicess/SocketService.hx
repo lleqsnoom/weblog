@@ -18,6 +18,7 @@ typedef SocketLogModel = {
 
 typedef LogsModel = {
 	var logData:Array<LogLineModel>;
+	var outputData:Array<LogLineModel>;
 	var debugData:Array<LogLineModel>;
 	var testData:Array<LogLineModel>;
 	var tictocData:Array<LogLineModel>;
@@ -46,12 +47,14 @@ class SocketService implements IService
 {
 	public var socketData:Dynamic;
 	public var logData:Array<Dynamic>;
+	public var outputData:Array<Dynamic>;
 	public var debugData:Array<Dynamic>;
 	public var statsData:Array<Dynamic>;
 	public var inspectData:Array<Dynamic>;
 	public var testData:Array<Dynamic>;
 	private var tictocDeferred:Dynamic;
 	private var logDeferred:Dynamic;
+	private var outputDeferred:Dynamic;
 	private var debugDeferred:Dynamic;
 	private var statsDeferred:Dynamic;
 	private var inspectDeferred:Dynamic;
@@ -83,6 +86,7 @@ class SocketService implements IService
 
 
 		logDeferred = q.defer();
+		outputDeferred = q.defer();
 		debugDeferred = q.defer();
 		statsDeferred = q.defer();
 		testDeferred = q.defer();
@@ -105,6 +109,7 @@ class SocketService implements IService
 		
 		
 		logDeferred = q.defer();
+		outputDeferred = q.defer();
 		debugDeferred = q.defer();
 		statsDeferred = q.defer();
 		testDeferred = q.defer();
@@ -113,6 +118,7 @@ class SocketService implements IService
 		
 		
 		logDeferred.resolve(devLogs.logData);
+		outputDeferred.resolve(devLogs.outputData);
 		debugDeferred.resolve(devLogs.debugData);
 		inspectDeferred.resolve(devLogs.inspectData);
 		testDeferred.resolve(devLogs.testData);
@@ -138,6 +144,7 @@ class SocketService implements IService
 		if(!logsData.exists(sdata.dev)){
 			logsData.set(sdata.dev, {
 					logData: new Array<LogLineModel>(),
+					outputData: new Array<LogLineModel>(),
 					debugData: new Array<LogLineModel>(),
 					testData: new Array<LogLineModel>(),
 					tictocData: new Array<LogLineModel>(),
@@ -183,6 +190,14 @@ class SocketService implements IService
 					msg: sdata.msg,
 				});
 				if (devLogs.logData.length > max) devLogs.logData.pop();
+			case "output":
+				devLogs.outputData.insert(0, {
+					id: index,
+					time: Date.now(),
+					data: sdata.data,
+					msg: sdata.msg,
+				});
+				if (devLogs.outputData.length > max) devLogs.outputData.pop();
 			case "debug":
 				devLogs.debugData.insert(0, {
 					id: index,
@@ -276,6 +291,9 @@ class SocketService implements IService
 	public function getDebugData():Dynamic {
 		return debugDeferred.promise;
 	}
+	public function getOutputData():Dynamic {
+		return outputDeferred.promise;
+	}
 	public function getStatsData():Dynamic {
 		return statsDeferred.promise;
 	}
@@ -299,6 +317,12 @@ class SocketService implements IService
 	public function getDebugSocketData():Dynamic {
 		if(!logsData.exists(device))return null;
 		return logsData.get(device).debugData;
+		//return inspectSocketData;
+	}
+
+	public function getOutputSocketData():Dynamic {
+		if(!logsData.exists(device))return null;
+		return logsData.get(device).outputData;
 		//return inspectSocketData;
 	}
 

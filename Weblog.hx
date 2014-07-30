@@ -35,6 +35,11 @@ import haxe.macro.Compiler;
 	import cpp.vm.Thread;
 #end
 
+#if hscript
+	import hscript.Parser;
+	import hscript.Interp;
+#end
+
 /**
  * ...
  * @author tkwiatek
@@ -226,9 +231,40 @@ class Weblog{
 				dev: device,
 			})
 		);
+		r.onData = function(d) {
+			trace(d);
+			#if hscript
+				execute(d);
+			#end
+		}
 		r.request(true);
 	}
-	
+
+	#if hscript
+	private static function execute(str:String):Void {
+		if(str == null || str == "") return;
+		var data:Array<Dynamic> = Json.parse(str);
+		
+		if(data == null) return;
+		if(!Std.is(data, Array)) return;
+
+		for(i in 0...data.length){
+			try{			
+				var expr = data[i].code;
+				var parser = new hscript.Parser();
+				var ast = parser.parseString(expr);
+				var interp = new hscript.Interp();	
+				send(interp.execute(ast), "output");
+			}catch(e:Dynamic){
+				send("Error when running: " + data[i].code, "output");
+			}
+			
+
+		}
+
+	}
+	#end
+
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
 
 		if(depth == 0)return null;

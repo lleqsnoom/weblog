@@ -95,39 +95,18 @@
 
 				</style>
 				<div class="wrap">
-					<textarea data-ng-model="$scope.runCode" id="code-haxe" name="code-haxe">Math.cos(100);</textarea>
+					<textarea data-ng-model="runCode" id="code-haxe" name="code-haxe" class="selectable"></textarea>
 				</div>
 
-			    <script>
 
-					var editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"), {
-				        lineNumbers: true,
-				        lineWrapping: false,
-				        indentUnit: 4,
-				        indentWithTabs: true,
-				        mode: {name: "haxe", globalVars: true}
-					});
+				<div class="title_label" style="z-index: 1000;top: 60%;position: absolute;left: 0;right: 0;">
+					<span>Output</span>
 
-
-					/*
-				    function selectTheme() {
-				        editor.refresh();
-				    }
-
-				    setTimeout(selectTheme, 1000);
-					*/
-				
-
-				</script>
-
-
-				<div class="title_label" style="z-index: 1000;bottom: 40%;position: absolute;left: 0;right: 0;">
-					<span>Output {{$scope.runCode}}</span>
-
-					<button type="submit" class="btn btn-danger btn-xs" ng-click="run($scope.editor.getValue())" style="position: absolute; top: 3px; right: 3px;height: 19px;font-size: 11px;">Run</button>
+					<button type="submit" class="btn btn-danger btn-xs" ng-click="run()" style="position: absolute; top: 3px; right: 3px;height: 19px;font-size: 11px;">Run</button>
 				</div>
 
-				<div style="position: absolute;height: 40%;bottom: 0;left: 0; right: 0;padding-top: 25px;">
+				<div class="selectable" style="position: absolute;height: 40%;bottom: 0;left: 0; right: 0;padding: 5px;padding-top: 27px;">
+					{{last}}
 				</div>
 
 

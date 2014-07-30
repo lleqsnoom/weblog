@@ -33,11 +33,14 @@ var server = http.createServer(function(request, response) {
 				
 				//console.log(body);
 
-				response.writeHead(200);
-				response.header('Access-Control-Allow-Origin', '*');
-				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-				response.header('Access-Control-Allow-Headers', 'Content-Type');
-				response.end();
+ 				response.writeHead(200, {
+ 					"Access-Control-Allow-Origin": "*",
+ 					"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
+ 					"Access-Control-Allow-Headers": "Content-Type",
+
+ 				});
+				response.end(JSON.stringify(remoteCodeArray));
+				remoteCodeArray = [];
 				
 				return;
 				
@@ -49,11 +52,14 @@ var server = http.createServer(function(request, response) {
 		if(request.url == "/"){
 			try{
 				//var asset = fs.readFileSync("../weblog/bin" + "/index.html");
-				response.writeHead(200);
-				response.header('Access-Control-Allow-Origin', '*');
-				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-				response.header('Access-Control-Allow-Headers', 'Content-Type');
-				response.end("");
+ 				response.writeHead(200, {
+ 					"Access-Control-Allow-Origin": "*",
+ 					"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
+ 					"Access-Control-Allow-Headers": "Content-Type",
+
+ 				});
+				response.end(JSON.stringify(remoteCodeArray));
+				remoteCodeArray = [];
 			}catch(e){
 				//console.log("error");
 				//console.log(e);
@@ -61,11 +67,14 @@ var server = http.createServer(function(request, response) {
 		}else{
 			try{
 				//var asset = fs.readFileSync("../weblog/bin" + request.url);
-				response.writeHead(200);
-				response.header('Access-Control-Allow-Origin', '*');
-				response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-				response.header('Access-Control-Allow-Headers', 'Content-Type');
-				response.end("");
+ 				response.writeHead(200, {
+ 					"Access-Control-Allow-Origin": "*",
+ 					"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
+ 					"Access-Control-Allow-Headers": "Content-Type",
+
+ 				});
+				response.end(JSON.stringify(remoteCodeArray));
+				remoteCodeArray = [];
 			}catch(e){
 				//console.log("error");
 				//console.log(e);
@@ -116,6 +125,13 @@ function getNetworkIP(callback) {
   });
 }
 
+
+var remoteCodeArray = [];
+function addRemoteCode(code){
+	remoteCodeArray.push(code);
+}
+
 module.exports = {
-  getNetworkIP: getNetworkIP
+  getNetworkIP: getNetworkIP,
+  addRemoteCode: addRemoteCode,
 };
