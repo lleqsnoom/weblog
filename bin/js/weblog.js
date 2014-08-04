@@ -565,14 +565,14 @@ pl.bigsoda.weblog.controllers.StatsController.prototype = {
 				maxMS = Math.max(maxMS,data[i].ms);
 			}
 			_g.drawData(data,"fps",maxFPS,"rgba(255, 0, 0, 0.3)","rgba(255, 0, 0, 1)",ctx,width,height,height * 0 | 0);
-			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.33333333333333331 | 0);
+			_g.drawData(data,"ms",maxMS,"rgba(255, 198, 0, 0.3)","rgba(255, 198, 0, 1)",ctx,width,height,height * 0.333333333333333315 | 0);
 			_g.drawData(data,"mem",maxMEM,"rgba(0, 138, 255, 0.3)","rgba(0, 138, 255, 1)",ctx,width,height,height * 0.66666666666666663 | 0);
 			ctx.fillStyle = "#f5f5f5";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,3);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,3);
 			ctx.fillRect(0,(height * 1. | 0) - 1,width,3);
 			ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			ctx.fillRect(0,(height * 0.33333333333333331 | 0) - 1,width,1);
+			ctx.fillRect(0,(height * 0.333333333333333315 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(255, 198, 0, 1)";
 			ctx.fillRect(0,(height * 0.66666666666666663 | 0) - 1,width,1);
 			ctx.fillStyle = "rgba(0, 138, 255, 1)";
@@ -796,14 +796,31 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	}
 	,onSocketData: function(data) {
 		var sdata = JSON.parse(data);
+		if(sdata.type == "collection") {
+			var _g1 = 0;
+			var _g = sdata.data.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				this.setSocketData(sdata.data[i]);
+			}
+		} else this.setSocketData(sdata);
+	}
+	,setSocketData: function(sdata) {
 		var did = null;
 		var devLogs;
-		if(!this.logsData.exists(sdata.dev)) {
+		if(!(function($this) {
+			var $r;
+			var key = sdata.dev;
+			$r = $this.logsData.exists(key);
+			return $r;
+		}(this))) {
+			var key1 = sdata.dev;
 			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
-			this.logsData.set(sdata.dev,value);
+			this.logsData.set(key1,value);
 			did = this.device = sdata.dev;
 		}
-		devLogs = this.logsData.get(sdata.dev);
+		var key2 = sdata.dev;
+		devLogs = this.logsData.get(key2);
 		var _g = sdata.type;
 		switch(_g) {
 		case "tictoc":

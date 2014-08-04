@@ -139,6 +139,18 @@ class SocketService implements IService
 		//data.data = Json.parse(data.data);
 
 		var sdata:SocketLogModel = Json.parse(data);
+		if(sdata.type == "collection"){
+			for(i in 0...sdata.data.length){
+				setSocketData(sdata.data[i]);
+			}
+		}else{
+			setSocketData(sdata);
+		}
+	}
+
+
+	public function setSocketData(sdata:Dynamic):Void {
+
 		var did:String = null;
 		var devLogs:LogsModel;
 		if(!logsData.exists(sdata.dev)){
