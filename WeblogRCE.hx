@@ -24,11 +24,11 @@ class WeblogRCE
 	   return instance;
 	}
 
-	public function listCommands():Array<String> {
-		var a:Array<String> = new Array<String>();
+	public function listCommands():Array<Dynamic> {
+		var a:Array<Dynamic> = new Array<Dynamic>();
 
 		for(key in commands.keys()){
-			a.push(key);
+			a.push({name: key, type: "function"});
 		}
 
 		return a;

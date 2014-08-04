@@ -58,6 +58,8 @@ class RemoteController implements IController
 	
 	public function update():Void {
 		scope.logs = socketService.getOutputSocketData();
+		scope.commands = socketService.getCommandsSocketData();
+		Console.log(socketService.getCommandsSocketData());
 		//Console.log("=================== "+socketService.getOutputSocketData());
 		if(scope.logs == null || scope.logs.length == 0 || scope.logs[0] == null) return;
 		if(scope.logs[0].data == lastLog) return;
@@ -68,7 +70,7 @@ class RemoteController implements IController
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		Console.log("=================== "+socketService.getOutputSocketData());
+		//Console.log("=================== "+socketService.getOutputSocketData());
 		//Console.log("onSocketData");
 		scope.logs = data;
 		scope.last = scope.logs[0].data;

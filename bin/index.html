@@ -94,10 +94,17 @@
 				    }
 
 				</style>
+
 				<div class="wrap">
 					<textarea data-ng-model="runCode" id="code-haxe" name="code-haxe" class="selectable"></textarea>
 				</div>
 
+
+				<div>
+					<ul>
+						<li ng-repeat="command in commands">name: {{command.name}} - {{command.type}}</li>
+					</ul>
+				</div>
 
 				<div class="title_label" style="z-index: 1000;top: 60%;position: absolute;left: 0;right: 0;">
 					<span>Output</span>

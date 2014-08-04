@@ -143,13 +143,13 @@ class Weblog{
 		runRemote();
 	}
 	
-	#if (neko || cpp)
 	private static var remoteStep:UInt = 0;
+	#if (neko || cpp)
 	private static function remoteThread():Void {
 		while (true) {
 			remoteStep++;
 			if(remoteStep % 10 == 0){
-				sendData(WeblogRCE.instance.listCommands(), "remote");
+				sendData(WeblogRCE.instance.listCommands(), "commands");
 			}else{
 				sendData({}, "remote");
 			}
@@ -165,7 +165,12 @@ class Weblog{
 			}
         #else       
             haxe.Timer.delay(function():Void {
-				send({}, "remote");
+				remoteStep++;
+				if(remoteStep % 10 == 0){
+					sendData(WeblogRCE.instance.listCommands(), "commands");
+				}else{
+					sendData({}, "remote");
+				}
                 runRemote();
             }, 10);
         #end		

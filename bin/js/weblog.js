@@ -447,12 +447,13 @@ pl.bigsoda.weblog.controllers.RemoteController.prototype = {
 	,lastLog: null
 	,update: function() {
 		this.scope.logs = this.socketService.getOutputSocketData();
+		this.scope.commands = this.socketService.getCommandsSocketData();
+		js.Console.log(this.socketService.getCommandsSocketData());
 		if(this.scope.logs == null || this.scope.logs.length == 0 || this.scope.logs[0] == null) return;
 		if(this.scope.logs[0].data == this.lastLog) return;
 		this.lastLog = this.scope.last = this.scope.logs[0].data;
 	}
 	,onSocketData: function(data) {
-		js.Console.log("=================== " + Std.string(this.socketService.getOutputSocketData()));
 		this.scope.logs = data;
 		this.scope.last = this.scope.logs[0].data;
 	}
@@ -728,6 +729,7 @@ pl.bigsoda.weblog.servicess.SocketService = function(q,rootScope,sce) {
 	this.outputDeferred = q.defer();
 	this.debugDeferred = q.defer();
 	this.statsDeferred = q.defer();
+	this.commandsDeferred = q.defer();
 	this.testDeferred = q.defer();
 	this.inspectDeferred = q.defer();
 	this.tictocDeferred = q.defer();
@@ -743,6 +745,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,outputData: null
 	,debugData: null
 	,statsData: null
+	,commandsData: null
 	,inspectData: null
 	,testData: null
 	,tictocDeferred: null
@@ -750,6 +753,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,outputDeferred: null
 	,debugDeferred: null
 	,statsDeferred: null
+	,commandsDeferred: null
 	,inspectDeferred: null
 	,testDeferred: null
 	,rootScope: null
@@ -771,6 +775,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.outputDeferred = this.q.defer();
 		this.debugDeferred = this.q.defer();
 		this.statsDeferred = this.q.defer();
+		this.commandsDeferred = this.q.defer();
 		this.testDeferred = this.q.defer();
 		this.inspectDeferred = this.q.defer();
 		this.tictocDeferred = this.q.defer();
@@ -780,6 +785,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
+		this.commandsDeferred.resolve(devLogs.commandsData);
 		this.tictocDeferred.resolve(devLogs.tictocData);
 		var _g1 = 0;
 		var _g2 = this.updateArr.length;
@@ -815,7 +821,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			return $r;
 		}(this))) {
 			var key1 = sdata.dev;
-			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
+			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), commandsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
 			this.logsData.set(key1,value);
 			did = this.device = sdata.dev;
 		}
@@ -875,6 +881,9 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 				return $r;
 			}(this))) devLogs.debugData.pop();
 			break;
+		case "commands":
+			devLogs.commandsData = sdata.data;
+			break;
 		case "test":
 			var x4 = { id : this.index, time : new Date(), data : this.sce.trustAsHtml(this.formatMunit(sdata.data)), msg : sdata.msg};
 			devLogs.testData.splice(0,0,x4);
@@ -905,6 +914,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 		this.inspectDeferred.resolve(devLogs.inspectData);
 		this.testDeferred.resolve(devLogs.testData);
 		this.statsDeferred.resolve(devLogs.statsData);
+		this.commandsDeferred.resolve(devLogs.commandsData);
 		this.tictocDeferred.resolve(devLogs.tictocData);
 		this.rootScope.$apply();
 		if(did != null) this.setCurrDevice(did);
@@ -997,6 +1007,10 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,setDebugSocketItem: function(item) {
 		if(!this.logsData.exists(this.device)) return null;
 		this.logsData.get(this.device).debugDataItem = item;
+	}
+	,getCommandsSocketData: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).commandsData;
 	}
 	,getDebugSocketItem: function() {
 		if(!this.logsData.exists(this.device)) return null;

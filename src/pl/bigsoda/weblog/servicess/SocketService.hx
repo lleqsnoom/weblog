@@ -24,6 +24,7 @@ typedef LogsModel = {
 	var tictocData:Array<LogLineModel>;
 	var statsData:Array<Dynamic>;
 	var inspectData:Array<Dynamic>;
+	var commandsData:Array<Dynamic>;
 	var debugDataItem:Dynamic;
 	var filterObj:String;
 	var filterInsp:String;
@@ -50,13 +51,16 @@ class SocketService implements IService
 	public var outputData:Array<Dynamic>;
 	public var debugData:Array<Dynamic>;
 	public var statsData:Array<Dynamic>;
+	public var commandsData:Array<Dynamic>;
 	public var inspectData:Array<Dynamic>;
 	public var testData:Array<Dynamic>;
+
 	private var tictocDeferred:Dynamic;
 	private var logDeferred:Dynamic;
 	private var outputDeferred:Dynamic;
 	private var debugDeferred:Dynamic;
 	private var statsDeferred:Dynamic;
+	private var commandsDeferred:Dynamic;
 	private var inspectDeferred:Dynamic;
 	private var testDeferred:Dynamic;
 	private var rootScope:Dynamic;
@@ -89,6 +93,7 @@ class SocketService implements IService
 		outputDeferred = q.defer();
 		debugDeferred = q.defer();
 		statsDeferred = q.defer();
+		commandsDeferred = q.defer();
 		testDeferred = q.defer();
 		inspectDeferred = q.defer();
 		tictocDeferred = q.defer();
@@ -112,6 +117,7 @@ class SocketService implements IService
 		outputDeferred = q.defer();
 		debugDeferred = q.defer();
 		statsDeferred = q.defer();
+		commandsDeferred = q.defer();
 		testDeferred = q.defer();
 		inspectDeferred = q.defer();
 		tictocDeferred = q.defer();
@@ -123,6 +129,7 @@ class SocketService implements IService
 		inspectDeferred.resolve(devLogs.inspectData);
 		testDeferred.resolve(devLogs.testData);
 		statsDeferred.resolve(devLogs.statsData);
+		commandsDeferred.resolve(devLogs.commandsData);
 		tictocDeferred.resolve(devLogs.tictocData);
 		
 		for (i in 0...updateArr.length) {
@@ -161,6 +168,7 @@ class SocketService implements IService
 					testData: new Array<LogLineModel>(),
 					tictocData: new Array<LogLineModel>(),
 					statsData: new Array<Dynamic>(),
+					commandsData: new Array<Dynamic>(),
 					inspectData: new Array<Dynamic>(),
 					debugDataItem: null,
 					filterObj: null,
@@ -218,6 +226,8 @@ class SocketService implements IService
 					msg: sdata.msg,
 				});
 				if (devLogs.debugData.length > max) devLogs.debugData.pop();
+			case "commands":
+				devLogs.commandsData = sdata.data;
 			case "test":
 				devLogs.testData.insert(0, {
 					id: index,
@@ -241,6 +251,7 @@ class SocketService implements IService
 		inspectDeferred.resolve(devLogs.inspectData);
 		testDeferred.resolve(devLogs.testData);
 		statsDeferred.resolve(devLogs.statsData);
+		commandsDeferred.resolve(devLogs.commandsData);
 		tictocDeferred.resolve(devLogs.tictocData);
 		
 		rootScope.$apply();
@@ -346,6 +357,11 @@ class SocketService implements IService
 	public function setDebugSocketItem(item:Dynamic):Void {
 		if(!logsData.exists(device))return null;
 		logsData.get(device).debugDataItem = item;
+		//return inspectSocketData;
+	}
+	public function getCommandsSocketData():Dynamic {
+		if(!logsData.exists(device))return null;
+		return logsData.get(device).commandsData;
 		//return inspectSocketData;
 	}
 	public function getDebugSocketItem():Dynamic {
