@@ -35,11 +35,6 @@ import haxe.macro.Compiler;
 	import cpp.vm.Thread;
 #end
 
-#if hscript
-	import hscript.Parser;
-	import hscript.Interp;
-#end
-
 /**
  * ...
  * @author tkwiatek
@@ -129,6 +124,10 @@ class Weblog{
 
 
 
+	public static function output(data:Dynamic):Void {
+		//send(data, "log");
+		send(data, "output");
+	}
 
 	public static function log(data:Dynamic):Void {
 		//send(data, "log");
@@ -145,9 +144,15 @@ class Weblog{
 	}
 	
 	#if (neko || cpp)
+	private static var remoteStep:UInt = 0;
 	private static function remoteThread():Void {
 		while (true) {
-			sendData({}, "remote");
+			remoteStep++;
+			if(remoteStep % 10 == 0){
+				sendData(WeblogRCE.instance.listCommands(), "remote");
+			}else{
+				sendData({}, "remote");
+			}
 			Sys.sleep(10 / 1000);
 		}				
 	}
@@ -259,40 +264,14 @@ class Weblog{
 			})
 		);
 		r.onData = function(d) {
-			//trace(d);
-			#if hscript
-				execute(d);
-			#end
+			WeblogRCE.instance.execute(d);
 		}
 		r.request(true);
 	}
 
-	#if hscript
-	private static function execute(str:String):Void {
-		if(str == null || str == "") return;
-		var data:Array<Dynamic> = Json.parse(str);
-		
-		if(data == null) return;
-		if(!Std.is(data, Array)) return;
-
-		for(i in 0...data.length){
-			try{			
-				var expr = data[i].code;
-				var parser = new hscript.Parser();
-				var ast = parser.parseString(expr);
-				var interp = new hscript.Interp();	
-				send(interp.execute(ast), "output");
-			}catch(e:Dynamic){
-				send("Error when running: " + data[i].code, "output");
-			}
-			
-
-		}
-
+	public static function map(alias:String, element:Dynamic):Void {
+		WeblogRCE.instance.map(alias, element);
 	}
-
-	#end
-
 
 	private static function readObjectReflectArr(o:Iterable<Dynamic>, depth:Int = 5):Dynamic {
 
