@@ -445,6 +445,9 @@ pl.bigsoda.weblog.controllers.RemoteController.prototype = {
 	,socketService: null
 	,msg: null
 	,lastLog: null
+	,addCommand: function(name,type) {
+		this.scope.editor.replaceRange(name,CodeMirror.Pos(this.scope.editor.lastLine()));
+	}
 	,update: function() {
 		this.scope.logs = this.socketService.getOutputSocketData();
 		this.scope.commands = this.socketService.getCommandsSocketData();
@@ -458,7 +461,7 @@ pl.bigsoda.weblog.controllers.RemoteController.prototype = {
 		this.scope.last = this.scope.logs[0].data;
 	}
 	,buildEditor: function() {
-		this.scope.editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"),{ lineNumbers : true, lineWrapping : false, indentUnit : 4, indentWithTabs : true, mode : { name : "haxe", globalVars : true}});
+		this.scope.editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"),{ lineNumbers : true, lineWrapping : true, indentUnit : 4, indentWithTabs : true, mode : { name : "haxe", globalVars : true}});
 	}
 	,run: function(data) {
 		this.window.server.addRemoteCode({ dev : this.socketService.getDevice(), code : this.scope.editor.getValue()});

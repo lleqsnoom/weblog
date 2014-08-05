@@ -55,7 +55,10 @@ class RemoteController implements IController
 
 	}
 
-	
+	public function addCommand(name:String, type:String):Void {
+		scope.editor.replaceRange(name, CodeMirror.Pos(scope.editor.lastLine()));
+	}
+
 	public function update():Void {
 		scope.logs = socketService.getOutputSocketData();
 		scope.commands = socketService.getCommandsSocketData();
@@ -82,7 +85,7 @@ class RemoteController implements IController
 		scope.editor = CodeMirror.fromTextArea( untyped __js__("document.getElementById")("code-haxe"), 
 		{
 			lineNumbers: true, 
-			lineWrapping: false,	
+			lineWrapping: true,	
 			indentUnit: 4, 
 			indentWithTabs: true, 
 			mode: {
