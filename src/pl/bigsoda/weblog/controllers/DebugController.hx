@@ -39,6 +39,10 @@ class DebugController implements IController
 
 
 	public function filter():Void {
+		Console.log("filter");
+		Console.log(scope.msg);
+		Console.log(scope.filterStr);
+
 		fillWindow( filterObj(scope.msg, scope.filterStr) );
 		socketService.setFilterObj(scope.filterStr);
 	}
@@ -109,8 +113,10 @@ class DebugController implements IController
 		for(i in 0...scope.logs.length){
 			if(scope.logs[i].id == id){
 				socketService.setDebugSocketItem(scope.logs[i].data);
-				fillWindow( filterObj(scope.logs[i].data, scope.filterStr) );
+				scope.msg = scope.logs[i].data;
+				//fillWindow( filterObj(scope.logs[i].data, scope.filterStr) );
 				scope.selectedId = id;
+				filter();
 				break;
 			}
 		}
@@ -120,13 +126,15 @@ class DebugController implements IController
 		scope.selectedId = id;*/
 	}
 	
-	public function select(msg, id)
+	/*public function select(msg, id)
 	{
 		scope.msg = msg;
+		Console.log("select");
+		Console.log(msg);
 		socketService.setDebugSocketItem(msg);
 		fillWindow( filterObj(msg, scope.filterStr) );
 		scope.selectedId = id;
-	}
+	}*/
 
 	public function fillWindow(data:Dynamic):Void {
 		//scope.selectedDebugItem = sce.trustAsHtml("<pre class='jsonprint'>" + socketService.formatJson(data) + "</pre>");

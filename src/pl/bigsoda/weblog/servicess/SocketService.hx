@@ -29,6 +29,8 @@ typedef LogsModel = {
 	var filterObj:String;
 	var filterInsp:String;
 	var maxTime:Float;
+	var rceInput:String;
+	var rceOutput:String;
 }
 
 typedef LogLineModel = {
@@ -174,6 +176,8 @@ class SocketService implements IService
 					filterObj: null,
 					filterInsp: null,
 					maxTime: 0,
+					rceInput: "",
+					rceOutput: "",
 				});
 			did = device = sdata.dev;
 		}
@@ -393,6 +397,27 @@ class SocketService implements IService
 		if(!logsData.exists(device)) return;
 		logsData.get(device).filterObj = s;
 	}
+
+
+
+	public function getRceInput():String {
+		if(!logsData.exists(device)) return null;
+		return logsData.get(device).rceInput;
+	}
+	public function setRceInput(s:String):Void {
+		if(!logsData.exists(device)) return;
+		logsData.get(device).rceInput = s;
+	}
+	public function getRceOutput():String {
+		if(!logsData.exists(device)) return null;
+		return logsData.get(device).rceOutput;
+	}
+	public function setRceOutput(s:String):Void {
+		if(!logsData.exists(device)) return;
+		logsData.get(device).rceOutput = s;
+	}
+
+
 
 	public function getFilterInsp():String {
 		if(!logsData.exists(device)) return null;

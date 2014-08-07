@@ -30,7 +30,7 @@ class LogController implements IController
 	
 	private function onSocketData(data:Dynamic):Void 
 	{
-		Console.log("onSocketData");
+		//Console.log("onSocketData");
 		scope.logs = data;
 	}
 	

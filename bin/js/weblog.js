@@ -286,6 +286,9 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 	,socketService: null
 	,msg: null
 	,filter: function() {
+		console.log("filter");
+		console.log(this.scope.msg);
+		console.log(this.scope.filterStr);
 		this.fillWindow(this.filterObj(this.scope.msg,this.scope.filterStr));
 		this.socketService.setFilterObj(this.scope.filterStr);
 	}
@@ -337,17 +340,12 @@ pl.bigsoda.weblog.controllers.DebugController.prototype = {
 			var i = _g1++;
 			if(this.scope.logs[i].id == id) {
 				this.socketService.setDebugSocketItem(this.scope.logs[i].data);
-				this.fillWindow(this.filterObj(this.scope.logs[i].data,this.scope.filterStr));
+				this.scope.msg = this.scope.logs[i].data;
 				this.scope.selectedId = id;
+				this.filter();
 				break;
 			}
 		}
-	}
-	,select: function(msg,id) {
-		this.scope.msg = msg;
-		this.socketService.setDebugSocketItem(msg);
-		this.fillWindow(this.filterObj(msg,this.scope.filterStr));
-		this.scope.selectedId = id;
 	}
 	,fillWindow: function(data) {
 		this.scope.selectedDebugItem = this.sce.trustAsHtml("<pre class='jsonprint'>" + library.json.prettyPrint(data) + "</pre>");
@@ -407,12 +405,12 @@ pl.bigsoda.weblog.controllers.LogController.prototype = {
 	,timeout: null
 	,socketData: null
 	,onSocketData: function(data) {
-		console.log("onSocketData");
 		this.scope.logs = data;
 	}
 	,__class__: pl.bigsoda.weblog.controllers.LogController
 };
 pl.bigsoda.weblog.controllers.RemoteController = $hx_exports.pl.bigsoda.weblog.controllers.RemoteController = function(scope,window,http,document,timeout,rootScope,socketService,sce) {
+	this.lastDevice = "";
 	this.lastLog = "";
 	var _g = this;
 	this.scope = scope;
@@ -421,7 +419,6 @@ pl.bigsoda.weblog.controllers.RemoteController = $hx_exports.pl.bigsoda.weblog.c
 	this.sce = sce;
 	this.socketService = socketService;
 	this.window = window;
-	hxangular.AngularHelper.map(this.scope,this);
 	hxangular.AngularHelper.map(this.scope,this);
 	socketService.getOutputData().then($bind(this,this.onSocketData));
 	socketService.addUpdateCallback($bind(this,this.update));
@@ -445,27 +442,40 @@ pl.bigsoda.weblog.controllers.RemoteController.prototype = {
 	,socketService: null
 	,msg: null
 	,lastLog: null
+	,lastDevice: null
 	,addCommand: function(name,type) {
 		this.scope.editor.replaceRange(name,CodeMirror.Pos(this.scope.editor.lastLine()));
 	}
 	,update: function() {
+		if(this.lastDevice != this.socketService.getDevice()) {
+			this.lastDevice = this.socketService.getDevice();
+			var inp = this.socketService.getRceInput();
+			if(inp != null) {
+				this.scope.editor.setValue(inp);
+				this.scope.last = this.socketService.getRceOutput();
+				console.log("#########################################################################              update");
+			}
+		}
 		this.scope.logs = this.socketService.getOutputSocketData();
 		this.scope.commands = this.socketService.getCommandsSocketData();
-		js.Console.log(this.socketService.getCommandsSocketData());
 		if(this.scope.logs == null || this.scope.logs.length == 0 || this.scope.logs[0] == null) return;
 		if(this.scope.logs[0].data == this.lastLog) return;
 		this.lastLog = this.scope.last = this.scope.logs[0].data;
+		this.socketService.setRceOutput(this.lastLog);
 	}
 	,onSocketData: function(data) {
 		this.scope.logs = data;
 		this.scope.last = this.scope.logs[0].data;
 	}
 	,buildEditor: function() {
+		var _g = this;
 		this.scope.editor = CodeMirror.fromTextArea(document.getElementById("code-haxe"),{ lineNumbers : true, lineWrapping : true, indentUnit : 4, indentWithTabs : true, mode : { name : "haxe", globalVars : true}});
+		this.scope.editor.on("change",function(cm,change) {
+			_g.socketService.setRceInput(_g.scope.editor.getValue());
+		});
 	}
 	,run: function(data) {
 		this.window.server.addRemoteCode({ dev : this.socketService.getDevice(), code : this.scope.editor.getValue()});
-		js.Console.log(this.scope.editor.getValue());
 	}
 	,__class__: pl.bigsoda.weblog.controllers.RemoteController
 };
@@ -474,7 +484,6 @@ pl.bigsoda.weblog.controllers.ServerAdressController = $hx_exports.pl.bigsoda.we
 	this.rootScope = rootScope;
 	rootScope.selectedTab = "log";
 	hxangular.AngularHelper.map(this.scope,this);
-	console.log(window.server);
 	window.server.getNetworkIP(function(error,ip) {
 		scope.$apply(function() {
 			scope.serverIP = ip;
@@ -824,7 +833,7 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 			return $r;
 		}(this))) {
 			var key1 = sdata.dev;
-			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), commandsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0};
+			var value = { logData : new Array(), outputData : new Array(), debugData : new Array(), testData : new Array(), tictocData : new Array(), statsData : new Array(), commandsData : new Array(), inspectData : new Array(), debugDataItem : null, filterObj : null, filterInsp : null, maxTime : 0, rceInput : "", rceOutput : ""};
 			this.logsData.set(key1,value);
 			did = this.device = sdata.dev;
 		}
@@ -1037,6 +1046,22 @@ pl.bigsoda.weblog.servicess.SocketService.prototype = {
 	,setFilterObj: function(s) {
 		if(!this.logsData.exists(this.device)) return;
 		this.logsData.get(this.device).filterObj = s;
+	}
+	,getRceInput: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).rceInput;
+	}
+	,setRceInput: function(s) {
+		if(!this.logsData.exists(this.device)) return;
+		this.logsData.get(this.device).rceInput = s;
+	}
+	,getRceOutput: function() {
+		if(!this.logsData.exists(this.device)) return null;
+		return this.logsData.get(this.device).rceOutput;
+	}
+	,setRceOutput: function(s) {
+		if(!this.logsData.exists(this.device)) return;
+		this.logsData.get(this.device).rceOutput = s;
 	}
 	,getFilterInsp: function() {
 		if(!this.logsData.exists(this.device)) return null;

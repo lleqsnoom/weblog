@@ -22,6 +22,7 @@ class RemoteController implements IController
 	var socketService:SocketService;
 	var msg:Dynamic;
 	var lastLog:String = "";
+	var lastDevice:String = "";
 	
 	@inject("$scope", "$window", "$http", "$document", "$timeout", "$rootScope", "pl.bigsoda.weblog.servicess.SocketService", "$sce")
 	public function new(scope, window, http, document, timeout, rootScope, socketService, sce) 
@@ -32,12 +33,6 @@ class RemoteController implements IController
 		this.sce = sce;
 		this.socketService = socketService;
 		this.window = window;
-		
-		
-		
-		AngularHelper.map(this.scope, this);
-		
-		
 		
 		AngularHelper.map(this.scope, this);
 		socketService.getOutputData().then(onSocketData);
@@ -60,15 +55,24 @@ class RemoteController implements IController
 	}
 
 	public function update():Void {
+
+		if(lastDevice != socketService.getDevice()){
+			lastDevice =  socketService.getDevice();
+			var inp:String = socketService.getRceInput();
+			if(inp != null) {
+				scope.editor.setValue(inp);
+				scope.last = socketService.getRceOutput();
+				Console.log("#########################################################################              update");
+			}
+		}
+
 		scope.logs = socketService.getOutputSocketData();
 		scope.commands = socketService.getCommandsSocketData();
-		Console.log(socketService.getCommandsSocketData());
-		//Console.log("=================== "+socketService.getOutputSocketData());
+
 		if(scope.logs == null || scope.logs.length == 0 || scope.logs[0] == null) return;
 		if(scope.logs[0].data == lastLog) return;
 		lastLog = scope.last = scope.logs[0].data;
-		//Console.log("+++++++++++++++++++++++++ "+socketService.getOutputSocketData());
-		//scope.selectedDebugItem = socketService.getDebugSocketItem();
+		socketService.setRceOutput(lastLog);
 	}
 	
 	private function onSocketData(data:Dynamic):Void 
@@ -93,6 +97,11 @@ class RemoteController implements IController
 				globalVars: true
 			}
 		});
+
+
+		scope.editor.on("change", function(cm, change) {
+			socketService.setRceInput(scope.editor.getValue());
+		});
 		
 	}
 	public function run(data:String):Void {
@@ -102,6 +111,6 @@ class RemoteController implements IController
 				code: scope.editor.getValue(),
 			}
 		);
-		Console.log(scope.editor.getValue());
+		//Console.log(scope.editor.getValue());
 	}
 }

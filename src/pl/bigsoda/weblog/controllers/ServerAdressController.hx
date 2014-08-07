@@ -21,7 +21,7 @@ class ServerAdressController implements IController
 	
 		rootScope.selectedTab = "log";
 		AngularHelper.map(this.scope, this);
-		Console.log(window.server);
+		//Console.log(window.server);
 
 		window.server.getNetworkIP(function (error, ip) {
 			scope.$apply(function () {
