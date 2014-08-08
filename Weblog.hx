@@ -138,8 +138,10 @@ class Weblog{
 		send(data, "debug");
 	}
 	
-	
+	private static var remoteRunning:Bool = false;
 	public static function initRemote():Void {
+		if(remoteRunning == true) return;
+		remoteRunning = true;
 		runRemote();
 	}
 	
@@ -159,6 +161,8 @@ class Weblog{
     #end
 	
 	private static function runRemote():Void {
+		if(remoteRunning == true) return;
+		remoteRunning = true;
 		#if (neko || cpp)
 			if(!synchronous) {
 				Thread.create(remoteThread);
@@ -269,12 +273,14 @@ class Weblog{
 			})
 		);
 		r.onData = function(d) {
+			Weblog.initRemote();
 			WeblogRCE.instance.execute(d);
 		}
 		r.request(true);
 	}
 
 	public static function map(alias:String, element:Dynamic):Void {
+		Weblog.initRemote();
 		WeblogRCE.instance.map(alias, element);
 	}
 
