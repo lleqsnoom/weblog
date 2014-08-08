@@ -161,8 +161,6 @@ class Weblog{
     #end
 	
 	private static function runRemote():Void {
-		if(remoteRunning == true) return;
-		remoteRunning = true;
 		#if (neko || cpp)
 			if(!synchronous) {
 				Thread.create(remoteThread);
